@@ -1,0 +1,16 @@
+%%~ bc0cbd2a407f3:e7ded148d6e4a:7031beac91f75:NOVEL:SCENE:Another Scene
+### Another Scene
+
+@pov: John
+@location: Earth
+
+Adding more scenes to a chapter is as easy as adding more scene files, with a level three heading, or just adding another level three heading in the same file if that works for the way you want to structure your files.
+
+In fact, if you wish, you can add all the scenes in the chapter file too. All novelWriter cares about is the level of the headings.
+
+### More Scenes
+
+@pov: Jane
+@location: Earth
+
+This is a second scene in the same file as the previous scene. You can always split the files up later.

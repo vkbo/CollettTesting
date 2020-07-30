@@ -1,0 +1,652 @@
+{
+  "tagIndex": {
+    "John": [
+      3,
+      "14298de4d9524",
+      "CHARACTER",
+      "T000001"
+    ],
+    "Jane": [
+      3,
+      "bb2c23b3c42cc",
+      "CHARACTER",
+      "T000001"
+    ],
+    "Earth": [
+      3,
+      "b3e74dbc1f584",
+      "WORLD",
+      "T000001"
+    ],
+    "Space": [
+      3,
+      "f1471bef9f2ae",
+      "WORLD",
+      "T000001"
+    ],
+    "Mars": [
+      3,
+      "5eaea4e8cdee8",
+      "WORLD",
+      "T000001"
+    ]
+  },
+  "refIndex": {
+    "53b69b83cdafc": {
+      "T000000": {
+        "tags": [],
+        "updated": 1592845572.2899537
+      },
+      "T000001": {
+        "tags": [],
+        "updated": 1592845572.289979
+      }
+    },
+    "974e400180a99": {
+      "T000000": {
+        "tags": [],
+        "updated": 1592845572.2917273
+      }
+    },
+    "edca4be2fcaf8": {
+      "T000000": {
+        "tags": [],
+        "updated": 1592845572.2935286
+      },
+      "T000001": {
+        "tags": [],
+        "updated": 1592845572.293549
+      }
+    },
+    "6a2d6d5f4f401": {
+      "T000000": {
+        "tags": [],
+        "updated": 1593419819.2904582
+      },
+      "T000001": {
+        "tags": [
+          [
+            3,
+            "@pov",
+            "Jane"
+          ],
+          [
+            4,
+            "@location",
+            "Earth"
+          ]
+        ],
+        "updated": 1593419819.290509
+      }
+    },
+    "636b6aa9b697b": {
+      "T000000": {
+        "tags": [],
+        "updated": 1596012057.6485734
+      },
+      "T000001": {
+        "tags": [
+          [
+            3,
+            "@pov",
+            "Jane"
+          ],
+          [
+            4,
+            "@char",
+            "John"
+          ],
+          [
+            5,
+            "@location",
+            "Earth"
+          ]
+        ],
+        "updated": 1596012057.6486516
+      },
+      "T000019": {
+        "tags": [],
+        "updated": 1596012057.6488118
+      }
+    },
+    "bc0cbd2a407f3": {
+      "T000000": {
+        "tags": [],
+        "updated": 1592845572.3015618
+      },
+      "T000001": {
+        "tags": [
+          [
+            3,
+            "@pov",
+            "John"
+          ],
+          [
+            4,
+            "@location",
+            "Earth"
+          ]
+        ],
+        "updated": 1592845572.3015997
+      },
+      "T000010": {
+        "tags": [
+          [
+            12,
+            "@pov",
+            "Jane"
+          ],
+          [
+            13,
+            "@location",
+            "Earth"
+          ]
+        ],
+        "updated": 1592845572.3017201
+      }
+    },
+    "ba8a28a246524": {
+      "T000000": {
+        "tags": [],
+        "updated": 1592845572.3039644
+      },
+      "T000001": {
+        "tags": [],
+        "updated": 1592845572.3040133
+      }
+    },
+    "96b68994dfa3d": {
+      "T000000": {
+        "tags": [],
+        "updated": 1592845572.306348
+      },
+      "T000001": {
+        "tags": [],
+        "updated": 1592845572.306389
+      },
+      "T000007": {
+        "tags": [],
+        "updated": 1592845572.3064244
+      },
+      "T000011": {
+        "tags": [],
+        "updated": 1592845572.3065429
+      },
+      "T000015": {
+        "tags": [],
+        "updated": 1592845572.306588
+      }
+    },
+    "88706ddc78b1b": {
+      "T000000": {
+        "tags": [],
+        "updated": 1592845572.308742
+      },
+      "T000001": {
+        "tags": [
+          [
+            3,
+            "@pov",
+            "Jane"
+          ],
+          [
+            4,
+            "@location",
+            "Space"
+          ]
+        ],
+        "updated": 1592845572.30877
+      },
+      "T000008": {
+        "tags": [
+          [
+            10,
+            "@pov",
+            "Jane"
+          ],
+          [
+            11,
+            "@location",
+            "Space"
+          ]
+        ],
+        "updated": 1592845572.308898
+      }
+    },
+    "ae7339df26ded": {
+      "T000000": {
+        "tags": [],
+        "updated": 1592845572.3108969
+      },
+      "T000001": {
+        "tags": [
+          [
+            3,
+            "@pov",
+            "John"
+          ],
+          [
+            4,
+            "@location",
+            "Mars"
+          ]
+        ],
+        "updated": 1592845572.3109272
+      }
+    },
+    "14298de4d9524": {
+      "T000000": {
+        "tags": [],
+        "updated": 1592845572.3149326
+      },
+      "T000001": {
+        "tags": [],
+        "updated": 1592845572.314961
+      }
+    },
+    "bb2c23b3c42cc": {
+      "T000000": {
+        "tags": [],
+        "updated": 1592845572.3171897
+      },
+      "T000001": {
+        "tags": [],
+        "updated": 1592845572.3172188
+      }
+    },
+    "b3e74dbc1f584": {
+      "T000000": {
+        "tags": [],
+        "updated": 1592845572.3205435
+      },
+      "T000001": {
+        "tags": [],
+        "updated": 1592845572.3205626
+      }
+    },
+    "f1471bef9f2ae": {
+      "T000000": {
+        "tags": [],
+        "updated": 1592845572.3226418
+      },
+      "T000001": {
+        "tags": [],
+        "updated": 1592845572.3226662
+      }
+    },
+    "5eaea4e8cdee8": {
+      "T000000": {
+        "tags": [],
+        "updated": 1592845572.3241503
+      },
+      "T000001": {
+        "tags": [],
+        "updated": 1592845572.3241792
+      }
+    },
+    "627ffc4a50e4f": {
+      "T000000": {
+        "tags": [],
+        "updated": 1593788830.9724214
+      },
+      "T000001": {
+        "tags": [],
+        "updated": 1593788830.9724371
+      }
+    },
+    "cb7a205cb820c": {
+      "T000000": {
+        "tags": [],
+        "updated": 1593805477.5719302
+      },
+      "T000001": {
+        "tags": [],
+        "updated": 1593805477.5719457
+      }
+    }
+  },
+  "novelIndex": {
+    "53b69b83cdafc": {
+      "T000001": {
+        "level": "H1",
+        "title": "My Novel",
+        "layout": "TITLE",
+        "synopsis": "",
+        "cCount": 23,
+        "wCount": 5,
+        "pCount": 1,
+        "updated": 1592845572.2900355
+      }
+    },
+    "974e400180a99": {},
+    "edca4be2fcaf8": {
+      "T000001": {
+        "level": "H1",
+        "title": "Part One",
+        "layout": "PARTITION",
+        "synopsis": "",
+        "cCount": 8,
+        "wCount": 2,
+        "pCount": 0,
+        "updated": 1592845572.2935908
+      }
+    },
+    "6a2d6d5f4f401": {
+      "T000001": {
+        "level": "H2",
+        "title": "So it Begins",
+        "layout": "CHAPTER",
+        "synopsis": "We can add a chapter file, but keep the scene files separate. In the chapter file we can set the meta data that applies to the whole chapter if we wish to.",
+        "cCount": 12,
+        "wCount": 3,
+        "pCount": 0,
+        "updated": 1593419819.2907233
+      }
+    },
+    "636b6aa9b697b": {
+      "T000001": {
+        "level": "H3",
+        "title": "Making a Scene",
+        "layout": "SCENE",
+        "synopsis": "",
+        "cCount": 1425,
+        "wCount": 245,
+        "pCount": 6,
+        "updated": 1596012057.649009
+      },
+      "T000019": {
+        "level": "H4",
+        "title": "Some Section Here",
+        "layout": "SCENE",
+        "synopsis": "",
+        "cCount": 163,
+        "wCount": 33,
+        "pCount": 1,
+        "updated": 1596012057.6490555
+      }
+    },
+    "bc0cbd2a407f3": {
+      "T000001": {
+        "level": "H3",
+        "title": "Another Scene",
+        "layout": "SCENE",
+        "synopsis": "",
+        "cCount": 362,
+        "wCount": 70,
+        "pCount": 2,
+        "updated": 1592845572.3018045
+      },
+      "T000010": {
+        "level": "H3",
+        "title": "More Scenes",
+        "layout": "SCENE",
+        "synopsis": "",
+        "cCount": 11,
+        "wCount": 2,
+        "pCount": 0,
+        "updated": 1592845572.3018956
+      }
+    },
+    "ba8a28a246524": {
+      "T000001": {
+        "level": "H2",
+        "title": "Interlude",
+        "layout": "UNNUMBERED",
+        "synopsis": "",
+        "cCount": 633,
+        "wCount": 101,
+        "pCount": 3,
+        "updated": 1592845572.3042347
+      }
+    },
+    "88706ddc78b1b": {
+      "T000001": {
+        "level": "H2",
+        "title": "Where has John Gone?",
+        "layout": "CHAPTER",
+        "synopsis": "",
+        "cCount": 20,
+        "wCount": 4,
+        "pCount": 0,
+        "updated": 1592845572.3089488
+      },
+      "T000008": {
+        "level": "H3",
+        "title": "Jane Cannot Find John",
+        "layout": "CHAPTER",
+        "synopsis": "",
+        "cCount": 21,
+        "wCount": 4,
+        "pCount": 0,
+        "updated": 1592845572.3090074
+      }
+    },
+    "ae7339df26ded": {
+      "T000001": {
+        "level": "H3",
+        "title": "We Found John!",
+        "layout": "SCENE",
+        "synopsis": "",
+        "cCount": 14,
+        "wCount": 3,
+        "pCount": 0,
+        "updated": 1592845572.311067
+      }
+    },
+    "627ffc4a50e4f": {
+      "T000001": {
+        "level": "H2",
+        "title": "The Period",
+        "layout": "SCENE",
+        "synopsis": "",
+        "cCount": 952,
+        "wCount": 188,
+        "pCount": 2,
+        "updated": 1593788830.9724715
+      }
+    },
+    "cb7a205cb820c": {
+      "T000001": {
+        "level": "H2",
+        "title": "The Period",
+        "layout": "SCENE",
+        "synopsis": "",
+        "cCount": 903,
+        "wCount": 180,
+        "pCount": 2,
+        "updated": 1593805477.5719912
+      }
+    }
+  },
+  "noteIndex": {
+    "96b68994dfa3d": {
+      "T000001": {
+        "level": "H1",
+        "title": "A Note on Structure",
+        "layout": "NOTE",
+        "synopsis": "",
+        "cCount": 368,
+        "wCount": 72,
+        "pCount": 2,
+        "updated": 1592845572.3065307
+      },
+      "T000007": {
+        "level": "H2",
+        "title": "Headers in Notes",
+        "layout": "NOTE",
+        "synopsis": "",
+        "cCount": 169,
+        "wCount": 30,
+        "pCount": 1,
+        "updated": 1592845572.306579
+      },
+      "T000011": {
+        "level": "H2",
+        "title": "Folders in the Tree View",
+        "layout": "NOTE",
+        "synopsis": "",
+        "cCount": 382,
+        "wCount": 71,
+        "pCount": 1,
+        "updated": 1592845572.306636
+      },
+      "T000015": {
+        "level": "H2",
+        "title": "Linking Files and Notes",
+        "layout": "NOTE",
+        "synopsis": "",
+        "cCount": 330,
+        "wCount": 58,
+        "pCount": 1,
+        "updated": 1592845572.3066716
+      }
+    },
+    "14298de4d9524": {
+      "T000001": {
+        "level": "H1",
+        "title": "John Smith",
+        "layout": "NOTE",
+        "synopsis": "",
+        "cCount": 10,
+        "wCount": 2,
+        "pCount": 0,
+        "updated": 1592845572.3150744
+      }
+    },
+    "bb2c23b3c42cc": {
+      "T000001": {
+        "level": "H1",
+        "title": "Jane Smith",
+        "layout": "NOTE",
+        "synopsis": "",
+        "cCount": 10,
+        "wCount": 2,
+        "pCount": 0,
+        "updated": 1592845572.317326
+      }
+    },
+    "b3e74dbc1f584": {
+      "T000001": {
+        "level": "H1",
+        "title": "Earth",
+        "layout": "NOTE",
+        "synopsis": "",
+        "cCount": 5,
+        "wCount": 1,
+        "pCount": 0,
+        "updated": 1592845572.3206449
+      }
+    },
+    "f1471bef9f2ae": {
+      "T000001": {
+        "level": "H1",
+        "title": "Space",
+        "layout": "NOTE",
+        "synopsis": "",
+        "cCount": 115,
+        "wCount": 24,
+        "pCount": 1,
+        "updated": 1592845572.3227692
+      }
+    },
+    "5eaea4e8cdee8": {
+      "T000001": {
+        "level": "H1",
+        "title": "Mars",
+        "layout": "NOTE",
+        "synopsis": "",
+        "cCount": 4,
+        "wCount": 1,
+        "pCount": 0,
+        "updated": 1592845572.3242517
+      }
+    }
+  },
+  "textCounts": {
+    "53b69b83cdafc": [
+      72,
+      15,
+      2
+    ],
+    "974e400180a99": [
+      210,
+      40,
+      2
+    ],
+    "edca4be2fcaf8": [
+      23,
+      5,
+      1
+    ],
+    "6a2d6d5f4f401": [
+      12,
+      3,
+      0
+    ],
+    "636b6aa9b697b": [
+      1811,
+      318,
+      8
+    ],
+    "bc0cbd2a407f3": [
+      476,
+      93,
+      3
+    ],
+    "ba8a28a246524": [
+      633,
+      101,
+      3
+    ],
+    "96b68994dfa3d": [
+      1692,
+      313,
+      6
+    ],
+    "88706ddc78b1b": [
+      139,
+      28,
+      1
+    ],
+    "ae7339df26ded": [
+      189,
+      37,
+      1
+    ],
+    "14298de4d9524": [
+      49,
+      9,
+      1
+    ],
+    "bb2c23b3c42cc": [
+      55,
+      9,
+      1
+    ],
+    "b3e74dbc1f584": [
+      76,
+      15,
+      1
+    ],
+    "f1471bef9f2ae": [
+      115,
+      24,
+      1
+    ],
+    "5eaea4e8cdee8": [
+      28,
+      6,
+      1
+    ],
+    "627ffc4a50e4f": [
+      1866,
+      336,
+      3
+    ],
+    "cb7a205cb820c": [
+      948,
+      188,
+      2
+    ]
+  }
+}

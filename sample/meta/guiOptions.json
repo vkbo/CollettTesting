@@ -1,0 +1,96 @@
+{
+  "GuiDocSplit": {
+    "spLevel": 3
+  },
+  "GuiBuildNovel": {
+    "winWidth": 1062,
+    "winHeight": 818,
+    "addNovel": true,
+    "addNotes": true,
+    "ignoreFlag": true,
+    "justifyText": true,
+    "excludeBody": false,
+    "textFont": "Cantarell",
+    "textSize": 11,
+    "noStyling": false,
+    "incSynopsis": true,
+    "incComments": true,
+    "incKeywords": true,
+    "incBodyText": true
+  },
+  "GuiOutline": {
+    "headerOrder": [
+      "TITLE",
+      "LEVEL",
+      "LABEL",
+      "LINE",
+      "CCOUNT",
+      "WCOUNT",
+      "PCOUNT",
+      "POV",
+      "CHAR",
+      "PLOT",
+      "TIME",
+      "WORLD",
+      "OBJECT",
+      "ENTITY",
+      "CUSTOM",
+      "SYNOP"
+    ],
+    "columnWidth": {
+      "TITLE": 237,
+      "LEVEL": 40,
+      "LABEL": 150,
+      "LINE": 40,
+      "CCOUNT": 50,
+      "WCOUNT": 57,
+      "PCOUNT": 54,
+      "POV": 59,
+      "CHAR": 91,
+      "PLOT": 57,
+      "TIME": 100,
+      "WORLD": 79,
+      "OBJECT": 100,
+      "ENTITY": 100,
+      "CUSTOM": 100,
+      "SYNOP": 824
+    },
+    "columnHidden": {
+      "TITLE": false,
+      "LEVEL": true,
+      "LABEL": false,
+      "LINE": true,
+      "CCOUNT": true,
+      "WCOUNT": false,
+      "PCOUNT": true,
+      "POV": false,
+      "CHAR": false,
+      "PLOT": false,
+      "TIME": true,
+      "WORLD": false,
+      "OBJECT": true,
+      "ENTITY": true,
+      "CUSTOM": true,
+      "SYNOP": false
+    }
+  },
+  "GuiProjectSettings": {
+    "winWidth": 570,
+    "winHeight": 355,
+    "replaceColW": 139
+  },
+  "GuiWritingStats": {
+    "winWidth": 550,
+    "winHeight": 500,
+    "widthCol0": 180,
+    "widthCol1": 80,
+    "widthCol2": 80,
+    "sortCol": 0,
+    "sortOrder": 0,
+    "incNovel": true,
+    "incNotes": true,
+    "hideZeros": true,
+    "hideNegative": false,
+    "groupByDay": false
+  }
+}
