@@ -3,8 +3,8 @@
     "spLevel": 3
   },
   "GuiBuildNovel": {
-    "winWidth": 1062,
-    "winHeight": 818,
+    "winWidth": 1044,
+    "winHeight": 781,
     "addNovel": true,
     "addNotes": true,
     "ignoreFlag": true,
@@ -16,7 +16,10 @@
     "incSynopsis": true,
     "incComments": true,
     "incKeywords": true,
-    "incBodyText": true
+    "incBodyText": true,
+    "boxWidth": 324,
+    "docWidth": 694,
+    "replaceTabs": false
   },
   "GuiOutline": {
     "headerOrder": [
@@ -38,14 +41,14 @@
       "SYNOP"
     ],
     "columnWidth": {
-      "TITLE": 237,
+      "TITLE": 226,
       "LEVEL": 40,
-      "LABEL": 150,
+      "LABEL": 141,
       "LINE": 40,
-      "CCOUNT": 50,
+      "CCOUNT": 59,
       "WCOUNT": 57,
       "PCOUNT": 54,
-      "POV": 59,
+      "POV": 57,
       "CHAR": 91,
       "PLOT": 57,
       "TIME": 100,
@@ -53,7 +56,7 @@
       "OBJECT": 100,
       "ENTITY": 100,
       "CUSTOM": 100,
-      "SYNOP": 824
+      "SYNOP": 1129
     },
     "columnHidden": {
       "TITLE": false,
@@ -64,8 +67,8 @@
       "WCOUNT": false,
       "PCOUNT": true,
       "POV": false,
-      "CHAR": false,
-      "PLOT": false,
+      "CHAR": true,
+      "PLOT": true,
       "TIME": true,
       "WORLD": false,
       "OBJECT": true,
@@ -76,12 +79,12 @@
   },
   "GuiProjectSettings": {
     "winWidth": 570,
-    "winHeight": 355,
+    "winHeight": 375,
     "replaceColW": 139
   },
   "GuiWritingStats": {
-    "winWidth": 550,
-    "winHeight": 500,
+    "winWidth": 580,
+    "winHeight": 508,
     "widthCol0": 180,
     "widthCol1": 80,
     "widthCol2": 80,
@@ -90,7 +93,8 @@
     "incNovel": true,
     "incNotes": true,
     "hideZeros": true,
-    "hideNegative": false,
-    "groupByDay": false
+    "hideNegative": true,
+    "groupByDay": true,
+    "histMax": 1000
   }
 }
