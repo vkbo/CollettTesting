@@ -18,7 +18,7 @@
 
 GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent)
 {
-    CltProject *theProject = new CltProject();
+    Project *theProject = new Project();
 
     // Main GUI Elements
     QPointer<GuiMainStatus>     statusBar = new GuiMainStatus(this);
@@ -71,7 +71,7 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent)
     this->setMenuBar(mainMenu);
     this->setStatusBar(statusBar);
 
-    theProject->openProject("../Source/sample/sampleNovel");
+    theProject->openProject("../Source/sample/");
 
     return;
 }

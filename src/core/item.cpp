@@ -2,7 +2,6 @@
 
 NWItem::NWItem()
 {
-    
 }
 
 NWItem::~NWItem()

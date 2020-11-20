@@ -1,7 +1,7 @@
 #ifndef GUIMAIN_H
 #define GUIMAIN_H
 
-#include "project.h"
+#include "core.h"
 
 #include <QMainWindow>
 #include <QSettings>
@@ -14,7 +14,7 @@ public:
     GuiMain(QWidget *parent=nullptr);
     ~GuiMain();
 
-    CltProject *theProject;
+    Project *theProject;
 
 private:
     QSettings mainConf;

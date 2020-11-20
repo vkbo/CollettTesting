@@ -23,7 +23,7 @@ include_directories(
     src
     src/gui
     src/gui/elements
-    src/project
+    src/core
 )
 
 add_executable(collett
@@ -54,14 +54,14 @@ add_executable(collett
     # ${TS_FILES}
 )
 
-add_library(CollettProject STATIC
-    src/project/project.h
-    src/project/project.cpp
-    src/project/item.h
-    src/project/item.cpp
+add_library(CollettCore STATIC
+    src/core/project.h
+    src/core/project.cpp
+    src/core/item.h
+    src/core/item.cpp
 )
 
-target_link_libraries(CollettProject PRIVATE Qt5::Core)
-target_link_libraries(collett        PRIVATE Qt5::Widgets CollettProject)
+target_link_libraries(CollettCore PRIVATE Qt5::Core)
+target_link_libraries(collett     PRIVATE Qt5::Widgets CollettCore)
 
 # qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})

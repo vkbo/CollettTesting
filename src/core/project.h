@@ -8,12 +8,12 @@
 #include <QList>
 #include <QHash>
 
-class CltProject
+class Project
 {
 
 public:
-    CltProject();
-    ~CltProject();
+    Project();
+    ~Project();
 
     // Class Methods
     int openProject(QString fileName, bool overrideLock=false);
