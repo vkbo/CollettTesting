@@ -2,8 +2,9 @@
 
 A C++ version of [novelWriter](https://github.com/vkbo/novelWriter).
 
-This project is just to test out how much work it would be to rewrite the Python application in C++ using the same QtWidget based structure.
+This project is just to test out how much work it would be to rewrite the Python application in C++
+using the same QtWidget based structure.
 
 ## Build
 
-Package dependencies (Debian): `qttools5-dev`, `qttools5-dev-tools`.
+Package dependencies (Debian/Ubuntu): `qttools5-dev`, `qttools5-dev-tools`.

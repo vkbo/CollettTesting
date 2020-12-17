@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(Collett LANGUAGES CXX VERSION "0.4.4")
-set(Collett_VERSION_DATE "2020-02-14")
+project(Collett LANGUAGES CXX VERSION "0.0.1")
+set(Collett_VERSION_DATE "2020-12-17")
 configure_file(src/collett.h src/collett.h)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -19,6 +19,21 @@ find_package(Qt5 COMPONENTS Core Widgets LinguistTools REQUIRED)
 
 # set(TS_FILES Collett_en_GB.ts)
 
+# Source Files
+list(APPEND SRC_CORE project item)
+list(APPEND SRC_BASE main config guimain)
+list(APPEND SRC_GUI
+    elements/docdetails
+    elements/doceditor
+    elements/doctree
+    elements/docviewer
+    elements/noticebar
+    elements/searchbar
+    elements/viewdetails
+    mainmenu
+    statusbar
+)
+
 include_directories(
     src
     src/gui
@@ -26,40 +41,25 @@ include_directories(
     src/core
 )
 
-add_executable(collett
-    src/collett.h
-    src/main.cpp
-    src/config.h
-    src/config.cpp
-    src/guimain.h
-    src/guimain.cpp
-    src/gui/mainmenu.h
-    src/gui/mainmenu.cpp
-    src/gui/statusbar.h
-    src/gui/statusbar.cpp
-    src/gui/elements/docdetails.h
-    src/gui/elements/docdetails.cpp
-    src/gui/elements/doceditor.h
-    src/gui/elements/doceditor.cpp
-    src/gui/elements/doctree.h
-    src/gui/elements/doctree.cpp
-    src/gui/elements/docviewer.h
-    src/gui/elements/docviewer.cpp
-    src/gui/elements/noticebar.h
-    src/gui/elements/noticebar.cpp
-    src/gui/elements/searchbar.h
-    src/gui/elements/searchbar.cpp
-    src/gui/elements/viewdetails.h
-    src/gui/elements/viewdetails.cpp
-    # ${TS_FILES}
-)
+# Source Files for libCollettCore
 
-add_library(CollettCore STATIC
-    src/core/project.h
-    src/core/project.cpp
-    src/core/item.h
-    src/core/item.cpp
-)
+foreach(entry IN LISTS SRC_CORE)
+    list(APPEND LIB_CORE_SRC src/core/${entry}.cpp)
+endforeach()
+
+# Source Files for Main Exec
+
+foreach(entry IN LISTS SRC_BASE)
+    list(APPEND EXEC_SRC src/${entry}.cpp)
+endforeach()
+foreach(entry IN LISTS SRC_GUI)
+    list(APPEND EXEC_SRC src/gui/${entry}.cpp)
+endforeach()
+# list(APPPEND EXEC_SRC ${TS_FILES})
+
+# Add Sources to Targets
+add_executable(collett ${EXEC_SRC})
+add_library(CollettCore STATIC ${LIB_CORE_SRC})
 
 target_link_libraries(CollettCore PRIVATE Qt5::Core)
 target_link_libraries(collett     PRIVATE Qt5::Widgets CollettCore)
