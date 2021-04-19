@@ -20,8 +20,16 @@ find_package(Qt5 COMPONENTS Core Widgets LinguistTools REQUIRED)
 # set(TS_FILES Collett_en_GB.ts)
 
 # Source Files
-list(APPEND SRC_CORE project item)
-list(APPEND SRC_BASE main config guimain)
+list(APPEND SRC_CORE
+    item
+    project
+    projxmlreader
+)
+list(APPEND SRC_BASE
+    main
+    config
+    guimain
+)
 list(APPEND SRC_GUI
     elements/docdetails
     elements/doceditor

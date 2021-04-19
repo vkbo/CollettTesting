@@ -36,12 +36,6 @@ private:
     QString             projMeta  = ""; // The full path to the project's meta data folder
     QString             projDict  = ""; // The spell check dictionary
     QString             projFile  = ""; // The file name of the project main xml file
-
-    // Methods
-    bool unpackProjectXML(QXmlStreamReader *xml);
-    bool unpackSettingsXML(QXmlStreamReader *xml);
-    bool unpackContentXML(QXmlStreamReader *xml);
-
 };
 
 #endif // PROJECT_H
