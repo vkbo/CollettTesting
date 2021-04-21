@@ -1,1 +1,6 @@
-build/
+# Third Party
+/lib
+
+# Sample Project
+/sample/cache
+/sample/meta

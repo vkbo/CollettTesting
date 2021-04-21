@@ -10,12 +10,23 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS_RELEASE "-Wall -O2 ${CMAKE_CXX_FLAGS_RELEASE}")
 set(CMAKE_CXX_FLAGS_DEBUG   "-Wall -g -O0 ${CMAKE_CXX_FLAGS_DEBUG}")
 
-find_package(Qt5 COMPONENTS Core Widgets LinguistTools REQUIRED)
+# Just symlink lib/qt6 to the correct location,
+# or set the path with -DCMAKE_PREFIX_PATH
+set(CMAKE_PREFIX_PATH "lib/qt6")
+set(QT_DEFAULT_MAJOR_VERSION 6)
+set(QT_NO_CREATE_VERSIONLESS_FUNCTIONS on)
+set(QT_NO_CREATE_VERSIONLESS_TARGETS on)
+
+find_package(Qt6 COMPONENTS Core Widgets LinguistTools REQUIRED)
+if(Qt6Widgets_FOUND)
+    message(STATUS "Found Qt6 Version: ${Qt6Widgets_VERSION}")
+    message(STATUS "Found Qt6 Libraries: ${Qt6Widgets_LIBRARIES}")
+endif()
 
 # set(TS_FILES Collett_en_GB.ts)
 
@@ -23,7 +34,6 @@ find_package(Qt5 COMPONENTS Core Widgets LinguistTools REQUIRED)
 list(APPEND SRC_CORE
     item
     project
-    projxmlreader
 )
 list(APPEND SRC_BASE
     main
@@ -69,7 +79,7 @@ endforeach()
 add_executable(collett ${EXEC_SRC})
 add_library(CollettCore STATIC ${LIB_CORE_SRC})
 
-target_link_libraries(CollettCore PRIVATE Qt5::Core)
-target_link_libraries(collett     PRIVATE Qt5::Widgets CollettCore)
+target_link_libraries(CollettCore PRIVATE Qt6::Core)
+target_link_libraries(collett     PRIVATE Qt6::Widgets CollettCore)
 
 # qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})

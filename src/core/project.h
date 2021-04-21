@@ -7,7 +7,6 @@
 #include <QString>
 #include <QList>
 #include <QHash>
-#include <QXmlStreamReader>
 
 class Project
 {

@@ -1,5 +1,4 @@
 #include "project.h"
-#include "projxmlreader.h"
 
 #include <QDebug>
 #include <QFile>
@@ -29,8 +28,5 @@ int Project::openProject(QString fileName, bool overrideLock) {
         return 1;
     }
 
-    ProjXMLReader* xmlRead = new ProjXMLReader();
-    int rStat = xmlRead->readProjectXML(&projFile, false);
-
-    return rStat;
+    return 0;
 }
