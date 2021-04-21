@@ -5,6 +5,8 @@
 
 class GuiDocEditor : public QTextEdit
 {
+    Q_OBJECT
+
 public:
     GuiDocEditor(QWidget *parent=nullptr);
     ~GuiDocEditor();

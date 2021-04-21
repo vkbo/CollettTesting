@@ -5,9 +5,6 @@
 #include "doceditor.h"
 #include "docviewer.h"
 #include "doctree.h"
-#include "noticebar.h"
-#include "searchbar.h"
-#include "viewdetails.h"
 
 #include <QCloseEvent>
 #include <QFrame>
@@ -21,15 +18,12 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent)
     Project *theProject = new Project();
 
     // Main GUI Elements
-    QPointer<GuiMainStatus>     statusBar = new GuiMainStatus(this);
-    QPointer<GuiNoticeBar>      noticeBar = new GuiNoticeBar(this);
-    QPointer<GuiDocEditor>      docEditor = new GuiDocEditor(this);
-    QPointer<GuiDocViewer>      docViewer = new GuiDocViewer(this);
-    QPointer<GuiDocViewDetails> viewMeta  = new GuiDocViewDetails(this);
-    QPointer<GuiSearchBar>      searchBar = new GuiSearchBar(this);
-    QPointer<GuiDocTree>        treeView  = new GuiDocTree(this);
-    QPointer<GuiDocDetails>     treeMeta  = new GuiDocDetails(this);
-    QPointer<GuiMainMenu>       mainMenu  = new GuiMainMenu(this);
+    QPointer<GuiMainStatus> statusBar = new GuiMainStatus(this);
+    QPointer<GuiDocEditor>  docEditor = new GuiDocEditor(this);
+    QPointer<GuiDocViewer>  docViewer = new GuiDocViewer(this);
+    QPointer<GuiDocTree>    treeView  = new GuiDocTree(this);
+    QPointer<GuiDocDetails> treeMeta  = new GuiDocDetails(this);
+    QPointer<GuiMainMenu>   mainMenu  = new GuiMainMenu(this);
 
     // Assemble Main Window
     QFrame      *treePane = new QFrame(this);
@@ -42,8 +36,6 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent)
     QFrame      *editPane = new QFrame(this);
     QVBoxLayout *docEdit  = new QVBoxLayout();
     docEdit->setContentsMargins(0, 0, 0, 0);
-    docEdit->addWidget(searchBar);
-    docEdit->addWidget(noticeBar);
     docEdit->addWidget(docEditor);
     editPane->setLayout(docEdit);
 
@@ -51,7 +43,6 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent)
     QVBoxLayout *docView  = new QVBoxLayout();
     docView->setContentsMargins(0, 0, 0, 0);
     docView->addWidget(docViewer);
-    docView->addWidget(viewMeta);
     viewPane->setLayout(docView);
 
     QSplitter *splitView = new QSplitter(Qt::Horizontal, this);

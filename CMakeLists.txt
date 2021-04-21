@@ -45,9 +45,6 @@ list(APPEND SRC_GUI
     elements/doceditor
     elements/doctree
     elements/docviewer
-    elements/noticebar
-    elements/searchbar
-    elements/viewdetails
     mainmenu
     statusbar
 )
