@@ -62,6 +62,8 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent)
     this->setMenuBar(mainMenu);
     this->setStatusBar(statusBar);
 
+    this->resize(QSize(1400, 800));
+
     theProject->openProject("../Source/sample/");
 
     return;

@@ -5,6 +5,8 @@
 
 class GuiMainStatus : public QStatusBar
 {
+    Q_OBJECT
+
 public:
     GuiMainStatus(QWidget *parent=nullptr);
     ~GuiMainStatus();

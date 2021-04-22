@@ -5,6 +5,8 @@
 
 class GuiDocViewer : public QTextBrowser
 {
+    Q_OBJECT
+
 public:
     GuiDocViewer(QWidget *parent=nullptr);
     ~GuiDocViewer();

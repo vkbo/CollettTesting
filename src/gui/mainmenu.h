@@ -5,6 +5,8 @@
 
 class GuiMainMenu : public QMenuBar
 {
+    Q_OBJECT
+
 public:
     GuiMainMenu(QWidget *parent=nullptr);
     ~GuiMainMenu();

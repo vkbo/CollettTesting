@@ -12,7 +12,6 @@ GuiMainMenu::~GuiMainMenu()
 {
 }
 
-
 //
 // Menu Builders
 //
@@ -21,12 +20,11 @@ void GuiMainMenu::buildProjectMenu()
 {
 
     // Project
-    QMenu *projMenu = this->addMenu("&Project");
+    QMenu *projMenu = this->addMenu(tr("&Project"));
 
     // Project > New Project
-    QAction *aNewProject = new QAction("New Project", this);
-    aNewProject->setStatusTip("Create new project");
-    // self.aNewProject.triggered.connect(lambda : self.theParent.newProject(None))
+    QAction *aNewProject = new QAction(tr("New Project"), this);
+    aNewProject->setStatusTip(tr("Create new project"));
     projMenu->addAction(aNewProject);
 
     return;

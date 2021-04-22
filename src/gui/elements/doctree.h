@@ -5,6 +5,8 @@
 
 class GuiDocTree : public QTreeWidget
 {
+    Q_OBJECT
+
 public:
     GuiDocTree(QWidget *parent=nullptr);
     ~GuiDocTree();

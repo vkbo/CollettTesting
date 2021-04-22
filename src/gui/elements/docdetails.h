@@ -8,6 +8,8 @@
 
 class GuiDocDetails : public QFrame
 {
+    Q_OBJECT
+
 public:
     GuiDocDetails(QWidget *parent=nullptr);
     ~GuiDocDetails();
