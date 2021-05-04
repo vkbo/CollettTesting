@@ -1,4 +1,4 @@
-#include "doctree.h"
+#include "noveltree.h"
 
 #include <QTreeWidget>
 
@@ -7,7 +7,7 @@
 #define C_FLAGS  2
 #define C_HANDLE 3
 
-GuiDocTree::GuiDocTree(QWidget *parent) : QTreeWidget(parent)
+GuiNovelTree::GuiNovelTree(QWidget *parent) : QTreeWidget(parent)
 {
     // Build GUI
     this->setIconSize(QSize(13,13));
@@ -31,6 +31,6 @@ GuiDocTree::GuiDocTree(QWidget *parent) : QTreeWidget(parent)
     return;
 }
 
-GuiDocTree::~GuiDocTree()
+GuiNovelTree::~GuiNovelTree()
 {
 }

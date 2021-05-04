@@ -1,10 +1,8 @@
 #include "guimain.h"
 #include "mainmenu.h"
 #include "statusbar.h"
-#include "docdetails.h"
 #include "doceditor.h"
-#include "docviewer.h"
-#include "doctree.h"
+#include "noveltree.h"
 
 #include <QCloseEvent>
 #include <QFrame>
@@ -20,17 +18,14 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent)
     // Main GUI Elements
     QPointer<GuiMainStatus> statusBar = new GuiMainStatus(this);
     QPointer<GuiDocEditor>  docEditor = new GuiDocEditor(this);
-    QPointer<GuiDocViewer>  docViewer = new GuiDocViewer(this);
-    QPointer<GuiDocTree>    treeView  = new GuiDocTree(this);
-    QPointer<GuiDocDetails> treeMeta  = new GuiDocDetails(this);
+    QPointer<GuiNovelTree>  novelTree = new GuiNovelTree(this);
     QPointer<GuiMainMenu>   mainMenu  = new GuiMainMenu(this);
 
     // Assemble Main Window
     QFrame      *treePane = new QFrame(this);
     QVBoxLayout *treeBox  = new QVBoxLayout();
     treeBox->setContentsMargins(0, 0, 0, 0);
-    treeBox->addWidget(treeView);
-    treeBox->addWidget(treeMeta);
+    treeBox->addWidget(novelTree);
     treePane->setLayout(treeBox);
 
     QFrame      *editPane = new QFrame(this);
@@ -42,7 +37,6 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent)
     QFrame      *viewPane = new QFrame(this);
     QVBoxLayout *docView  = new QVBoxLayout();
     docView->setContentsMargins(0, 0, 0, 0);
-    docView->addWidget(docViewer);
     viewPane->setLayout(docView);
 
     QSplitter *splitView = new QSplitter(Qt::Horizontal, this);

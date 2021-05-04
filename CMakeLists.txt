@@ -54,10 +54,8 @@ list(APPEND SRC_BASE
     guimain
 )
 list(APPEND SRC_GUI
-    elements/docdetails
     elements/doceditor
-    elements/doctree
-    elements/docviewer
+    elements/noveltree
     mainmenu
     statusbar
 )

@@ -1,6 +1,7 @@
 #ifndef GUIMAINMENU_H
 #define GUIMAINMENU_H
 
+#include <QAction>
 #include <QMenuBar>
 
 class GuiMainMenu : public QMenuBar
@@ -19,6 +20,15 @@ private:
     void buildFormatMenu();
     void buildToolsMenu();
     void buildHelpMenu();
+
+    // Menus
+    QMenu *projMenu;
+    QMenu *fmtMenu;
+
+    // Format Menu
+    QAction *aFmtEmph;
+    QAction *aFmtStrong;
+    QAction *aFmtStike;
 
 };
 #endif // GUIMAINMENU_H
