@@ -50,7 +50,6 @@ list(APPEND SRC_CORE
 )
 list(APPEND SRC_BASE
     main
-    config
     guimain
 )
 list(APPEND SRC_GUI

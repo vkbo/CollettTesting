@@ -20,65 +20,48 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include "guimain.h"
-#include "mainmenu.h"
-#include "statusbar.h"
 #include "doceditor.h"
+#include "mainmenu.h"
 #include "noveltree.h"
+#include "statusbar.h"
 
 #include <QCloseEvent>
-#include <QFrame>
+#include <QList>
 #include <QMainWindow>
 #include <QSplitter>
-#include <QVBoxLayout>
-#include <QPointer>
 
 GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
 
     Project *theProject = new Project();
 
     // Main GUI Elements
-    QPointer<GuiMainStatus> statusBar = new GuiMainStatus(this);
-    QPointer<GuiDocEditor>  docEditor = new GuiDocEditor(this);
-    QPointer<GuiNovelTree>  novelTree = new GuiNovelTree(this);
-    QPointer<GuiMainMenu>   mainMenu  = new GuiMainMenu(this);
+    guiMainStatus = new GuiMainStatus(this);
+    guiDocEditor  = new GuiDocEditor(this);
+    guiNovelTree  = new GuiNovelTree(this);
+    guiMainMenu   = new GuiMainMenu(this);
 
     // Assemble Main Window
-    QFrame      *treePane = new QFrame(this);
-    QVBoxLayout *treeBox  = new QVBoxLayout();
-    treeBox->setContentsMargins(0, 0, 0, 0);
-    treeBox->addWidget(novelTree);
-    treePane->setLayout(treeBox);
-
-    QFrame      *editPane = new QFrame(this);
-    QVBoxLayout *docEdit  = new QVBoxLayout();
-    docEdit->setContentsMargins(0, 0, 0, 0);
-    docEdit->addWidget(docEditor);
-    editPane->setLayout(docEdit);
-
-    QFrame      *viewPane = new QFrame(this);
-    QVBoxLayout *docView  = new QVBoxLayout();
-    docView->setContentsMargins(0, 0, 0, 0);
-    viewPane->setLayout(docView);
-
-    QSplitter *splitView = new QSplitter(Qt::Horizontal, this);
-    splitView->setOpaqueResize(false);
-    splitView->addWidget(editPane);
-    splitView->addWidget(viewPane);
-
-    QSplitter *splitMain = new QSplitter(Qt::Horizontal, this);
-    splitMain->setContentsMargins(4, 4, 4, 4);
-    splitMain->setOpaqueResize(false);
-    splitMain->addWidget(treePane);
-    splitMain->addWidget(splitView);
-
-    this->setCentralWidget(splitMain);
+    qtwSplitMain = new QSplitter(Qt::Horizontal, this);
+    qtwSplitMain->setContentsMargins(4, 4, 4, 4);
+    qtwSplitMain->setOpaqueResize(false);
+    qtwSplitMain->addWidget(guiNovelTree);
+    qtwSplitMain->addWidget(guiDocEditor);
 
     // Set Main Window Elements
-    this->setMenuBar(mainMenu);
-    this->setStatusBar(statusBar);
+    this->setMenuBar(guiMainMenu);
+    this->setCentralWidget(qtwSplitMain);
+    this->setStatusBar(guiMainStatus);
 
-    this->resize(QSize(1400, 800));
+    // Apply Settings
+    this->resize(mainConf.value(CNF_WIN_SIZE, QSize(1200, 800)).toSize());
 
+    QList<int> mainSplit;
+    mainSplit.append(mainConf.value(CNF_TREE_WIDTH, 300).toInt());
+    mainSplit.append(mainConf.value(CNF_EDIT_WIDTH, 900).toInt());
+
+    qtwSplitMain->setSizes(mainSplit);
+
+    // Load Something
     theProject->openProject("../Source/sample/");
 
     return;
@@ -92,8 +75,12 @@ GuiMain::~GuiMain() {
  */
 
 bool GuiMain::closeMain() {
+
+    // Save Settings
     if (!this->isFullScreen()) {
-        mainConf.setValue("GuiMain/winSize", this->size());
+        this->mainConf.setValue(CNF_WIN_SIZE, this->size());
+        this->mainConf.setValue(CNF_TREE_WIDTH, qtwSplitMain->sizes().at(0));
+        this->mainConf.setValue(CNF_EDIT_WIDTH, qtwSplitMain->sizes().at(1));
     }
     return true;
 }

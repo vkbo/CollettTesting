@@ -24,13 +24,15 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <QApplication>
 
-int main(int argc, char *argv[])
-{
-    QApplication cltApp(argc, argv);
+int main(int argc, char *argv[]) {
+
+    QApplication colApp(argc, argv);
     QCoreApplication::setOrganizationName("Collett");
     QCoreApplication::setOrganizationDomain("vkbo.net");
     QCoreApplication::setApplicationName("Collett");
-    GuiMain cltGUI;
-    cltGUI.show();
-    return cltApp.exec();
+
+    GuiMain colGUI;
+    colGUI.show();
+
+    return colApp.exec();
 }

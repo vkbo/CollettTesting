@@ -22,10 +22,20 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef GUIMAIN_H
 #define GUIMAIN_H
 
+// Settings
+#define CNF_WIN_SIZE   "GuiMain/winSize"
+#define CNF_TREE_WIDTH "GuiMain/treeSplit"
+#define CNF_EDIT_WIDTH "GuiMain/editorSplit"
+
 #include "core.h"
+#include "doceditor.h"
+#include "mainmenu.h"
+#include "noveltree.h"
+#include "statusbar.h"
 
 #include <QMainWindow>
 #include <QSettings>
+#include <QSplitter>
 
 class GuiMain : public QMainWindow
 {
@@ -39,6 +49,15 @@ public:
 
 private:
     QSettings mainConf;
+
+    // Main GUI Elements
+    GuiMainStatus *guiMainStatus;
+    GuiDocEditor  *guiDocEditor;
+    GuiNovelTree  *guiNovelTree;
+    GuiMainMenu   *guiMainMenu;
+
+    // GUI Widgets
+    QSplitter *qtwSplitMain;
 
     bool closeMain();
 

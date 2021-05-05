@@ -4,27 +4,27 @@
 <context>
     <name>GuiMainMenu</name>
     <message>
-        <location filename="../src/gui/mainmenu.cpp" line="22"/>
+        <location filename="../src/gui/mainmenu.cpp" line="43"/>
         <source>&amp;Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainmenu.cpp" line="25"/>
+        <location filename="../src/gui/mainmenu.cpp" line="46"/>
         <source>New Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainmenu.cpp" line="26"/>
+        <location filename="../src/gui/mainmenu.cpp" line="47"/>
         <source>Create new project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainmenu.cpp" line="35"/>
+        <location filename="../src/gui/mainmenu.cpp" line="56"/>
         <source>&amp;Format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainmenu.cpp" line="38"/>
+        <location filename="../src/gui/mainmenu.cpp" line="59"/>
         <source>Emphasis</source>
         <translation type="unfinished"></translation>
     </message>
