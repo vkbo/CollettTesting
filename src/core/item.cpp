@@ -21,6 +21,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "item.h"
 
-NWItem::NWItem() {}
+Item::Item() {}
 
-NWItem::~NWItem() {}
+Item::~Item() {}

@@ -1,6 +1,6 @@
 /*
-Collett – Core Header
-=====================
+Collett – Line Format Class
+===========================
 
 This file is a part of Collett
 Copyright 2020–2021, Veronica Berglyd Olsen
@@ -19,9 +19,27 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef CORE_H
-#define CORE_H
+#ifndef DOCLINEFMT_H
+#define DOCLINEFMT_H
 
-#include "project.h"
+#include <QString>
 
-#endif // CORE_H
+class DocLineFmt
+{
+
+public:
+    DocLineFmt();
+    ~DocLineFmt();
+
+    QString packFormat();
+
+    void setBlockType(int blockType);
+    void setBlockAlignment(Qt::Alignment alignFlag);
+
+private:
+    int           blockTypeValue;
+    Qt::Alignment blockAlignValue;
+
+};
+
+#endif // ITEM_H

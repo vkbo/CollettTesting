@@ -46,6 +46,7 @@ set(TS_FILES
 # Source Files
 list(APPEND SRC_CORE
     item
+    linefmt
     project
 )
 list(APPEND SRC_BASE

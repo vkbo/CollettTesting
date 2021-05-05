@@ -22,12 +22,12 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef ITEM_H
 #define ITEM_H
 
-class NWItem
+class Item
 {
 
 public:
-    NWItem();
-    ~NWItem();
+    Item();
+    ~Item();
 
 private:
 

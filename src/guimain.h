@@ -27,7 +27,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #define CNF_TREE_WIDTH "GuiMain/treeSplit"
 #define CNF_EDIT_WIDTH "GuiMain/editorSplit"
 
-#include "core.h"
+#include "project.h"
 #include "doceditor.h"
 #include "mainmenu.h"
 #include "noveltree.h"

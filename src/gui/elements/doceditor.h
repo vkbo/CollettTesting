@@ -22,6 +22,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef GUIDOCEDITOR_H
 #define GUIDOCEDITOR_H
 
+#include <QStringList>
 #include <QTextEdit>
 
 class GuiDocEditor : public QTextEdit
@@ -32,7 +33,11 @@ public:
     GuiDocEditor(QWidget *parent=nullptr);
     ~GuiDocEditor();
 
+    bool saveDocument();
+
 private:
+
+    QStringList getDocText();
 
 };
 #endif // GUIDOCEDITOR_H

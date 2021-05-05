@@ -20,17 +20,67 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include "doceditor.h"
+#include "linefmt.h"
+
+#include <QDebug>
+#include <QString>
+#include <QTextEdit>
+#include <QTextBlock>
+#include <QStringList>
 
 GuiDocEditor::GuiDocEditor(QWidget *parent) : QTextEdit(parent) {
 
     // Settings
     this->setAcceptRichText(true);
 
-    this->setHtml("<h1>Hello World</h1><p>This is some text ...</p>");
+    this->setHtml(
+        "<h1>Hello World</h1>"
+        "<p>This is some text in a paragraph.</p>"
+        "<p>And here is some more text in a second paragraph!</p>"
+        "<p>Here we have some <b>bold</b> and <i>italic</i> text.</p>"
+        "<p style='text-align: center;'><i>The End</i></p>"
+    );
 
     return;
 }
 
-GuiDocEditor::~GuiDocEditor()
-{
+GuiDocEditor::~GuiDocEditor() {}
+
+/*
+ * Methods
+ */
+
+bool GuiDocEditor::saveDocument() {
+    auto docText = this->getDocText();
+    for (int i=0; i < docText.size(); ++i) {
+        qInfo() << docText.at(i);
+    }
+    return true;
+}
+
+/*
+ * Internal Functions
+ */
+
+QStringList GuiDocEditor::getDocText() {
+
+    QStringList docText;
+
+    auto *doc = this->document();
+    QTextBlock block = doc->firstBlock();
+
+    while(block.isValid()) {
+
+        DocLineFmt theFormat;
+
+        auto blockFmt = block.blockFormat();
+
+        theFormat.setBlockType(blockFmt.headingLevel());
+        theFormat.setBlockAlignment(blockFmt.alignment());
+
+        docText.append(theFormat.packFormat() + block.text());
+        block = block.next();
+    }
+
+    return docText;
 }
