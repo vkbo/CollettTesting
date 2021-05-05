@@ -40,7 +40,7 @@ Project::~Project() {}
 int Project::openProject(QString fileName, bool overrideLock) {
 
     if (!fileName.endsWith("/")) fileName.append("/");
-    fileName.append("nwProject.nwx");
+    fileName.append("project.collett");
     qInfo() << "Opening project:" << fileName;
 
     QFile projFile(fileName);

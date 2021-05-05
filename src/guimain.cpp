@@ -62,7 +62,7 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
     qtwSplitMain->setSizes(mainSplit);
 
     // Load Something
-    theProject->openProject("../Source/sample/");
+    theProject->openProject("../Sample/");
 
     return;
 }
