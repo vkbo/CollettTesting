@@ -43,45 +43,42 @@ set(TS_FILES
 # Sources
 # =======
 
-# Source Files
-list(APPEND SRC_CORE
-    item
-    linefmt
-    project
-)
-list(APPEND SRC_BASE
-    editor/docexporter
-    main
-    guimain
-)
-list(APPEND SRC_GUI
-    elements/doceditor
-    elements/noveltree
-    mainmenu
-    statusbar
-)
-
+# Source Folders
 include_directories(
     src
     src/core
+    src/document
     src/editor
     src/gui
-    src/gui/elements
+)
+
+# Source Files
+list(APPEND SRC_CORE
+    document/document
+    core/item
+    core/linefmt
+    core/project
+)
+
+list(APPEND SRC_BASE
+    editor/doceditor
+    editor/docexporter
+    gui/mainmenu
+    gui/noveltree
+    gui/statusbar
+    main
+    guimain
 )
 
 # Source Files for libCollettCore
-
 foreach(entry IN LISTS SRC_CORE)
-    list(APPEND LIB_CORE_SRC src/core/${entry}.cpp)
+    list(APPEND LIB_CORE_SRC src/${entry}.cpp)
 endforeach()
 
 # Source Files for Main Exec
 
 foreach(entry IN LISTS SRC_BASE)
     list(APPEND EXEC_SRC src/${entry}.cpp)
-endforeach()
-foreach(entry IN LISTS SRC_GUI)
-    list(APPEND EXEC_SRC src/gui/${entry}.cpp)
 endforeach()
 # list(APPPEND EXEC_SRC ${TS_FILES})
 
