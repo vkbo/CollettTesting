@@ -22,14 +22,31 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef COLLETTDOCUMENT_H
 #define COLLETTDOCUMENT_H
 
+#include "project.h"
+
+#include <QString>
+
 class CollettDocument
 {
-
 public:
-    CollettDocument();
+
+    enum ReadStatus {
+        OK, New, Fail
+    };
+
+    CollettDocument(const CollettProject *_project, const QString _handle);
     ~CollettDocument();
 
+    ReadStatus  read();
+    QStringList paragraphs();
+    QString     text();
+
 private:
+    const CollettProject *project;
+    const QString         handle;
+
+    QString fileName;
+    QString filePath;
 
 };
 

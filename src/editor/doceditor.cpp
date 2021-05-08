@@ -19,6 +19,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include "data.h"
+#include "project.h"
 #include "doceditor.h"
 #include "docexporter.h"
 #include "linefmt.h"
@@ -29,7 +31,9 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QTextBlock>
 #include <QStringList>
 
-GuiDocEditor::GuiDocEditor(QWidget *parent) : QTextEdit(parent) {
+GuiDocEditor::GuiDocEditor(QWidget *parent, CollettData *_data)
+    : QTextEdit(parent), mainData(_data)
+{
 
     // Settings
     this->setAcceptRichText(true);
@@ -46,11 +50,21 @@ GuiDocEditor::GuiDocEditor(QWidget *parent) : QTextEdit(parent) {
     return;
 }
 
-GuiDocEditor::~GuiDocEditor() {}
+GuiDocEditor::~GuiDocEditor() {
+    delete colDoc;
+}
 
 /*
- * Methods
- */
+    Document Functions
+    ==================
+*/
+
+bool GuiDocEditor::openDocument(const QString handle) {
+
+    colDoc = new CollettDocument(mainData->getProject(), handle);
+
+    return true;
+}
 
 bool GuiDocEditor::saveDocument() {
     auto docText = this->toColletDoc();

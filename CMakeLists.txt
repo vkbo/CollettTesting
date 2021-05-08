@@ -54,20 +54,22 @@ include_directories(
 
 # Source Files
 list(APPEND SRC_CORE
-    document/document
     core/item
-    core/linefmt
     core/project
+    document/document
+    document/linefmt
 )
 
 list(APPEND SRC_BASE
     editor/doceditor
     editor/docexporter
+    editor/docimporter
     gui/mainmenu
     gui/noveltree
     gui/statusbar
-    main
+    data
     guimain
+    main
 )
 
 # Source Files for libCollettCore

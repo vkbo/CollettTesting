@@ -27,7 +27,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #define CNF_TREE_WIDTH "GuiMain/treeSplit"
 #define CNF_EDIT_WIDTH "GuiMain/editorSplit"
 
-#include "project.h"
+#include "data.h"
 #include "doceditor.h"
 #include "mainmenu.h"
 #include "noveltree.h"
@@ -36,6 +36,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QMainWindow>
 #include <QSettings>
 #include <QSplitter>
+#include <QDir>
 
 class GuiMain : public QMainWindow
 {
@@ -45,10 +46,9 @@ public:
     GuiMain(QWidget *parent=nullptr);
     ~GuiMain();
 
-    Project *theProject;
-
 private:
-    QSettings mainConf;
+    QSettings    mainConf;
+    CollettData *mainData;
 
     // Main GUI Elements
     GuiMainStatus *guiMainStatus;
@@ -58,6 +58,14 @@ private:
 
     // GUI Widgets
     QSplitter *qtwSplitMain;
+
+    bool openProject(const QDir projPath);
+    bool saveProject();
+    bool closeProject();
+
+    bool openDocument(const QString handle);
+    bool saveDocument();
+    bool closeDocument();
 
     bool closeMain();
 

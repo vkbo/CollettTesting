@@ -1,6 +1,6 @@
 /*
-Collett – Document Class
-========================
+Collett – Document Importer Class
+=================================
 
 This file is a part of Collett
 Copyright 2020–2021, Veronica Berglyd Olsen
@@ -19,23 +19,6 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "document.h"
-#include "project.h"
+#include "docimporter.h"
+#include "linefmt.h"
 
-CollettDocument::CollettDocument(const CollettProject *_project, const QString _handle)
-    : project(_project), handle(_handle)
-{
-    fileName = handle + ".ctxt";
-}
-
-CollettDocument::~CollettDocument() {}
-
-/*
-    Methods
-    =======
-*/
-
-CollettDocument::ReadStatus CollettDocument::read() {
-
-    return CollettDocument::ReadStatus::OK;
-}

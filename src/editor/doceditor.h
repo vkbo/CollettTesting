@@ -22,6 +22,10 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef GUIDOCEDITOR_H
 #define GUIDOCEDITOR_H
 
+#include "data.h"
+#include "project.h"
+#include "document.h"
+
 #include <QStringList>
 #include <QTextEdit>
 #include <QString>
@@ -33,12 +37,15 @@ class GuiDocEditor : public QTextEdit
     Q_OBJECT
 
 public:
-    GuiDocEditor(QWidget *parent=nullptr);
+    GuiDocEditor(QWidget *parent, CollettData *_data);
     ~GuiDocEditor();
 
+    bool openDocument(const QString handle);
     bool saveDocument();
 
 private:
+    CollettData     *mainData;
+    CollettDocument *colDoc;
 
     QStringList toColletDoc();
 

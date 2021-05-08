@@ -1,6 +1,6 @@
 /*
-Collett – Document Class
-========================
+Collett – Document Importer Class
+=================================
 
 This file is a part of Collett
 Copyright 2020–2021, Veronica Berglyd Olsen
@@ -19,23 +19,20 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "document.h"
-#include "project.h"
+#ifndef EDITORDOCIMPORTER_H
+#define EDITORDOCIMPORTER_H
 
-CollettDocument::CollettDocument(const CollettProject *_project, const QString _handle)
-    : project(_project), handle(_handle)
+#include <QTextDocument>
+#include <QString>
+
+class EditorDocImporter
 {
-    fileName = handle + ".ctxt";
-}
+public:
+    EditorDocImporter(QTextDocument *_doc) : doc(_doc) {};
+    bool fromColletDoc(const QString *text);
 
-CollettDocument::~CollettDocument() {}
+private:
+    QTextDocument *doc;
+};
 
-/*
-    Methods
-    =======
-*/
-
-CollettDocument::ReadStatus CollettDocument::read() {
-
-    return CollettDocument::ReadStatus::OK;
-}
+#endif // EDITORDOCIMPORTER_H

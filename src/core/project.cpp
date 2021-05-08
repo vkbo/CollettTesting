@@ -19,25 +19,31 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include "constants.h"
 #include "project.h"
 
 #include <QDebug>
 #include <QFile>
+#include <QDir>
 
-Project::Project() {}
+CollettProject::CollettProject(const QDir path) {
 
-Project::~Project() {}
+    projectPath = path.absolutePath();
+    projectFile = projectPath.absoluteFilePath(COL_PROJECT_FILE_NAME);
 
-// ============================================================================================== //
-//  Class Methods
-// ============================================================================================== //
+    qDebug() << "Project Path:" << projectPath.path();
+    qDebug() << "Project File:" << projectFile.path();
+
+}
+
+CollettProject::~CollettProject() {}
 
 /*
  * Open the project file provided, or if doesn't exist, assume it is a folder, and look for the file
  * within it. If successful, parse the XML of the file and populate the project variables and build
  * the tree of project items.
  */
-int Project::openProject(QString fileName, bool overrideLock) {
+int CollettProject::openProject(QString fileName, bool overrideLock) {
 
     if (!fileName.endsWith("/")) fileName.append("/");
     fileName.append("project.collett");

@@ -19,28 +19,29 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef PROJECT_H
-#define PROJECT_H
+#ifndef COLLETTPROJECT_H
+#define COLLETTPROJECT_H
 
 #include "collett.h"
 #include "item.h"
 
 #include <QString>
-#include <QList>
-#include <QHash>
+#include <QDir>
 
-class Project
+class CollettProject
 {
 
 public:
-    Project();
-    ~Project();
+    CollettProject(const QDir path);
+    ~CollettProject();
 
     // Class Methods
     int openProject(QString fileName, bool overrideLock=false);
 
 private:
+    QDir projectFile;
+    QDir projectPath;
 
 };
 
-#endif // PROJECT_H
+#endif // COLLETTPROJECT_H

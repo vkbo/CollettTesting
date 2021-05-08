@@ -1,6 +1,6 @@
 /*
-Collett – Document Class
-========================
+Collett – Core Data Class
+=========================
 
 This file is a part of Collett
 Copyright 2020–2021, Veronica Berglyd Olsen
@@ -19,23 +19,25 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "document.h"
+#include "data.h"
 #include "project.h"
 
-CollettDocument::CollettDocument(const CollettProject *_project, const QString _handle)
-    : project(_project), handle(_handle)
-{
-    fileName = handle + ".ctxt";
+#include <QWidget>
+#include <QDir>
+
+bool CollettData::openProject(const QDir path) {
+
+    project = new CollettProject(path);
+    // project->openProject();
+    hasProject = true;
+
+    return true;
 }
 
-CollettDocument::~CollettDocument() {}
-
-/*
-    Methods
-    =======
-*/
-
-CollettDocument::ReadStatus CollettDocument::read() {
-
-    return CollettDocument::ReadStatus::OK;
+CollettProject* CollettData::getProject() {
+    if (hasProject) {
+        return project;
+    } else {
+        return nullptr;
+    }
 }

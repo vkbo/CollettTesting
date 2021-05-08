@@ -20,6 +20,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include "guimain.h"
+#include "data.h"
+#include "document.h"
 #include "doceditor.h"
 #include "mainmenu.h"
 #include "noveltree.h"
@@ -29,14 +31,16 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QList>
 #include <QMainWindow>
 #include <QSplitter>
+#include <QDir>
 
 GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
 
-    Project *theProject = new Project();
+    // Create Main Data Object
+    mainData = new CollettData(this);
 
     // Main GUI Elements
     guiMainStatus = new GuiMainStatus(this);
-    guiDocEditor  = new GuiDocEditor(this);
+    guiDocEditor  = new GuiDocEditor(this, mainData);
     guiNovelTree  = new GuiNovelTree(this);
     guiMainMenu   = new GuiMainMenu(this);
 
@@ -62,7 +66,7 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
     qtwSplitMain->setSizes(mainSplit);
 
     // Load Something
-    // theProject->openProject("../Sample/");
+    openProject(QDir("../Sample"));
 
     guiDocEditor->saveDocument();
 
@@ -73,8 +77,27 @@ GuiMain::~GuiMain() {
 }
 
 /*
- * Internal Functions
- */
+    Project Functions
+    =================
+*/
+
+bool GuiMain::openProject(const QDir projPath) {
+    return mainData->openProject(projPath);
+}
+
+/*
+    Document Functions
+    ==================
+*/
+
+bool GuiMain::openDocument(const QString handle) {
+    return guiDocEditor->openDocument(handle);
+}
+
+/*
+    GUI Functions
+    =============
+*/
 
 bool GuiMain::closeMain() {
 
@@ -88,8 +111,9 @@ bool GuiMain::closeMain() {
 }
 
 /*
- * Events
- */
+    Events
+    ======
+*/
 
 void GuiMain::closeEvent(QCloseEvent *theEvent) {
     if (closeMain()) {
