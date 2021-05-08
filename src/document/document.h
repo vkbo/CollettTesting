@@ -25,25 +25,27 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "project.h"
 
 #include <QString>
+#include <QStringList>
 
 class CollettDocument
 {
 public:
 
-    enum ReadStatus {
+    enum RWStatus {
         OK, New, Fail
     };
 
-    CollettDocument(const CollettProject *_project, const QString _handle);
+    CollettDocument(CollettProject *_project, const QString _handle);
     ~CollettDocument();
 
-    ReadStatus  read();
+    RWStatus    read();
+    RWStatus    write(const QString text);
     QStringList paragraphs();
     QString     text();
 
 private:
-    const CollettProject *project;
-    const QString         handle;
+    CollettProject *project;
+    const QString   handle;
 
     QString fileName;
     QString filePath;

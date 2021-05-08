@@ -68,6 +68,7 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
     // Load Something
     openProject(QDir("../Sample"));
 
+    guiDocEditor->openDocument("test");
     guiDocEditor->saveDocument();
 
     return;

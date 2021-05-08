@@ -22,7 +22,13 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "document.h"
 #include "project.h"
 
-CollettDocument::CollettDocument(const CollettProject *_project, const QString _handle)
+#include <QDir>
+#include <QString>
+#include <QFile>
+#include <QIODevice>
+#include <QTextStream>
+
+CollettDocument::CollettDocument(CollettProject *_project, const QString _handle)
     : project(_project), handle(_handle)
 {
     fileName = handle + ".ctxt";
@@ -35,7 +41,28 @@ CollettDocument::~CollettDocument() {}
     =======
 */
 
-CollettDocument::ReadStatus CollettDocument::read() {
+CollettDocument::RWStatus CollettDocument::read() {
 
-    return CollettDocument::ReadStatus::OK;
+    return CollettDocument::RWStatus::OK;
+}
+
+CollettDocument::RWStatus CollettDocument::write(const QString text) {
+
+    QDir contentPath = project->getContentPath();
+    if (!contentPath.exists()) {
+        qCritical() << "Folder does not exits:" << contentPath.path();
+        return CollettDocument::RWStatus::Fail;
+    }
+
+    QString outPath = contentPath.absoluteFilePath(fileName);
+    QFile file(outPath);
+    if (file.open(QIODevice::WriteOnly)) {
+        QTextStream stream(&file);
+        stream << text << '\n';
+        qDebug() << "Wrote document:" << outPath;
+    } else {
+        return CollettDocument::RWStatus::Fail;
+    }
+
+    return CollettDocument::RWStatus::OK;
 }

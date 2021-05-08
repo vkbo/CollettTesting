@@ -36,11 +36,20 @@ public:
     ~CollettProject();
 
     // Class Methods
-    int openProject(QString fileName, bool overrideLock=false);
+    bool openProject(bool overrideLock=false);
+
+    // Getters
+    QDir getProjectPath() {
+        return projectPath;
+    }
+    QDir getContentPath() {
+        return contentPath;
+    }
 
 private:
     QDir projectFile;
     QDir projectPath;
+    QDir contentPath;
 
 };
 

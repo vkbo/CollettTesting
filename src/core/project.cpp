@@ -30,30 +30,25 @@ CollettProject::CollettProject(const QDir path) {
 
     projectPath = path.absolutePath();
     projectFile = projectPath.absoluteFilePath(COL_PROJECT_FILE_NAME);
+    contentPath = QDir(projectPath.path() + "/content");
+
+    if (!contentPath.exists()) {
+        if (projectPath.mkdir("content")) {
+            qDebug() << "Created folder:" << contentPath.path();
+        } else {
+            qCritical() << "Could not create folder:" << contentPath.path();
+        }
+    }
 
     qDebug() << "Project Path:" << projectPath.path();
     qDebug() << "Project File:" << projectFile.path();
+    qDebug() << "Content Path:" << contentPath.path();
 
 }
 
 CollettProject::~CollettProject() {}
 
-/*
- * Open the project file provided, or if doesn't exist, assume it is a folder, and look for the file
- * within it. If successful, parse the XML of the file and populate the project variables and build
- * the tree of project items.
- */
-int CollettProject::openProject(QString fileName, bool overrideLock) {
+bool CollettProject::openProject(bool overrideLock) {
 
-    if (!fileName.endsWith("/")) fileName.append("/");
-    fileName.append("project.collett");
-    qInfo() << "Opening project:" << fileName;
-
-    QFile projFile(fileName);
-    if (!projFile.open(QFile::ReadOnly | QFile::Text)){
-        qCritical() << "Cannot read file" << projFile.errorString();
-        return 1;
-    }
-
-    return 0;
+    return true;
 }

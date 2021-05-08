@@ -38,20 +38,12 @@ GuiDocEditor::GuiDocEditor(QWidget *parent, CollettData *_data)
     // Settings
     this->setAcceptRichText(true);
 
-    this->setHtml(
-        "<h1>Hello World</h1>"
-        "<p>This is some text in a paragraph.</p>"
-        "<p>And here is some {more} text in a second paragraph!</p>"
-        "<p>Here we have some <b>bold</b> and <i>italic</i> text.</p>"
-        "<p>This is <b>a <i>sentence <u>with <s>nested</s> formatting</u> in</i> the</b> middle.</p>"
-        "<p style='text-align: center;'><i>The End</i></p>"
-    );
-
     return;
 }
 
 GuiDocEditor::~GuiDocEditor() {
     delete colDoc;
+    hasDocument = false;
 }
 
 /*
@@ -62,6 +54,16 @@ GuiDocEditor::~GuiDocEditor() {
 bool GuiDocEditor::openDocument(const QString handle) {
 
     colDoc = new CollettDocument(mainData->getProject(), handle);
+    hasDocument = true;
+
+    this->setHtml(
+        "<h1>Hello World</h1>"
+        "<p>This is some text in a paragraph.</p>"
+        "<p>And here is some {more} text in a second paragraph!</p>"
+        "<p>Here we have some <b>bold</b> and <i>italic</i> text.</p>"
+        "<p>This is <b>a <i>sentence <u>with <s>nested</s> formatting</u> in</i> the</b> middle.</p>"
+        "<p style='text-align: center;'><i>The End</i></p>"
+    );
 
     return true;
 }
@@ -70,6 +72,9 @@ bool GuiDocEditor::saveDocument() {
     auto docText = this->toColletDoc();
     for (int i=0; i < docText.size(); ++i) {
         qInfo() << docText.at(i);
+    }
+    if (hasDocument) {
+        colDoc->write(docText.join("\n"));
     }
     return true;
 }

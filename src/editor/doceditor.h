@@ -47,6 +47,8 @@ private:
     CollettData     *mainData;
     CollettDocument *colDoc;
 
+    bool hasDocument = false;
+
     QStringList toColletDoc();
 
 };
