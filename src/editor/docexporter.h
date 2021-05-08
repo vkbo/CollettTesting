@@ -1,6 +1,6 @@
 /*
-Collett – Collett Main Header
-=============================
+Collett – Document Exporter Class
+=================================
 
 This file is a part of Collett
 Copyright 2020–2021, Veronica Berglyd Olsen
@@ -19,14 +19,26 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef COLLETT_H
-#define COLLETT_H
+#ifndef EDITORDOCEXPORTER_H
+#define EDITORDOCEXPORTER_H
 
-// Version info set by CMake
-#define CT_VERSION       "@Collett_VERSION@"
-#define CT_VERSION_DATE  "@Collett_VERSION_DATE@"
-#define CT_VERSION_MAJOR @Collett_VERSION_MAJOR@
-#define CT_VERSION_MINOR @Collett_VERSION_MINOR@
-#define CT_VERSION_PATCH @Collett_VERSION_PATCH@
+#include <QStringList>
+#include <QTextDocument>
+#include <QTextBlock>
+#include <QTextFragment>
 
-#endif // COLLETT_H
+class EditorDocExporter
+{
+public:
+    EditorDocExporter(const QTextDocument *_doc) : doc(_doc) {};
+    QStringList toColletDoc();
+
+private:
+    const QTextDocument *doc;
+    QStringList          docResult;
+
+    QString formatBlock(const QTextBlock *block);
+    QString formatFragment(const QTextFragment &fragment);
+};
+
+#endif // EDITORDOCEXPORTER_H

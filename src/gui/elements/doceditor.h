@@ -24,6 +24,9 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <QStringList>
 #include <QTextEdit>
+#include <QString>
+#include <QTextBlock>
+#include <QTextDocument>
 
 class GuiDocEditor : public QTextEdit
 {
@@ -37,7 +40,8 @@ public:
 
 private:
 
-    QStringList getDocText();
+    QStringList toColletDoc();
 
 };
+
 #endif // GUIDOCEDITOR_H

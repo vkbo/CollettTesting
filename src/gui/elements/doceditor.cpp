@@ -20,6 +20,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include "doceditor.h"
+#include "docexporter.h"
 #include "linefmt.h"
 
 #include <QDebug>
@@ -36,8 +37,9 @@ GuiDocEditor::GuiDocEditor(QWidget *parent) : QTextEdit(parent) {
     this->setHtml(
         "<h1>Hello World</h1>"
         "<p>This is some text in a paragraph.</p>"
-        "<p>And here is some more text in a second paragraph!</p>"
+        "<p>And here is some {more} text in a second paragraph!</p>"
         "<p>Here we have some <b>bold</b> and <i>italic</i> text.</p>"
+        "<p>This is <b>a <i>sentence <u>with <s>nested</s> formatting</u> in</i> the</b> middle.</p>"
         "<p style='text-align: center;'><i>The End</i></p>"
     );
 
@@ -51,7 +53,7 @@ GuiDocEditor::~GuiDocEditor() {}
  */
 
 bool GuiDocEditor::saveDocument() {
-    auto docText = this->getDocText();
+    auto docText = this->toColletDoc();
     for (int i=0; i < docText.size(); ++i) {
         qInfo() << docText.at(i);
     }
@@ -62,25 +64,6 @@ bool GuiDocEditor::saveDocument() {
  * Internal Functions
  */
 
-QStringList GuiDocEditor::getDocText() {
-
-    QStringList docText;
-
-    auto *doc = this->document();
-    QTextBlock block = doc->firstBlock();
-
-    while(block.isValid()) {
-
-        DocLineFmt theFormat;
-
-        auto blockFmt = block.blockFormat();
-
-        theFormat.setBlockType(blockFmt.headingLevel());
-        theFormat.setBlockAlignment(blockFmt.alignment());
-
-        docText.append(theFormat.packFormat() + block.text());
-        block = block.next();
-    }
-
-    return docText;
+QStringList GuiDocEditor::toColletDoc() {
+    return EditorDocExporter(this->document()).toColletDoc();
 }

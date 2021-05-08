@@ -50,6 +50,7 @@ list(APPEND SRC_CORE
     project
 )
 list(APPEND SRC_BASE
+    editor/docexporter
     main
     guimain
 )
@@ -62,9 +63,10 @@ list(APPEND SRC_GUI
 
 include_directories(
     src
+    src/core
+    src/editor
     src/gui
     src/gui/elements
-    src/core
 )
 
 # Source Files for libCollettCore
