@@ -1,6 +1,6 @@
 /*
-Collett – Collett Document Parser Class
-=======================================
+Collett – Collett Document Block Class
+======================================
 
 This file is a part of Collett
 Copyright 2020–2021, Veronica Berglyd Olsen
@@ -19,21 +19,37 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef COLLETTDOCPARSER_H
-#define COLLETTDOCPARSER_H
+#ifndef COLDOCBLOCK_H
+#define COLDOCBLOCK_H
+
+#include "coldocfragment.h"
+
+#include <QString>
+#include <QList>
 
 namespace Collett {
 
-class CollettDocParser
+class ColDocBlock
 {
 
 public:
-    CollettDocParser() {};
-    ~CollettDocParser() {};
+    ColDocBlock();
+    ~ColDocBlock() {};
+
+    void unpackText(const QString &text);
+    QString packText();
+
+    void setBlockType(int blockType);
+    void setBlockAlignment(Qt::Alignment alignFlag);
 
 private:
+    QList<ColDocFragment> blockFragments;
+
+    bool          blockValid;
+    int           blockTypeValue;
+    Qt::Alignment blockAlignValue;
 
 };
 } // namespace Collett
 
-#endif // COLLETTDOCPARSER_H
+#endif // COLDOCBLOCK_H

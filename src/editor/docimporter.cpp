@@ -20,6 +20,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include "docimporter.h"
+#include "coldocblock.h"
 #include "linefmt.h"
 
 #include <QTextDocument>
@@ -44,7 +45,8 @@ EditorDocImporter::EditorDocImporter(QTextDocument *_doc, const QStringList &con
 void EditorDocImporter::import() {
 
     for (const QString& line : rawText) {
-        qDebug() << line;
+        ColDocBlock newBlock;
+        newBlock.unpackText(line);
     }
 
     return;

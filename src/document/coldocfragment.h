@@ -1,6 +1,6 @@
 /*
-Collett – Collett Document Parser Class
-=======================================
+Collett – Collett Document Fragment Class
+=========================================
 
 This file is a part of Collett
 Copyright 2020–2021, Veronica Berglyd Olsen
@@ -19,5 +19,30 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
+#ifndef COLDOCFRAGMENT_H
+#define COLDOCFRAGMENT_H
+
+#include <QString>
+
 namespace Collett {
+
+class ColDocFragment
+{
+
+public:
+    ColDocFragment(const QString &text);
+    ~ColDocFragment() {};
+
+private:
+    QString fText;
+
+    bool fValid;
+    bool fBold;
+    bool fItalic;
+    bool fUnderline;
+    bool fStrikeOut;
+
+};
 } // namespace Collett
+
+#endif // COLDOCFRAGMENT_H

@@ -71,8 +71,8 @@ QString EditorDocExporter::formatBlock(const QTextBlock *block) {
 
 QString EditorDocExporter::formatFragment(const QTextFragment &fragment) {
 
-    QString fragFmt = "";
-    QString fmtText = fragment.text().replace('{', "\\{").replace('}', "\\}");
+    QString fragFmt = "f";
+    QString fmtText = fragment.text().replace('\\', "\\bs\\").replace('{', "\\lc\\").replace('}', "\\rc\\");
 
     QTextCharFormat chrFmt = fragment.charFormat();
 
@@ -83,7 +83,7 @@ QString EditorDocExporter::formatFragment(const QTextFragment &fragment) {
 
     if (fragFmt != "") {
         fmtText.prepend("{"+fragFmt+"}");
-        fmtText.append("{/"+fragFmt+"}");
+        fmtText.append("{/f}");
     }
 
     return fmtText;
