@@ -69,4 +69,4 @@ CollettDocument::RWStatus CollettDocument::write(const QString text) {
     return CollettDocument::RWStatus::OK;
 }
 
-} // namespace Collet
+} // namespace Collett

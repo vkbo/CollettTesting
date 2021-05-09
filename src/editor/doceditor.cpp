@@ -89,4 +89,4 @@ QStringList GuiDocEditor::toColletDoc() {
     return EditorDocExporter(this->document()).toColletDoc();
 }
 
-} // namespace Collet
+} // namespace Collett

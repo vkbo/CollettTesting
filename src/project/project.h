@@ -54,6 +54,6 @@ private:
     QDir contentPath;
 
 };
-} // namespace Collet
+} // namespace Collett
 
 #endif // COLLETTPROJECT_H

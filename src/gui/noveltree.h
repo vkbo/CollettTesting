@@ -38,6 +38,6 @@ public:
 private:
 
 };
-} // namespace Collet
+} // namespace Collett
 
 #endif // GUINOVELTREE_H

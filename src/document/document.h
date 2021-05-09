@@ -53,6 +53,6 @@ private:
     QString filePath;
 
 };
-} // namespace Collet
+} // namespace Collett
 
 #endif // COLLETTDOCUMENT_H

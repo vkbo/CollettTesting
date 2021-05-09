@@ -89,4 +89,4 @@ QString EditorDocExporter::formatFragment(const QTextFragment &fragment) {
     return fmtText;
 }
 
-} // namespace Collet
+} // namespace Collett

@@ -48,6 +48,6 @@ private:
     CollettProject *project;
 
 };
-} // namespace Collet
+} // namespace Collett
 
 #endif // COLLETTDATA_H

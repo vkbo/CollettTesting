@@ -1,6 +1,6 @@
 /*
-Collett – Core Data Class
-=========================
+Collett – Main Settings Class
+=============================
 
 This file is a part of Collett
 Copyright 2020–2021, Veronica Berglyd Olsen
@@ -19,29 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "data.h"
-#include "project.h"
-
-#include <QWidget>
-#include <QDir>
+#include "settings.h"
 
 namespace Collett {
-
-bool CollettData::openProject(const QDir path) {
-
-    project = new CollettProject(path);
-    // project->openProject();
-    hasProject = true;
-
-    return true;
-}
-
-CollettProject* CollettData::getProject() {
-    if (hasProject) {
-        return project;
-    } else {
-        return nullptr;
-    }
-}
-
 } // namespace Collett

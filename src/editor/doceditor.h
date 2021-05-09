@@ -55,6 +55,6 @@ private:
     QStringList toColletDoc();
 
 };
-} // namespace Collet
+} // namespace Collett
 
 #endif // GUIDOCEDITOR_H

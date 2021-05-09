@@ -34,6 +34,6 @@ public:
 private:
 
 };
-} // namespace Collet
+} // namespace Collett
 
 #endif // ITEM_H

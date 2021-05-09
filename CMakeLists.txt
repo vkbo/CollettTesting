@@ -67,6 +67,7 @@ list(APPEND Collet_SOURCE
     data
     guimain
     main
+    settings
 )
 
 foreach(entry IN LISTS Collet_SOURCE)

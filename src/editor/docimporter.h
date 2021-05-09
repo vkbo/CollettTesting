@@ -36,6 +36,6 @@ public:
 private:
     QTextDocument *doc;
 };
-} // namespace Collet
+} // namespace Collett
 
 #endif // EDITORDOCIMPORTER_H

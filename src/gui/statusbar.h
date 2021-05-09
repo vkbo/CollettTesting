@@ -38,6 +38,6 @@ public:
 private:
 
 };
-} // namespace Collet
+} // namespace Collett
 
 #endif // GUIMAINSTATUS_H

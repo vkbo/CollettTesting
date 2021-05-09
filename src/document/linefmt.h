@@ -43,6 +43,6 @@ private:
     Qt::Alignment blockAlignValue;
 
 };
-} // namespace Collet
+} // namespace Collett
 
 #endif // ITEM_H

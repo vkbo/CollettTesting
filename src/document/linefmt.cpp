@@ -83,4 +83,4 @@ void DocLineFmt::setBlockAlignment(Qt::Alignment alignFlag) {
     blockAlignValue = alignFlag;
 }
 
-} // namespace Collet
+} // namespace Collett

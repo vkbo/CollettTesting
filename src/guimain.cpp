@@ -126,4 +126,4 @@ void GuiMain::closeEvent(QCloseEvent *theEvent) {
     }
 }
 
-} // namespace Collet
+} // namespace Collett

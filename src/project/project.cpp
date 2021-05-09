@@ -55,4 +55,4 @@ bool CollettProject::openProject(bool overrideLock) {
     return true;
 }
 
-} // namespace Collet
+} // namespace Collett

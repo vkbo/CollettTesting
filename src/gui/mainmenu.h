@@ -55,6 +55,6 @@ private:
     QAction *aFmtStike;
 
 };
-} // namespace Collet
+} // namespace Collett
 
 #endif // GUIMAINMENU_H

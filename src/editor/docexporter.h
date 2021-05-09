@@ -42,6 +42,6 @@ private:
     QString formatBlock(const QTextBlock *block);
     QString formatFragment(const QTextFragment &fragment);
 };
-} // namespace Collet
+} // namespace Collett
 
 #endif // EDITORDOCEXPORTER_H

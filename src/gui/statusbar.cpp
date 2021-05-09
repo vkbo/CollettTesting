@@ -29,4 +29,4 @@ GuiMainStatus::GuiMainStatus(QWidget *parent) : QStatusBar(parent) {}
 
 GuiMainStatus::~GuiMainStatus() {}
 
-} // namespace Collet
+} // namespace Collett

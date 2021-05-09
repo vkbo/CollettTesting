@@ -76,6 +76,6 @@ private:
     virtual void closeEvent(QCloseEvent*);
 
 };
-} // namespace Collet
+} // namespace Collett
 
 #endif // GUIMAIN_H

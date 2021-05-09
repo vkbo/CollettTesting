@@ -51,4 +51,4 @@ GuiNovelTree::GuiNovelTree(QWidget *parent) : QTreeWidget(parent) {
 
 GuiNovelTree::~GuiNovelTree() {}
 
-} // namespace Collet
+} // namespace Collett

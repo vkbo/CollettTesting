@@ -64,4 +64,4 @@ void GuiMainMenu::buildFormatMenu() {
     return;
 }
 
-} // namespace Collet
+} // namespace Collett
