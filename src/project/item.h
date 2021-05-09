@@ -19,21 +19,20 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef ITEM_H
-#define ITEM_H
+#ifndef COLITEM_H
+#define COLITEM_H
 
 namespace Collett {
 
-class Item
+class ColItem
 {
-
 public:
-    Item();
-    ~Item();
+    ColItem() {};
+    ~ColItem() {};
 
 private:
 
 };
 } // namespace Collett
 
-#endif // ITEM_H
+#endif // COLITEM_H

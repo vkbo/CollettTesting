@@ -30,30 +30,30 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-CollettDocument::CollettDocument(CollettProject *_project, const QString _handle)
+ColDocument::ColDocument(ColProject *_project, const QString _handle)
     : project(_project), handle(_handle)
 {
     fileName = handle + ".ctxt";
 }
 
-CollettDocument::~CollettDocument() {}
+ColDocument::~ColDocument() {}
 
 /*
     Methods
     =======
 */
 
-CollettDocument::RWStatus CollettDocument::read() {
+ColDocument::RWStatus ColDocument::read() {
 
-    return CollettDocument::RWStatus::OK;
+    return ColDocument::RWStatus::OK;
 }
 
-CollettDocument::RWStatus CollettDocument::write(const QString text) {
+ColDocument::RWStatus ColDocument::write(const QString text) {
 
     QDir contentPath = project->getContentPath();
     if (!contentPath.exists()) {
         qCritical() << "Folder does not exits:" << contentPath.path();
-        return CollettDocument::RWStatus::Fail;
+        return ColDocument::RWStatus::Fail;
     }
 
     QString outPath = contentPath.absoluteFilePath(fileName);
@@ -63,10 +63,10 @@ CollettDocument::RWStatus CollettDocument::write(const QString text) {
         stream << text << '\n';
         qDebug() << "Wrote document:" << outPath;
     } else {
-        return CollettDocument::RWStatus::Fail;
+        return ColDocument::RWStatus::Fail;
     }
 
-    return CollettDocument::RWStatus::OK;
+    return ColDocument::RWStatus::OK;
 }
 
 } // namespace Collett

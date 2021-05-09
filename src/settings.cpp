@@ -26,11 +26,12 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #define CNF_MAIN_SPLIT_TREE_WIDTH   "GuiMain/splitTreeWidth"
 #define CNF_MAIN_SPLIT_EDITOR_WIDTH "GuiMain/splitEditorWidth"
 
-#include <QSize>
 #include <QCoreApplication>
-#include <QSettings>
-#include <QVariant>
 #include <QList>
+#include <QSettings>
+#include <QSize>
+#include <QVariant>
+
 #include <QDebug>
 
 namespace Collett {
@@ -40,13 +41,13 @@ namespace Collett {
     =========================
 */
 
-class CollettSettingsPrivate
+class ColSettingsPrivate
 {
 public:
-    static CollettSettings *instance;
+    static ColSettings *instance;
 
-    CollettSettingsPrivate() {};
-    ~CollettSettingsPrivate() {};
+    ColSettingsPrivate() {};
+    ~ColSettingsPrivate() {};
 
     QSize mainWindowSize;
     int   mainSplitTreeWidth;
@@ -58,19 +59,19 @@ public:
     =======================================
 */
 
-CollettSettings *CollettSettingsPrivate::instance = nullptr;
+ColSettings *ColSettingsPrivate::instance = nullptr;
 
-CollettSettings *CollettSettings::instance() {
-    if (nullptr == CollettSettingsPrivate::instance) {
-        CollettSettingsPrivate::instance = new CollettSettings();
-        qDebug() << "CollettSettings instance created";
+ColSettings *ColSettings::instance() {
+    if (nullptr == ColSettingsPrivate::instance) {
+        ColSettingsPrivate::instance = new ColSettings();
+        qDebug() << "ColSettings instance created";
     }
-    return CollettSettingsPrivate::instance;
+    return ColSettingsPrivate::instance;
 }
 
-CollettSettings::CollettSettings() : d_ptr(new CollettSettingsPrivate()) {
+ColSettings::ColSettings() : d_ptr(new ColSettingsPrivate()) {
 
-    Q_D(CollettSettings);
+    Q_D(ColSettings);
 
     QCoreApplication::setOrganizationName("Collett");
     QCoreApplication::setOrganizationDomain("vkbo.net");
@@ -78,11 +79,11 @@ CollettSettings::CollettSettings() : d_ptr(new CollettSettingsPrivate()) {
     QCoreApplication::setApplicationVersion(CT_VERSION);
 
     // Load Settings
-    QSettings colSettings;
+    QSettings mainConf;
 
-    d->mainWindowSize       = colSettings.value(CNF_MAIN_WINDOW_SIZE,        QSize(1200, 800)).toSize();
-    d->mainSplitTreeWidth   = colSettings.value(CNF_MAIN_SPLIT_TREE_WIDTH,   QVariant(300)).toInt();
-    d->mainSplitEditorWidth = colSettings.value(CNF_MAIN_SPLIT_EDITOR_WIDTH, QVariant(900)).toInt();
+    d->mainWindowSize       = mainConf.value(CNF_MAIN_WINDOW_SIZE,        QSize(1200, 800)).toSize();
+    d->mainSplitTreeWidth   = mainConf.value(CNF_MAIN_SPLIT_TREE_WIDTH,   QVariant(300)).toInt();
+    d->mainSplitEditorWidth = mainConf.value(CNF_MAIN_SPLIT_EDITOR_WIDTH, QVariant(900)).toInt();
 
     // Check Values
     if (d->mainWindowSize.width() < 400) {
@@ -93,7 +94,7 @@ CollettSettings::CollettSettings() : d_ptr(new CollettSettingsPrivate()) {
     }
 }
 
-CollettSettings::~CollettSettings() {
+ColSettings::~ColSettings() {
     flushSettings();
 }
 
@@ -102,16 +103,16 @@ CollettSettings::~CollettSettings() {
     ====================
 */
 
-void CollettSettings::flushSettings() {
-    Q_D(CollettSettings);
+void ColSettings::flushSettings() {
+    Q_D(ColSettings);
 
-    QSettings colSettings;
+    QSettings mainConf;
 
-    colSettings.setValue(CNF_MAIN_WINDOW_SIZE,        QVariant(d->mainWindowSize));
-    colSettings.setValue(CNF_MAIN_SPLIT_TREE_WIDTH,   QVariant(d->mainSplitTreeWidth));
-    colSettings.setValue(CNF_MAIN_SPLIT_EDITOR_WIDTH, QVariant(d->mainSplitEditorWidth));
+    mainConf.setValue(CNF_MAIN_WINDOW_SIZE,        QVariant(d->mainWindowSize));
+    mainConf.setValue(CNF_MAIN_SPLIT_TREE_WIDTH,   QVariant(d->mainSplitTreeWidth));
+    mainConf.setValue(CNF_MAIN_SPLIT_EDITOR_WIDTH, QVariant(d->mainSplitEditorWidth));
 
-    qDebug() << "CollettSettings values saved";
+    qDebug() << "ColSettings values saved";
 
     return;
 }
@@ -121,14 +122,14 @@ void CollettSettings::flushSettings() {
     ================
 */
 
-void CollettSettings::setMainWindowSize(const QSize size) {
-    Q_D(CollettSettings);
+void ColSettings::setMainWindowSize(const QSize size) {
+    Q_D(ColSettings);
     d->mainWindowSize = size;
     return;
 }
 
-void CollettSettings::setMainSplitSizes(const QList<int> &sizes) {
-    Q_D(CollettSettings);
+void ColSettings::setMainSplitSizes(const QList<int> &sizes) {
+    Q_D(ColSettings);
     if (sizes.length() > 0) {
         d->mainSplitTreeWidth = sizes.at(0);
     }
@@ -142,13 +143,13 @@ void CollettSettings::setMainSplitSizes(const QList<int> &sizes) {
     ================
 */
 
-QSize CollettSettings::mainWindowSize() const {
-    Q_D(const CollettSettings);
+QSize ColSettings::mainWindowSize() const {
+    Q_D(const ColSettings);
     return d->mainWindowSize;
 }
 
-QList<int> CollettSettings::mainSplitSizes() const {
-    Q_D(const CollettSettings);
+QList<int> ColSettings::mainSplitSizes() const {
+    Q_D(const ColSettings);
     QList<int> sizes;
     sizes.append(d->mainSplitTreeWidth);
     sizes.append(d->mainSplitEditorWidth);

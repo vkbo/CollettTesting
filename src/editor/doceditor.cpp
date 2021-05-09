@@ -33,7 +33,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-GuiDocEditor::GuiDocEditor(QWidget *parent, CollettData *_data)
+GuiDocEditor::GuiDocEditor(QWidget *parent, ColData *_data)
     : QTextEdit(parent), mainData(_data)
 {
 
@@ -55,7 +55,7 @@ GuiDocEditor::~GuiDocEditor() {
 
 bool GuiDocEditor::openDocument(const QString handle) {
 
-    colDoc = new CollettDocument(mainData->getProject(), handle);
+    colDoc = new ColDocument(mainData->getProject(), handle);
     hasDocument = true;
 
     this->setHtml(

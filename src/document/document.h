@@ -19,8 +19,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef COLLETTDOCUMENT_H
-#define COLLETTDOCUMENT_H
+#ifndef COLDOCUMENT_H
+#define COLDOCUMENT_H
 
 #include "project.h"
 
@@ -29,7 +29,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-class CollettDocument
+class ColDocument
 {
 public:
 
@@ -37,8 +37,8 @@ public:
         OK, New, Fail
     };
 
-    CollettDocument(CollettProject *_project, const QString _handle);
-    ~CollettDocument();
+    ColDocument(ColProject *_project, const QString _handle);
+    ~ColDocument();
 
     RWStatus    read();
     RWStatus    write(const QString text);
@@ -46,7 +46,7 @@ public:
     QString     text();
 
 private:
-    CollettProject *project;
+    ColProject *project;
     const QString   handle;
 
     QString fileName;
@@ -55,4 +55,4 @@ private:
 };
 } // namespace Collett
 
-#endif // COLLETTDOCUMENT_H
+#endif // COLDOCUMENT_H

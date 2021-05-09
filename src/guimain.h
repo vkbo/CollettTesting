@@ -49,7 +49,7 @@ public:
     ~GuiMain();
 
 private:
-    CollettData *mainData;
+    ColData *mainData;
 
     // Main GUI Elements
     GuiMainStatus *guiMainStatus;

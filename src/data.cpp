@@ -27,16 +27,16 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-bool CollettData::openProject(const QDir path) {
+bool ColData::openProject(const QDir path) {
 
-    project = new CollettProject(path);
+    project = new ColProject(path);
     // project->openProject();
     hasProject = true;
 
     return true;
 }
 
-CollettProject* CollettData::getProject() {
+ColProject* ColData::getProject() {
     if (hasProject) {
         return project;
     } else {

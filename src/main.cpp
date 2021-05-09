@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
 
     QApplication collettApp(argc, argv);
 
-    Collett::CollettSettings *mainConf = Collett::CollettSettings::instance();
+    Collett::ColSettings *mainConf = Collett::ColSettings::instance();
 
     Collett::GuiMain mainGUI;
     mainGUI.show();

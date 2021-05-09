@@ -40,15 +40,15 @@ class GuiDocEditor : public QTextEdit
     Q_OBJECT
 
 public:
-    GuiDocEditor(QWidget *parent, CollettData *_data);
+    GuiDocEditor(QWidget *parent, ColData *_data);
     ~GuiDocEditor();
 
     bool openDocument(const QString handle);
     bool saveDocument();
 
 private:
-    CollettData     *mainData;
-    CollettDocument *colDoc;
+    ColData     *mainData;
+    ColDocument *colDoc;
 
     bool hasDocument = false;
 

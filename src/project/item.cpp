@@ -22,9 +22,4 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "item.h"
 
 namespace Collett {
-
-Item::Item() {}
-
-Item::~Item() {}
-
 } // namespace Collett

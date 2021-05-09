@@ -28,7 +28,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-CollettProject::CollettProject(const QDir path) {
+ColProject::ColProject(const QDir path) {
 
     projectPath = path.absolutePath();
     projectFile = projectPath.absoluteFilePath(COL_PROJECT_FILE_NAME);
@@ -48,9 +48,9 @@ CollettProject::CollettProject(const QDir path) {
 
 }
 
-CollettProject::~CollettProject() {}
+ColProject::~ColProject() {}
 
-bool CollettProject::openProject(bool overrideLock) {
+bool ColProject::openProject(bool overrideLock) {
 
     return true;
 }

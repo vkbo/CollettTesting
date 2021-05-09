@@ -19,8 +19,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef COLLETTPROJECT_H
-#define COLLETTPROJECT_H
+#ifndef COLPROJECT_H
+#define COLPROJECT_H
 
 #include "collett.h"
 #include "item.h"
@@ -30,12 +30,12 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-class CollettProject
+class ColProject
 {
 
 public:
-    CollettProject(const QDir path);
-    ~CollettProject();
+    ColProject(const QDir path);
+    ~ColProject();
 
     // Class Methods
     bool openProject(bool overrideLock=false);
@@ -56,4 +56,4 @@ private:
 };
 } // namespace Collett
 
-#endif // COLLETTPROJECT_H
+#endif // COLPROJECT_H

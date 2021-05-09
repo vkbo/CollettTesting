@@ -39,7 +39,7 @@ namespace Collett {
 GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
 
     // Create Main Data Object
-    mainData = new CollettData(this);
+    mainData = new ColData(this);
 
     // Main GUI Elements
     guiMainStatus = new GuiMainStatus(this);
@@ -60,7 +60,7 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
     this->setStatusBar(guiMainStatus);
 
     // Apply Settings
-    CollettSettings *mainConf = CollettSettings::instance();
+    ColSettings *mainConf = ColSettings::instance();
     this->resize(mainConf->mainWindowSize());
     qtwSplitMain->setSizes(mainConf->mainSplitSizes());
 
@@ -102,7 +102,7 @@ bool GuiMain::openDocument(const QString handle) {
 bool GuiMain::closeMain() {
 
     // Save Settings
-    CollettSettings *mainConf = CollettSettings::instance();
+    ColSettings *mainConf = ColSettings::instance();
     if (!this->isFullScreen()) {
         mainConf->setMainWindowSize(this->size());
         mainConf->setMainSplitSizes(qtwSplitMain->sizes());
