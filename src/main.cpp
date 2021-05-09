@@ -20,19 +20,19 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include "collett.h"
+#include "settings.h"
 #include "guimain.h"
 
 #include <QApplication>
 
 int main(int argc, char *argv[]) {
 
-    QApplication colApp(argc, argv);
-    QCoreApplication::setOrganizationName("Collett");
-    QCoreApplication::setOrganizationDomain("vkbo.net");
-    QCoreApplication::setApplicationName("Collett");
+    QApplication collettApp(argc, argv);
 
-    Collett::GuiMain colGUI;
-    colGUI.show();
+    Collett::CollettSettings *mainConf = Collett::CollettSettings::instance();
 
-    return colApp.exec();
+    Collett::GuiMain mainGUI;
+    mainGUI.show();
+
+    return collettApp.exec();
 }

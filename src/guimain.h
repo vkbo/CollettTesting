@@ -35,7 +35,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <QObject>
 #include <QMainWindow>
-#include <QSettings>
 #include <QSplitter>
 #include <QDir>
 
@@ -50,7 +49,6 @@ public:
     ~GuiMain();
 
 private:
-    QSettings    mainConf;
     CollettData *mainData;
 
     // Main GUI Elements

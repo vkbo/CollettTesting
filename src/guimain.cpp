@@ -21,6 +21,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "guimain.h"
 #include "data.h"
+#include "settings.h"
 #include "document.h"
 #include "doceditor.h"
 #include "mainmenu.h"
@@ -59,13 +60,9 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
     this->setStatusBar(guiMainStatus);
 
     // Apply Settings
-    this->resize(mainConf.value(CNF_WIN_SIZE, QSize(1200, 800)).toSize());
-
-    QList<int> mainSplit;
-    mainSplit.append(mainConf.value(CNF_TREE_WIDTH, 300).toInt());
-    mainSplit.append(mainConf.value(CNF_EDIT_WIDTH, 900).toInt());
-
-    qtwSplitMain->setSizes(mainSplit);
+    CollettSettings *mainConf = CollettSettings::instance();
+    this->resize(mainConf->mainWindowSize());
+    qtwSplitMain->setSizes(mainConf->mainSplitSizes());
 
     // Load Something
     openProject(QDir("../Sample"));
@@ -105,11 +102,12 @@ bool GuiMain::openDocument(const QString handle) {
 bool GuiMain::closeMain() {
 
     // Save Settings
+    CollettSettings *mainConf = CollettSettings::instance();
     if (!this->isFullScreen()) {
-        this->mainConf.setValue(CNF_WIN_SIZE, this->size());
-        this->mainConf.setValue(CNF_TREE_WIDTH, qtwSplitMain->sizes().at(0));
-        this->mainConf.setValue(CNF_EDIT_WIDTH, qtwSplitMain->sizes().at(1));
+        mainConf->setMainWindowSize(this->size());
+        mainConf->setMainSplitSizes(qtwSplitMain->sizes());
     }
+    mainConf->flushSettings();
     return true;
 }
 

@@ -22,24 +22,39 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef COLLETTSETTINGS_H
 #define COLLETTSETTINGS_H
 
-// Settings
-#define CNF_WIN_SIZE   "GuiMain/winSize"
-#define CNF_TREE_WIDTH "GuiMain/treeSplit"
-#define CNF_EDIT_WIDTH "GuiMain/editorSplit"
-
 #include "collett.h"
+
+#include <QObject>
+#include <QScopedPointer>
+#include <QSize>
+#include <QList>
 
 namespace Collett {
 
-class CollettSettings
+class CollettSettingsPrivate;
+class CollettSettings : public QObject
 {
+    Q_OBJECT
+    Q_DECLARE_PRIVATE(CollettSettings)
 
 public:
-    CollettSettings() {};
-    ~CollettSettings() {};
+    static CollettSettings *instance();
+    ~CollettSettings();
 
 private:
+    QScopedPointer<CollettSettingsPrivate> d_ptr;
+    CollettSettings();
 
+public:
+    void flushSettings();
+
+    // Setters
+    void setMainWindowSize(const QSize size);
+    void setMainSplitSizes(const QList<int> &sizes);
+
+    // Getters
+    QSize      mainWindowSize() const;
+    QList<int> mainSplitSizes() const;
 };
 } // namespace Collett
 
