@@ -31,6 +31,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QTextEdit>
 #include <QTextBlock>
 #include <QStringList>
+#include <QTextDocument>
 
 namespace Collett {
 
@@ -58,16 +59,17 @@ bool GuiDocEditor::openDocument(const QString handle) {
 
     colDoc = new ColDocument(mainData->getProject(), handle);
     hasDocument = true;
+
     this->setColletDoc(colDoc->paragraphs());
 
-    this->setHtml(
-        "<h1>Hello World</h1>"
-        "<p>This is some text in a paragraph.</p>"
-        "<p>And here is some {more} text in a second paragraph!</p>"
-        "<p>Here we have some <b>bold</b> and <i>italic</i> text.</p>"
-        "<p>This is <b>a <i>sentence <u>with <s>nested</s> formatting</u> in</i> the</b> middle.</p>"
-        "<p style='text-align: center;'><i>The End</i></p>"
-    );
+    // this->setHtml(
+    //     "<h1>Hello World</h1>"
+    //     "<p>This is some text in a paragraph.</p>"
+    //     "<p>And here is some {more} text in a second paragraph!</p>"
+    //     "<p>Here we have some <b>bold</b> and <i>italic</i> text.</p>"
+    //     "<p>This is <b>a <i>sentence <u>with <s>nested</s> formatting</u> in</i> the</b> middle.</p>"
+    //     "<p style='text-align: center;'><i>The End</i></p>"
+    // );
 
     return true;
 }
@@ -88,7 +90,13 @@ bool GuiDocEditor::saveDocument() {
  */
 
 void GuiDocEditor::setColletDoc(const QStringList &content) {
-    EditorDocImporter(this->document(), content).import();
+
+    QTextDocument *doc = this->document();
+
+    doc->setUndoRedoEnabled(false);
+    doc->clear();
+    EditorDocImporter(doc, content).import();
+    doc->setUndoRedoEnabled(true);
 }
 
 QStringList GuiDocEditor::toColletDoc() {

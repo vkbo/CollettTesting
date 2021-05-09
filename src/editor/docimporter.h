@@ -22,6 +22,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef EDITORDOCIMPORTER_H
 #define EDITORDOCIMPORTER_H
 
+#include "coldocblock.h"
+
 #include <QTextDocument>
 #include <QString>
 #include <QStringList>
@@ -39,6 +41,7 @@ private:
     QTextDocument *doc;
     QStringList    rawText;
     QTextCursor    cursor;
+
 };
 } // namespace Collett
 

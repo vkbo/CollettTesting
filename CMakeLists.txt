@@ -55,7 +55,6 @@ include_directories(
 # Source Files
 list(APPEND Collet_SOURCE
     document/coldocblock
-    document/coldocfragment
     document/document
     document/linefmt
     editor/doceditor

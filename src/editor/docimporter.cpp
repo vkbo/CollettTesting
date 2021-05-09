@@ -21,12 +21,14 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "docimporter.h"
 #include "coldocblock.h"
-#include "linefmt.h"
 
 #include <QTextDocument>
 #include <QString>
 #include <QStringList>
 #include <QTextCursor>
+#include <QTextCharFormat>
+
+#include <QDebug>
 
 namespace Collett {
 
@@ -44,10 +46,29 @@ EditorDocImporter::EditorDocImporter(QTextDocument *_doc, const QStringList &con
 
 void EditorDocImporter::import() {
 
+    cursor.beginEditBlock();
     for (const QString& line : rawText) {
         ColDocBlock newBlock;
         newBlock.unpackText(line);
+        if (!newBlock.isValid()) {
+            qWarning() << "Invalid block encountered";
+            continue;
+        }
+
+        QTextCharFormat defaultFmt(cursor.charFormat());
+
+        QList<ColDocBlock::Fragment> blockFrags = newBlock.fragments();
+        for (const ColDocBlock::Fragment& blockFrag : blockFrags) {
+            QTextCharFormat insFmt = defaultFmt;
+            insFmt.setFontWeight(blockFrag.bold ? 700 : 400);
+            insFmt.setFontItalic(blockFrag.italic);
+            insFmt.setFontUnderline(blockFrag.underline);
+            insFmt.setFontStrikeOut(blockFrag.strikeout);
+            cursor.insertText(blockFrag.text, insFmt);
+        }
+        cursor.insertBlock();
     }
+    cursor.endEditBlock();
 
     return;
 }

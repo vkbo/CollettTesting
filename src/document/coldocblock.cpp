@@ -20,7 +20,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include "coldocblock.h"
-#include "coldocfragment.h"
 
 #include <QString>
 #include <QStringList>
@@ -67,7 +66,7 @@ void ColDocBlock::unpackText(const QString &text) {
 
     blockFragments.clear();
     for (const QString& textFrag : textFrags) {
-        blockFragments.append(ColDocFragment(textFrag));
+        blockFragments.append(parseFragment(textFrag));
     }
 
     blockValid = true;
@@ -120,6 +119,58 @@ void ColDocBlock::setBlockType(int blockType) {
 
 void ColDocBlock::setBlockAlignment(Qt::Alignment alignFlag) {
     blockAlignValue = alignFlag;
+}
+
+/*
+    Internal Functions
+    ==================
+*/
+
+ColDocBlock::Fragment ColDocBlock::parseFragment(const QString &text) {
+
+    Fragment fragment;
+
+    if (!text.startsWith("{f")) {
+        fragment.valid = false;
+        return fragment;
+    }
+
+    qsizetype endFmt = text.indexOf('}');
+    if (endFmt < 0) {
+        fragment.valid = false;
+        return fragment;
+    }
+
+    fragment.text = text.sliced(endFmt+1);
+    if (fragment.text.contains('\\')) {
+        // Only replace escaped characters if there is a backslash
+        fragment.text = fragment.text.replace("\\rc\\", "}").replace("\\lc\\", "{").replace("\\bs\\", "\\");
+    }
+
+    // Parse format flags
+    for (int i=1; i<endFmt; ++i) {
+        if (text.at(i) == 'b') {
+            fragment.bold = true;
+            continue;
+        }
+        if (text.at(i) == 'i') {
+            fragment.italic = true;
+            continue;
+        }
+        if (text.at(i) == 'u') {
+            fragment.underline = true;
+            continue;
+        }
+        if (text.at(i) == 's') {
+            fragment.strikeout = true;
+            continue;
+        }
+    }
+    qDebug() << "Fragment Text:" << fragment.text;
+
+    fragment.valid = false;
+
+    return fragment;
 }
 
 } // namespace Collett

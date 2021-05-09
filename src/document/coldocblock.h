@@ -22,8 +22,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef COLDOCBLOCK_H
 #define COLDOCBLOCK_H
 
-#include "coldocfragment.h"
-
 #include <QString>
 #include <QList>
 
@@ -33,6 +31,16 @@ class ColDocBlock
 {
 
 public:
+
+    struct Fragment {
+        bool valid     = false;
+        bool bold      = false;
+        bool italic    = false;
+        bool underline = false;
+        bool strikeout = false;
+        QString text   = "";
+    };
+
     ColDocBlock();
     ~ColDocBlock() {};
 
@@ -42,12 +50,22 @@ public:
     void setBlockType(int blockType);
     void setBlockAlignment(Qt::Alignment alignFlag);
 
+    bool isValid() {
+        return blockValid;
+    }
+
+    QList<Fragment> fragments() {
+        return blockFragments;
+    }
+
 private:
-    QList<ColDocFragment> blockFragments;
+    QList<Fragment> blockFragments;
 
     bool          blockValid;
     int           blockTypeValue;
     Qt::Alignment blockAlignValue;
+
+    Fragment parseFragment(const QString &text);
 
 };
 } // namespace Collett
