@@ -33,6 +33,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QSplitter>
 #include <QDir>
 
+namespace Collett {
+
 GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
 
     // Create Main Data Object
@@ -123,3 +125,5 @@ void GuiMain::closeEvent(QCloseEvent *theEvent) {
         theEvent->ignore();
     }
 }
+
+} // namespace Collet

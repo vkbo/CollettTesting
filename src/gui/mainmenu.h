@@ -26,6 +26,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QAction>
 #include <QMenuBar>
 
+namespace Collett {
+
 class GuiMainMenu : public QMenuBar
 {
     Q_OBJECT
@@ -53,4 +55,6 @@ private:
     QAction *aFmtStike;
 
 };
+} // namespace Collet
+
 #endif // GUIMAINMENU_H

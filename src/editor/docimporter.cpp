@@ -22,3 +22,5 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "docimporter.h"
 #include "linefmt.h"
 
+namespace Collett {
+} // namespace Collet

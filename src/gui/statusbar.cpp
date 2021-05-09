@@ -23,8 +23,10 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <QStatusBar>
 
-GuiMainStatus::GuiMainStatus(QWidget *parent) : QStatusBar(parent) {
-}
+namespace Collett {
 
-GuiMainStatus::~GuiMainStatus() {
-}
+GuiMainStatus::GuiMainStatus(QWidget *parent) : QStatusBar(parent) {}
+
+GuiMainStatus::~GuiMainStatus() {}
+
+} // namespace Collet

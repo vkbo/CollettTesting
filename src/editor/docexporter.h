@@ -27,6 +27,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QTextBlock>
 #include <QTextFragment>
 
+namespace Collett {
+
 class EditorDocExporter
 {
 public:
@@ -40,5 +42,6 @@ private:
     QString formatBlock(const QTextBlock *block);
     QString formatFragment(const QTextFragment &fragment);
 };
+} // namespace Collet
 
 #endif // EDITORDOCEXPORTER_H

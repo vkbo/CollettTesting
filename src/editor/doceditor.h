@@ -33,6 +33,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QTextBlock>
 #include <QTextDocument>
 
+namespace Collett {
+
 class GuiDocEditor : public QTextEdit
 {
     Q_OBJECT
@@ -53,5 +55,6 @@ private:
     QStringList toColletDoc();
 
 };
+} // namespace Collet
 
 #endif // GUIDOCEDITOR_H

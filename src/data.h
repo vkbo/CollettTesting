@@ -28,6 +28,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QWidget>
 #include <QDir>
 
+namespace Collett {
+
 class CollettData
 {
 
@@ -46,5 +48,6 @@ private:
     CollettProject *project;
 
 };
+} // namespace Collet
 
 #endif // COLLETTDATA_H

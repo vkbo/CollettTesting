@@ -26,6 +26,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QFile>
 #include <QDir>
 
+namespace Collett {
+
 CollettProject::CollettProject(const QDir path) {
 
     projectPath = path.absolutePath();
@@ -52,3 +54,5 @@ bool CollettProject::openProject(bool overrideLock) {
 
     return true;
 }
+
+} // namespace Collet

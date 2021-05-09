@@ -25,6 +25,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QObject>
 #include <QTreeWidget>
 
+namespace Collett {
+
 class GuiNovelTree : public QTreeWidget
 {
     Q_OBJECT
@@ -36,4 +38,6 @@ public:
 private:
 
 };
+} // namespace Collet
+
 #endif // GUINOVELTREE_H

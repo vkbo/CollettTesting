@@ -2,31 +2,31 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
-    <name>GuiMainMenu</name>
+    <name>Collett::GuiMainMenu</name>
     <message>
-        <location filename="../src/gui/mainmenu.cpp" line="43"/>
+        <location filename="../src/gui/mainmenu.cpp" line="45"/>
         <source>&amp;Project</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainmenu.cpp" line="46"/>
+        <location filename="../src/gui/mainmenu.cpp" line="48"/>
         <source>New Project</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainmenu.cpp" line="47"/>
+        <location filename="../src/gui/mainmenu.cpp" line="49"/>
         <source>Create new project</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainmenu.cpp" line="56"/>
+        <location filename="../src/gui/mainmenu.cpp" line="58"/>
         <source>&amp;Format</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainmenu.cpp" line="59"/>
+        <location filename="../src/gui/mainmenu.cpp" line="61"/>
         <source>Emphasis</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

@@ -25,6 +25,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QWidget>
 #include <QDir>
 
+namespace Collett {
+
 bool CollettData::openProject(const QDir path) {
 
     project = new CollettProject(path);
@@ -41,3 +43,5 @@ CollettProject* CollettData::getProject() {
         return nullptr;
     }
 }
+
+} // namespace Collet

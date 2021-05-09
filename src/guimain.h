@@ -39,6 +39,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QSplitter>
 #include <QDir>
 
+namespace Collett {
+
 class GuiMain : public QMainWindow
 {
     Q_OBJECT
@@ -74,5 +76,6 @@ private:
     virtual void closeEvent(QCloseEvent*);
 
 };
+} // namespace Collet
 
 #endif // GUIMAIN_H

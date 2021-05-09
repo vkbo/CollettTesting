@@ -23,10 +23,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <QTreeWidget>
 
-#define C_NAME   0
-#define C_COUNT  1
-#define C_FLAGS  2
-#define C_HANDLE 3
+namespace Collett {
 
 GuiNovelTree::GuiNovelTree(QWidget *parent) : QTreeWidget(parent) {
 
@@ -36,10 +33,10 @@ GuiNovelTree::GuiNovelTree(QWidget *parent) : QTreeWidget(parent) {
     this->setIndentation(13);
     this->setColumnCount(4);
     this->setHeaderLabels(QStringList() << "Label" << "Words" << "Flags" << "Handle");
-    this->hideColumn(C_HANDLE);
+    this->hideColumn(3);
 
     QTreeWidgetItem *treeHead = this->headerItem();
-    treeHead->setTextAlignment(C_COUNT, Qt::AlignRight);
+    treeHead->setTextAlignment(1, Qt::AlignRight);
 
     // Allow move by drag'n'drop
     this->setDragEnabled(true);
@@ -52,5 +49,6 @@ GuiNovelTree::GuiNovelTree(QWidget *parent) : QTreeWidget(parent) {
     return;
 }
 
-GuiNovelTree::~GuiNovelTree() {
-}
+GuiNovelTree::~GuiNovelTree() {}
+
+} // namespace Collet

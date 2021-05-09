@@ -25,6 +25,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QObject>
 #include <QStatusBar>
 
+namespace Collett {
+
 class GuiMainStatus : public QStatusBar
 {
     Q_OBJECT
@@ -36,4 +38,6 @@ public:
 private:
 
 };
+} // namespace Collet
+
 #endif // GUIMAINSTATUS_H

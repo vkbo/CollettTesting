@@ -28,6 +28,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QTextFragment>
 #include <QTextCharFormat>
 
+namespace Collett {
+
 /*
     Convert a QTextDocument into a list of strings, one for each paragraph.
     Each string starts with the paragraph format, and then follows the text of
@@ -86,3 +88,5 @@ QString EditorDocExporter::formatFragment(const QTextFragment &fragment) {
 
     return fmtText;
 }
+
+} // namespace Collet

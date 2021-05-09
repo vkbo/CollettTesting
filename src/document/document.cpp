@@ -28,6 +28,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QIODevice>
 #include <QTextStream>
 
+namespace Collett {
+
 CollettDocument::CollettDocument(CollettProject *_project, const QString _handle)
     : project(_project), handle(_handle)
 {
@@ -66,3 +68,5 @@ CollettDocument::RWStatus CollettDocument::write(const QString text) {
 
     return CollettDocument::RWStatus::OK;
 }
+
+} // namespace Collet

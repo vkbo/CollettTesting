@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
     QCoreApplication::setOrganizationDomain("vkbo.net");
     QCoreApplication::setApplicationName("Collett");
 
-    GuiMain colGUI;
+    Collett::GuiMain colGUI;
     colGUI.show();
 
     return colApp.exec();

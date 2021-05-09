@@ -28,6 +28,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QString>
 #include <QDir>
 
+namespace Collett {
+
 class CollettProject
 {
 
@@ -52,5 +54,6 @@ private:
     QDir contentPath;
 
 };
+} // namespace Collet
 
 #endif // COLLETTPROJECT_H

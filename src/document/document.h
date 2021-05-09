@@ -27,6 +27,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QString>
 #include <QStringList>
 
+namespace Collett {
+
 class CollettDocument
 {
 public:
@@ -51,5 +53,6 @@ private:
     QString filePath;
 
 };
+} // namespace Collet
 
 #endif // COLLETTDOCUMENT_H

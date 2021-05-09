@@ -25,6 +25,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QTextDocument>
 #include <QString>
 
+namespace Collett {
+
 class EditorDocImporter
 {
 public:
@@ -34,5 +36,6 @@ public:
 private:
     QTextDocument *doc;
 };
+} // namespace Collet
 
 #endif // EDITORDOCIMPORTER_H

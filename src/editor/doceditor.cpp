@@ -31,6 +31,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QTextBlock>
 #include <QStringList>
 
+namespace Collett {
+
 GuiDocEditor::GuiDocEditor(QWidget *parent, CollettData *_data)
     : QTextEdit(parent), mainData(_data)
 {
@@ -86,3 +88,5 @@ bool GuiDocEditor::saveDocument() {
 QStringList GuiDocEditor::toColletDoc() {
     return EditorDocExporter(this->document()).toColletDoc();
 }
+
+} // namespace Collet

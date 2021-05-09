@@ -24,6 +24,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QString>
 #include <QStringList>
 
+namespace Collett {
+
 DocLineFmt::DocLineFmt() {
     blockTypeValue = 0;
     blockAlignValue = Qt::AlignLeft;
@@ -80,3 +82,5 @@ void DocLineFmt::setBlockType(int blockType) {
 void DocLineFmt::setBlockAlignment(Qt::Alignment alignFlag) {
     blockAlignValue = alignFlag;
 }
+
+} // namespace Collet

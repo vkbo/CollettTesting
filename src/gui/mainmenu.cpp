@@ -23,6 +23,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <QKeySequence>
 
+namespace Collett {
+
 GuiMainMenu::GuiMainMenu(QWidget *parent) : QMenuBar(parent) {
 
     buildProjectMenu();
@@ -61,3 +63,5 @@ void GuiMainMenu::buildFormatMenu() {
 
     return;
 }
+
+} // namespace Collet

@@ -22,6 +22,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef ITEM_H
 #define ITEM_H
 
+namespace Collett {
+
 class Item
 {
 
@@ -32,5 +34,6 @@ public:
 private:
 
 };
+} // namespace Collet
 
 #endif // ITEM_H
