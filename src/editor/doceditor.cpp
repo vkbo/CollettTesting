@@ -23,6 +23,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "project.h"
 #include "doceditor.h"
 #include "docexporter.h"
+#include "docimporter.h"
 #include "linefmt.h"
 
 #include <QDebug>
@@ -57,6 +58,7 @@ bool GuiDocEditor::openDocument(const QString handle) {
 
     colDoc = new ColDocument(mainData->getProject(), handle);
     hasDocument = true;
+    this->setColletDoc(colDoc->paragraphs());
 
     this->setHtml(
         "<h1>Hello World</h1>"
@@ -84,6 +86,10 @@ bool GuiDocEditor::saveDocument() {
 /*
  * Internal Functions
  */
+
+void GuiDocEditor::setColletDoc(const QStringList &content) {
+    EditorDocImporter(this->document(), content).import();
+}
 
 QStringList GuiDocEditor::toColletDoc() {
     return EditorDocExporter(this->document()).toColletDoc();

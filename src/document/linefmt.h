@@ -31,7 +31,7 @@ class DocLineFmt
 
 public:
     DocLineFmt();
-    ~DocLineFmt();
+    ~DocLineFmt() {};
 
     QString packFormat();
 
@@ -45,4 +45,4 @@ private:
 };
 } // namespace Collett
 
-#endif // ITEM_H
+#endif // DOCLINEFMT_H

@@ -54,6 +54,7 @@ include_directories(
 
 # Source Files
 list(APPEND Collet_SOURCE
+    document/collettdocparser
     document/document
     document/linefmt
     editor/doceditor

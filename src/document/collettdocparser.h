@@ -1,6 +1,6 @@
 /*
-Collett – Document Importer Class
-=================================
+Collett – Collett Document Parser Class
+=======================================
 
 This file is a part of Collett
 Copyright 2020–2021, Veronica Berglyd Olsen
@@ -19,35 +19,21 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "docimporter.h"
-#include "linefmt.h"
-
-#include <QTextDocument>
-#include <QString>
-#include <QStringList>
-#include <QTextCursor>
+#ifndef COLLETTDOCPARSER_H
+#define COLLETTDOCPARSER_H
 
 namespace Collett {
 
-EditorDocImporter::EditorDocImporter(QTextDocument *_doc, const QStringList &content) : doc(_doc) {
+class CollettDocParser
+{
 
-    cursor = QTextCursor(doc);
-    rawText = content;
+public:
+    CollettDocParser() {};
+    ~CollettDocParser() {};
 
-}
+private:
 
-/*
-    Methods
-    =======
-*/
-
-void EditorDocImporter::import() {
-
-    for (const QString& line : rawText) {
-        qDebug() << line;
-    }
-
-    return;
-}
-
+};
 } // namespace Collett
+
+#endif // COLLETTDOCPARSER_H

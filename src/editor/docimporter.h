@@ -24,17 +24,21 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <QTextDocument>
 #include <QString>
+#include <QStringList>
+#include <QTextCursor>
 
 namespace Collett {
 
 class EditorDocImporter
 {
 public:
-    EditorDocImporter(QTextDocument *_doc) : doc(_doc) {};
-    bool fromColletDoc(const QString *text);
+    EditorDocImporter(QTextDocument *_doc, const QStringList &content);
+    void import();
 
 private:
     QTextDocument *doc;
+    QStringList    rawText;
+    QTextCursor    cursor;
 };
 } // namespace Collett
 

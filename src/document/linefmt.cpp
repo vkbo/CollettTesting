@@ -31,8 +31,6 @@ DocLineFmt::DocLineFmt() {
     blockAlignValue = Qt::AlignLeft;
 }
 
-DocLineFmt::~DocLineFmt() {}
-
 /*
  * Methods
  */
