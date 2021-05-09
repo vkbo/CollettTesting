@@ -27,13 +27,27 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QFile>
 #include <QIODevice>
 #include <QTextStream>
+#include <QStringList>
+
+#include <QDebug>
 
 namespace Collett {
 
 ColDocument::ColDocument(ColProject *_project, const QString _handle)
     : project(_project), handle(_handle)
 {
-    fileName = handle + ".ctxt";
+    QDir contentPath = project->getContentPath();
+    if (!contentPath.exists()) {
+        qWarning() << "Cannot initialise document object as content path does not exist";
+        docVaild = false;
+        docEmpty = true;
+        return;
+    }
+
+    fileName = handle+".ctxt";
+    filePath = contentPath.absoluteFilePath(fileName);
+
+    docFile = new QFile(filePath);
 }
 
 ColDocument::~ColDocument() {}
@@ -43,25 +57,57 @@ ColDocument::~ColDocument() {}
     =======
 */
 
-ColDocument::RWStatus ColDocument::read() {
+void ColDocument::readMeta() {
 
-    return ColDocument::RWStatus::OK;
+    QString line;
+
+    rawMeta.clear();
+    if (docFile->open(QIODevice::ReadOnly)) {
+        QTextStream inStream(docFile);
+        while (!inStream.atEnd()) {
+            line = inStream.readLine();
+            if (line.startsWith("[META:")) {
+                rawMeta.append(line);
+            } else {
+                break;
+            }
+        }
+        docFile->close();
+    }
+
+    return;
+}
+
+QStringList ColDocument::paragraphs() {
+
+    QStringList content;
+    QString line;
+
+    if (docFile->open(QIODevice::ReadOnly)) {
+        QTextStream inStream(docFile);
+        while (!inStream.atEnd()) {
+            line = inStream.readLine();
+            if (!line.startsWith("[META:")) {
+                content.append(line);
+            }
+        }
+        docFile->close();
+    }
+
+    return content;
+}
+
+QString ColDocument::text() {
+    return paragraphs().join('\n');
 }
 
 ColDocument::RWStatus ColDocument::write(const QString text) {
 
-    QDir contentPath = project->getContentPath();
-    if (!contentPath.exists()) {
-        qCritical() << "Folder does not exits:" << contentPath.path();
-        return ColDocument::RWStatus::Fail;
-    }
-
-    QString outPath = contentPath.absoluteFilePath(fileName);
-    QFile file(outPath);
-    if (file.open(QIODevice::WriteOnly)) {
-        QTextStream stream(&file);
+    if (docFile->open(QIODevice::WriteOnly)) {
+        QTextStream stream(docFile);
         stream << text << '\n';
-        qDebug() << "Wrote document:" << outPath;
+        docFile->close();
+        qDebug() << "Wrote document:" << filePath;
     } else {
         return ColDocument::RWStatus::Fail;
     }

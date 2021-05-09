@@ -73,9 +73,6 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
     return;
 }
 
-GuiMain::~GuiMain() {
-}
-
 /*
     Project Functions
     =================
@@ -108,6 +105,7 @@ bool GuiMain::closeMain() {
         mainConf->setMainSplitSizes(qtwSplitMain->sizes());
     }
     mainConf->flushSettings();
+
     return true;
 }
 

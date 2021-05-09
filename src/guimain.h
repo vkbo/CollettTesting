@@ -46,7 +46,7 @@ class GuiMain : public QMainWindow
 
 public:
     GuiMain(QWidget *parent=nullptr);
-    ~GuiMain();
+    ~GuiMain() {};
 
 private:
     ColData *mainData;

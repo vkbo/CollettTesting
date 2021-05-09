@@ -26,6 +26,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <QString>
 #include <QStringList>
+#include <QFile>
 
 namespace Collett {
 
@@ -40,15 +41,34 @@ public:
     ColDocument(ColProject *_project, const QString _handle);
     ~ColDocument();
 
-    RWStatus    read();
+    void readMeta();
+
     RWStatus    write(const QString text);
     QStringList paragraphs();
     QString     text();
 
+    bool isValid() {
+        return docVaild;
+    }
+
+    bool isEmpty() {
+        return docEmpty;
+    }
+
+    bool exists() {
+        return docFile->exists();
+    }
+
 private:
     ColProject *project;
-    const QString   handle;
+    const QString handle;
 
+    QStringList rawMeta;
+
+    bool docVaild;
+    bool docEmpty;
+
+    QFile  *docFile;
     QString fileName;
     QString filePath;
 

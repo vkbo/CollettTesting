@@ -42,9 +42,9 @@ public:
     bool openProject(const QDir path);
 
 private:
-    bool            hasProject = false;
+    bool hasProject = false;
 
-    QWidget        *parent;
+    QWidget    *parent;
     ColProject *project;
 
 };
