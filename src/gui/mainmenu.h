@@ -22,6 +22,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef GUIMAINMENU_H
 #define GUIMAINMENU_H
 
+#include <QObject>
 #include <QAction>
 #include <QMenuBar>
 

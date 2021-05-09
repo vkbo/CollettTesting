@@ -26,6 +26,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "project.h"
 #include "document.h"
 
+#include <QObject>
 #include <QStringList>
 #include <QTextEdit>
 #include <QString>

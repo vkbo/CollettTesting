@@ -33,6 +33,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "noveltree.h"
 #include "statusbar.h"
 
+#include <QObject>
 #include <QMainWindow>
 #include <QSettings>
 #include <QSplitter>

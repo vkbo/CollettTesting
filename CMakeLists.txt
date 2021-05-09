@@ -46,49 +46,37 @@ set(TS_FILES
 # Source Folders
 include_directories(
     src
-    src/core
     src/document
     src/editor
     src/gui
+    src/project
 )
 
 # Source Files
-list(APPEND SRC_CORE
-    core/item
-    core/project
+list(APPEND Collet_SOURCE
     document/document
     document/linefmt
-)
-
-list(APPEND SRC_BASE
     editor/doceditor
     editor/docexporter
     editor/docimporter
     gui/mainmenu
     gui/noveltree
     gui/statusbar
+    project/item
+    project/project
     data
     guimain
     main
 )
 
-# Source Files for libCollettCore
-foreach(entry IN LISTS SRC_CORE)
-    list(APPEND LIB_CORE_SRC src/${entry}.cpp)
-endforeach()
-
-# Source Files for Main Exec
-
-foreach(entry IN LISTS SRC_BASE)
+foreach(entry IN LISTS Collet_SOURCE)
     list(APPEND EXEC_SRC src/${entry}.cpp)
 endforeach()
-# list(APPPEND EXEC_SRC ${TS_FILES})
 
-# Add Sources to Targets
+# Targets
+# =======
+
 qt6_add_executable(collett ${EXEC_SRC} ${TS_FILES})
-add_library(CollettCore STATIC ${LIB_CORE_SRC})
-
-target_link_libraries(CollettCore PRIVATE Qt6::Core)
-target_link_libraries(collett     PRIVATE Qt6::Widgets CollettCore)
+target_link_libraries(collett PRIVATE Qt6::Widgets)
 
 qt6_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})

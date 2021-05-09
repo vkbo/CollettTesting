@@ -22,6 +22,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef GUINOVELTREE_H
 #define GUINOVELTREE_H
 
+#include <QObject>
 #include <QTreeWidget>
 
 class GuiNovelTree : public QTreeWidget
