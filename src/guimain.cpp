@@ -28,11 +28,13 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "noveltree.h"
 #include "statusbar.h"
 
+#include <QApplication>
 #include <QCloseEvent>
 #include <QList>
 #include <QMainWindow>
 #include <QSplitter>
 #include <QDir>
+#include <QString>
 
 namespace Collett {
 
@@ -63,6 +65,9 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
     ColSettings *mainConf = ColSettings::instance();
     this->resize(mainConf->mainWindowSize());
     qtwSplitMain->setSizes(mainConf->mainSplitSizes());
+
+    // Finalise
+    this->setWindowTitle(tr("%1 %2 Version %3").arg(qApp->applicationName(), "–", qApp->applicationVersion()));
 
     // Load Something
     openProject(QDir("../Sample"));

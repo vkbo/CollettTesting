@@ -22,11 +22,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef COLLETT_H
 #define COLLETT_H
 
-// Version info set by CMake
-#define CT_VERSION       "@Collett_VERSION@"
-#define CT_VERSION_DATE  "@Collett_VERSION_DATE@"
-#define CT_VERSION_MAJOR @Collett_VERSION_MAJOR@
-#define CT_VERSION_MINOR @Collett_VERSION_MINOR@
-#define CT_VERSION_PATCH @Collett_VERSION_PATCH@
+#define COL_VERSION_STR  "0.0.1-alpha0"
+#define COL_VERSION_HEX  0x000001a0
+#define COL_VERSION_DATE "2020-12-17"
 
 #endif // COLLETT_H

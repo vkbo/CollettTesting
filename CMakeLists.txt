@@ -1,8 +1,15 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(Collett LANGUAGES CXX VERSION "0.0.1")
-set(Collett_VERSION_DATE "2020-12-17")
-configure_file(src/collett.h src/collett.h)
+file(READ "src/collett.h" COLLET_H)
+string(REGEX MATCH "#define[ ]+COL_VERSION_STR[ ]+\"([0-9a-z\.\-]+)\"" _ ${COLLET_H})
+set(Collett_RELEASE ${CMAKE_MATCH_1})
+string(REGEX MATCH "([0-9\.]*)" _ ${Collett_RELEASE})
+set(Collett_VERSION ${CMAKE_MATCH_1})
+
+message(STATUS "Collett Version: ${Collett_VERSION}")
+message(STATUS "Collett Release: ${Collett_RELEASE}")
+
+project(Collett LANGUAGES CXX VERSION ${Collett_VERSION})
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -78,7 +85,8 @@ endforeach()
 # Targets
 # =======
 
-qt6_add_executable(collett ${EXEC_SRC} ${TS_FILES})
-target_link_libraries(collett PRIVATE Qt6::Widgets)
+qt6_add_executable(Collett ${EXEC_SRC} ${TS_FILES})
+target_link_libraries(Collett PRIVATE Qt6::Widgets)
+set_target_properties(Collett PROPERTIES OUTPUT_NAME "collett-${Collett_RELEASE}")
 
 qt6_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})

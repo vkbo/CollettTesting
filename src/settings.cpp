@@ -76,7 +76,7 @@ ColSettings::ColSettings() : d_ptr(new ColSettingsPrivate()) {
     QCoreApplication::setOrganizationName("Collett");
     QCoreApplication::setOrganizationDomain("vkbo.net");
     QCoreApplication::setApplicationName("Collett");
-    QCoreApplication::setApplicationVersion(CT_VERSION);
+    QCoreApplication::setApplicationVersion(COL_VERSION_STR);
 
     // Load Settings
     QSettings mainConf;
