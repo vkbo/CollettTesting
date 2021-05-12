@@ -30,11 +30,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 namespace Collett {
 
 ColDocBlock::ColDocBlock() {
-
     blockValid = false;
-    blockTypeValue = 0;
-    blockAlignValue = Qt::AlignLeft;
-
 }
 
 /*
@@ -49,7 +45,7 @@ void ColDocBlock::unpackText(const QString &text) {
         return;
     }
 
-    qsizetype endFmt = text.indexOf(']');
+    auto endFmt = text.indexOf(']');
     if (endFmt < 0) {
         blockValid = false;
         return;
@@ -58,9 +54,10 @@ void ColDocBlock::unpackText(const QString &text) {
     QString blockFmt = text.first(endFmt+1);
     QString blockText = text.sliced(endFmt+1);
 
-    qDebug() << "Format:" << blockFmt;
-    qDebug() << "Text:" << blockText;
+    // Parse block format
+    blockStyles = parseBlockFormat(blockFmt);
 
+    // Parse block text
     QStringList textFrags;
     QString buffer;
     bool inFragment = false;
@@ -85,7 +82,8 @@ void ColDocBlock::unpackText(const QString &text) {
         textFrags.append(buffer);
     }
 
-    // QStringList textFrags = blockText.split("{/f}", Qt::SkipEmptyParts);
+    qDebug() << "Format:" << blockFmt;
+    qDebug() << "Text:" << blockText;
     qDebug() << "Fragments:" << textFrags;
 
     blockFragments.clear();
@@ -102,12 +100,40 @@ QString ColDocBlock::packText() {
 
     QStringList fmtText;
 
-    QString fmtBlockType;
-    fmtBlockType.setNum(blockTypeValue, 10);
-    fmtBlockType.prepend("H");
-    fmtText.append(fmtBlockType);
+    switch (blockStyles.type) {
+        case (ColDocBlock::Title):
+            fmtText.append("TT");
+            break;
+        case (ColDocBlock::Header1):
+            fmtText.append("H1");
+            break;
+        case (ColDocBlock::Header2):
+            fmtText.append("H2");
+            break;
+        case (ColDocBlock::Header3):
+            fmtText.append("H3");
+            break;
+        case (ColDocBlock::Header4):
+            fmtText.append("H4");
+            break;
+        case (ColDocBlock::Paragraph):
+            fmtText.append("PP");
+            break;
+        case (ColDocBlock::BlockQuote):
+            fmtText.append("BQ");
+            break;
+        case (ColDocBlock::KeyWord):
+            fmtText.append("KW");
+            break;
+        case (ColDocBlock::Comment):
+            fmtText.append("CC");
+            break;
+        default:
+            fmtText.append("PP");
+            break;
+    }
 
-    switch (blockAlignValue) {
+    switch (blockStyles.alignemnt) {
         case Qt::AlignLeft:
             fmtText.append("AL");
             break;
@@ -133,16 +159,12 @@ QString ColDocBlock::packText() {
     =======
 */
 
-void ColDocBlock::setBlockType(int blockType) {
-    if (blockType >= 0 && blockType <= 4) {
-        blockTypeValue = blockType;
-    } else {
-        blockTypeValue = 0;
-    }
+void ColDocBlock::setBlockType(ColDocBlock::BlockType blockType) {
+    blockStyles.type = blockType;
 }
 
 void ColDocBlock::setBlockAlignment(Qt::Alignment alignFlag) {
-    blockAlignValue = alignFlag;
+    blockStyles.alignemnt = alignFlag;
 }
 
 /*
@@ -150,6 +172,65 @@ void ColDocBlock::setBlockAlignment(Qt::Alignment alignFlag) {
     ==================
 */
 
+ColDocBlock::Block ColDocBlock::parseBlockFormat(const QString &format) {
+
+    Block block;
+
+    QString fmtCore = format.sliced(1);
+    fmtCore.chop(1);
+
+    QStringList fmtBits = fmtCore.split(':', Qt::SkipEmptyParts);
+
+    if (fmtBits.length() > 0) {
+        QString fmtBit = fmtBits.at(0);
+        if (fmtBit == "PP") {
+            block.type = BlockType::Paragraph;
+        } else if (fmtBit == "H1") {
+            block.type = BlockType::Header1;
+        } else if (fmtBit == "H2") {
+            block.type = BlockType::Header2;
+        } else if (fmtBit == "H3") {
+            block.type = BlockType::Header3;
+        } else if (fmtBit == "H4") {
+            block.type = BlockType::Header4;
+        } else if (fmtBit == "KW") {
+            block.type = BlockType::KeyWord;
+        } else if (fmtBit == "BQ") {
+            block.type = BlockType::BlockQuote;
+        } else if (fmtBit == "CC") {
+            block.type = BlockType::Comment;
+        } else if (fmtBit == "TT") {
+            block.type = BlockType::Title;
+        } else {
+            block.type = BlockType::Paragraph;
+        }
+    }
+
+    if (fmtBits.length() > 1) {
+        QString fmtBit = fmtBits.at(1);
+        if (fmtBit == "AL") {
+            block.alignemnt = Qt::AlignLeft;
+        } else if (fmtBit == "AC") {
+            block.alignemnt = Qt::AlignCenter;
+        } else if (fmtBit == "AR") {
+            block.alignemnt = Qt::AlignRight;
+        } else if (fmtBit == "AJ") {
+            block.alignemnt = Qt::AlignJustify;
+        } else {
+            block.alignemnt = Qt::AlignLeft;
+        }
+    }
+
+    return block;
+}
+
+/*
+    Parse a text fragment and extract any formatting information that may exist
+    in it. If there are no formatting tags, flag the fragment as plain text and
+    return it as-is. If there are errors in the formatting tags, parse as much
+    as possible and return the text with the tags. In principle, it should not
+    be possible to lose any text if there are any errors.
+*/
 ColDocBlock::Fragment ColDocBlock::parseFragment(const QString &text) {
 
     Fragment fragment;

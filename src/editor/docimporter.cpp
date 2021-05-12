@@ -46,6 +46,28 @@ EditorDocImporter::EditorDocImporter(QTextDocument *_doc, const QStringList &con
 
 void EditorDocImporter::import() {
 
+    QTextCharFormat  defaultCharFmt(cursor.charFormat());
+    QTextBlockFormat defaultBlockFmt(cursor.blockFormat());
+
+    qreal defaultFontSize = 13.0;
+    qreal defaultLineHeight = 1.15;
+    qreal defaultTopMargin = 0.5*defaultFontSize;
+    qreal defaultBottomMargin = 0.5*defaultFontSize;
+
+    qreal header1FontSize = 2.2*defaultFontSize;
+    qreal header2FontSize = 1.9*defaultFontSize;
+    qreal header3FontSize = 1.6*defaultFontSize;
+    qreal header4FontSize = 1.3*defaultFontSize;
+
+    qreal headerBottomMargin = 0.7*defaultFontSize;
+
+    defaultCharFmt.setFontPointSize(defaultFontSize);
+    defaultBlockFmt.setLineHeight(defaultLineHeight, QTextBlockFormat::SingleHeight);
+    defaultBlockFmt.setTopMargin(defaultTopMargin);
+    defaultBlockFmt.setBottomMargin(defaultBottomMargin);
+
+    bool firstPara = true;
+
     cursor.beginEditBlock();
     for (const QString& line : rawText) {
         ColDocBlock newBlock;
@@ -55,18 +77,69 @@ void EditorDocImporter::import() {
             continue;
         }
 
-        QTextCharFormat defaultFmt(cursor.charFormat());
+        QTextBlockFormat textBlockFmt = defaultBlockFmt;
+        QTextCharFormat  textCharFmt = defaultCharFmt;
+
+        ColDocBlock::Block lineFmt = newBlock.blockStyle();
+        switch (lineFmt.type) {
+            case ColDocBlock::Header1:
+                textBlockFmt.setHeadingLevel(1);
+                textBlockFmt.setTopMargin(header1FontSize);
+                textBlockFmt.setBottomMargin(headerBottomMargin);
+                textCharFmt.setFontPointSize(header1FontSize);
+                firstPara = true;
+                break;
+
+            case ColDocBlock::Header2:
+                textBlockFmt.setHeadingLevel(2);
+                textBlockFmt.setTopMargin(header2FontSize);
+                textBlockFmt.setBottomMargin(headerBottomMargin);
+                textCharFmt.setFontPointSize(header2FontSize);
+                firstPara = true;
+                break;
+
+            case ColDocBlock::Header3:
+                textBlockFmt.setHeadingLevel(3);
+                textBlockFmt.setTopMargin(header3FontSize);
+                textBlockFmt.setBottomMargin(headerBottomMargin);
+                textCharFmt.setFontPointSize(header3FontSize);
+                firstPara = true;
+                break;
+
+            case ColDocBlock::Header4:
+                textBlockFmt.setHeadingLevel(4);
+                textBlockFmt.setTopMargin(header4FontSize);
+                textBlockFmt.setBottomMargin(headerBottomMargin);
+                textCharFmt.setFontPointSize(header4FontSize);
+                firstPara = true;
+                break;
+
+            case ColDocBlock::Paragraph:
+                textBlockFmt.setHeadingLevel(0);
+                if (!firstPara) {
+                    textBlockFmt.setTextIndent(2.0*defaultFontSize);
+                }
+                firstPara = false;
+                break;
+
+            default:
+                textBlockFmt.setHeadingLevel(0);
+                break;
+        }
+
+        textBlockFmt.setAlignment(lineFmt.alignemnt);
+        cursor.setBlockFormat(textBlockFmt);
 
         for (const ColDocBlock::Fragment& blockFrag : newBlock.fragments()) {
             if (blockFrag.plain) {
-                cursor.insertText(blockFrag.text, defaultFmt);
+                cursor.insertText(blockFrag.text, textCharFmt);
             } else {
-                auto insFmt = defaultFmt;
-                insFmt.setFontWeight(blockFrag.bold ? 700 : 400);
-                insFmt.setFontItalic(blockFrag.italic);
-                insFmt.setFontUnderline(blockFrag.underline);
-                insFmt.setFontStrikeOut(blockFrag.strikeout);
-                cursor.insertText(blockFrag.text, insFmt);
+                auto textFragFmt = textCharFmt;
+                textFragFmt.setFontWeight(blockFrag.bold ? 700 : 400);
+                textFragFmt.setFontItalic(blockFrag.italic);
+                textFragFmt.setFontUnderline(blockFrag.underline);
+                textFragFmt.setFontStrikeOut(blockFrag.strikeout);
+                cursor.insertText(blockFrag.text, textFragFmt);
             }
         }
         cursor.insertBlock();

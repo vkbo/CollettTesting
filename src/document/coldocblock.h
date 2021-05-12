@@ -42,17 +42,38 @@ public:
         QString text   = "";
     };
 
+    enum BlockType {
+        Paragraph,  // PP
+        Header1,    // H1
+        Header2,    // H2
+        Header3,    // H3
+        Header4,    // H4
+        KeyWord,    // KW
+        BlockQuote, // BQ
+        Comment,    // CC
+        Title,      // TT
+    };
+
+    struct Block {
+        BlockType     type      = BlockType::Paragraph;
+        Qt::Alignment alignemnt = Qt::AlignLeft;
+    };
+
     ColDocBlock();
     ~ColDocBlock() {};
 
     void unpackText(const QString &text);
     QString packText();
 
-    void setBlockType(int blockType);
+    void setBlockType(BlockType blockType);
     void setBlockAlignment(Qt::Alignment alignFlag);
 
     bool isValid() {
         return blockValid;
+    }
+
+    Block blockStyle() {
+        return blockStyles;
     }
 
     QList<Fragment> fragments() {
@@ -60,12 +81,12 @@ public:
     }
 
 private:
+    Block           blockStyles;
     QList<Fragment> blockFragments;
 
-    bool          blockValid;
-    int           blockTypeValue;
-    Qt::Alignment blockAlignValue;
+    bool blockValid;
 
+    Block    parseBlockFormat(const QString &format);
     Fragment parseFragment(const QString &text);
 
 };
