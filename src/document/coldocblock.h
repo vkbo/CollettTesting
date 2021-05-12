@@ -33,6 +33,7 @@ class ColDocBlock
 public:
 
     struct Fragment {
+        bool plain     = false;
         bool valid     = false;
         bool bold      = false;
         bool italic    = false;

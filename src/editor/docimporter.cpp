@@ -57,14 +57,17 @@ void EditorDocImporter::import() {
 
         QTextCharFormat defaultFmt(cursor.charFormat());
 
-        QList<ColDocBlock::Fragment> blockFrags = newBlock.fragments();
-        for (const ColDocBlock::Fragment& blockFrag : blockFrags) {
-            QTextCharFormat insFmt = defaultFmt;
-            insFmt.setFontWeight(blockFrag.bold ? 700 : 400);
-            insFmt.setFontItalic(blockFrag.italic);
-            insFmt.setFontUnderline(blockFrag.underline);
-            insFmt.setFontStrikeOut(blockFrag.strikeout);
-            cursor.insertText(blockFrag.text, insFmt);
+        for (const ColDocBlock::Fragment& blockFrag : newBlock.fragments()) {
+            if (blockFrag.plain) {
+                cursor.insertText(blockFrag.text, defaultFmt);
+            } else {
+                auto insFmt = defaultFmt;
+                insFmt.setFontWeight(blockFrag.bold ? 700 : 400);
+                insFmt.setFontItalic(blockFrag.italic);
+                insFmt.setFontUnderline(blockFrag.underline);
+                insFmt.setFontStrikeOut(blockFrag.strikeout);
+                cursor.insertText(blockFrag.text, insFmt);
+            }
         }
         cursor.insertBlock();
     }

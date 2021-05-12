@@ -61,7 +61,31 @@ void ColDocBlock::unpackText(const QString &text) {
     qDebug() << "Format:" << blockFmt;
     qDebug() << "Text:" << blockText;
 
-    QStringList textFrags = blockText.split("{/f}", Qt::SkipEmptyParts);
+    QStringList textFrags;
+    QString buffer;
+    bool inFragment = false;
+    for (const QChar& c : blockText) {
+
+        if (!inFragment && c == '{') {
+            inFragment = true;
+            if (buffer != "") {
+                textFrags.append(buffer);
+                buffer = "";
+            }
+        }
+
+        buffer += c;
+        if (inFragment && c == '}' && buffer.startsWith("{f") && buffer.endsWith("{/f}")) {
+            inFragment = false;
+            textFrags.append(buffer);
+            buffer = "";
+        }
+    }
+    if (buffer != "") {
+        textFrags.append(buffer);
+    }
+
+    // QStringList textFrags = blockText.split("{/f}", Qt::SkipEmptyParts);
     qDebug() << "Fragments:" << textFrags;
 
     blockFragments.clear();
@@ -130,45 +154,66 @@ ColDocBlock::Fragment ColDocBlock::parseFragment(const QString &text) {
 
     Fragment fragment;
 
-    if (!text.startsWith("{f")) {
-        fragment.valid = false;
-        return fragment;
+    // Check if we have an unformatted or formatted fragment
+    if (!text.startsWith("{") && !text.endsWith("}") ) {
+
+        // It is unformatted, so we keep it as-is
+        fragment.plain = true;
+        fragment.valid = true;
+        fragment.text = text;
+
+    } else {
+
+        // We have a block with formatting, check that it is valid
+        fragment.plain = false;
+
+        // It must have open and close tags to be valid
+        if (text.startsWith("{f") && text.endsWith("{/f}") ) {
+            fragment.valid = true;
+        } else {
+            fragment.valid = false;
+        }
+
+        // Also check that the opening formatting tag is closed
+        auto endFmt = text.indexOf('}');
+        if (endFmt < 0 || endFmt > text.length() - 5) {
+            fragment.valid = false;
+        }
+
+        // If the fragment is a valid format fragment, parse it,
+        // otherwise just return the text as-is
+        if (fragment.valid) {
+
+            // Remove the tags
+            fragment.text = text.sliced(endFmt+1);
+            fragment.text.chop(4);
+
+            // Parse format flags
+            for (int i=1; i<endFmt; ++i) {
+                if (text.at(i) == 'f') {
+                    continue;
+                } else if (text.at(i) == 'b') {
+                    fragment.bold = true;
+                } else if (text.at(i) == 'i') {
+                    fragment.italic = true;
+                } else if (text.at(i) == 'u') {
+                    fragment.underline = true;
+                } else if (text.at(i) == 's') {
+                    fragment.strikeout = true;
+                } else {
+                    fragment.text = text;
+                    break;
+                }
+            }
+        } else {
+            fragment.text = text;
+        }
     }
 
-    qsizetype endFmt = text.indexOf('}');
-    if (endFmt < 0) {
-        fragment.valid = false;
-        return fragment;
-    }
-
-    fragment.text = text.sliced(endFmt+1);
+    // If there are any backslashes in the fragment text, run the replacements
     if (fragment.text.contains('\\')) {
-        // Only replace escaped characters if there is a backslash
-        fragment.text = fragment.text.replace("\\rc\\", "}").replace("\\lc\\", "{").replace("\\bs\\", "\\");
+        fragment.text.replace("\\rc\\", "}").replace("\\lc\\", "{").replace("\\bs\\", "\\");
     }
-
-    // Parse format flags
-    for (int i=1; i<endFmt; ++i) {
-        if (text.at(i) == 'b') {
-            fragment.bold = true;
-            continue;
-        }
-        if (text.at(i) == 'i') {
-            fragment.italic = true;
-            continue;
-        }
-        if (text.at(i) == 'u') {
-            fragment.underline = true;
-            continue;
-        }
-        if (text.at(i) == 's') {
-            fragment.strikeout = true;
-            continue;
-        }
-    }
-    qDebug() << "Fragment Text:" << fragment.text;
-
-    fragment.valid = false;
 
     return fragment;
 }
