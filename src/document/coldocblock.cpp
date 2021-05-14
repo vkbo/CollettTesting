@@ -24,6 +24,9 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QString>
 #include <QStringList>
 #include <QChar>
+#include <QTextBlock>
+#include <QTextBlockFormat>
+#include <QTextFragment>
 
 #include <QDebug>
 
@@ -31,6 +34,93 @@ namespace Collett {
 
 ColDocBlock::ColDocBlock() {
     blockValid = false;
+}
+
+QString ColDocBlock::encodeQTextBlock(const QTextBlock &qBlock) {
+
+    QString blockText = "";
+    if (!qBlock.isValid()) {
+        return blockText;
+    }
+
+    // Block Format
+    // ============
+
+    QStringList blockFmt;
+    QTextBlockFormat qBlockFmt = qBlock.blockFormat();
+
+    // Encode Block Type
+    int qHLevel = qBlockFmt.headingLevel();
+    if (qHLevel > 0 && qHLevel < 5) {
+        QString blockType;
+        blockType.setNum(qHLevel);
+        blockType.prepend('H');
+        blockFmt.append(blockType);
+    } else {
+        blockFmt.append("TX");
+    }
+
+    // Encode Text Alignment
+    switch (qBlockFmt.alignment() & 0x000f) {
+        case Qt::AlignLeft:
+            blockFmt.append("AL");
+            break;
+        case Qt::AlignHCenter:
+            blockFmt.append("AC");
+            break;
+        case Qt::AlignRight:
+            blockFmt.append("AR");
+            break;
+        case Qt::AlignJustify:
+            blockFmt.append("AJ");
+            break;
+        default:
+            blockFmt.append("AL");
+            break;
+    }
+
+    // Encode Text Indent
+    if (qBlockFmt.textIndent() > 0.0) {
+        blockFmt.append("I");
+    } else {
+        blockFmt.append("O");
+    }
+
+    // Assemble Format
+    blockText = blockFmt.join(":").prepend("[").append("]");
+
+    // Block Text
+    // ==========
+
+    QTextBlock::Iterator blockIt = qBlock.begin();
+    for (; !blockIt.atEnd(); ++blockIt) {
+
+        QTextFragment qFrag = blockIt.fragment();
+        QTextCharFormat chrFmt = qFrag.charFormat();
+
+        QString fragFmt = "";
+        QString fragTxt = qFrag.text();
+
+        fragTxt.replace('\\', "\\bs\\");
+        fragTxt.replace('{', "\\lc\\");
+        fragTxt.replace('}', "\\rc\\");
+
+        if (chrFmt.fontWeight() > 500) fragFmt += "b";
+        if (chrFmt.fontItalic()) fragFmt += "i";
+        if (chrFmt.fontUnderline()) fragFmt += "u";
+        if (chrFmt.fontStrikeOut()) fragFmt += "s";
+
+        if (fragFmt != "") {
+            fragTxt.prepend("{f"+fragFmt+"}");
+            fragTxt.append("{/f}");
+        }
+
+        if (fragTxt != "") {
+            blockText.append(fragTxt);
+        }
+    }
+
+    return blockText;
 }
 
 /*
@@ -94,70 +184,6 @@ void ColDocBlock::unpackText(const QString &text) {
     blockValid = true;
 
     return;
-}
-
-QString ColDocBlock::packText() {
-
-    QStringList fmtText;
-
-    switch (blockStyles.type) {
-        case (ColDocBlock::Title):
-            fmtText.append("TT");
-            break;
-        case (ColDocBlock::Header1):
-            fmtText.append("H1");
-            break;
-        case (ColDocBlock::Header2):
-            fmtText.append("H2");
-            break;
-        case (ColDocBlock::Header3):
-            fmtText.append("H3");
-            break;
-        case (ColDocBlock::Header4):
-            fmtText.append("H4");
-            break;
-        case (ColDocBlock::Paragraph):
-            fmtText.append("PP");
-            break;
-        case (ColDocBlock::BlockQuote):
-            fmtText.append("BQ");
-            break;
-        case (ColDocBlock::KeyWord):
-            fmtText.append("KW");
-            break;
-        case (ColDocBlock::Comment):
-            fmtText.append("CC");
-            break;
-        default:
-            fmtText.append("PP");
-            break;
-    }
-
-    switch (blockStyles.alignemnt) {
-        case Qt::AlignLeft:
-            fmtText.append("AL");
-            break;
-        case Qt::AlignCenter:
-            fmtText.append("AC");
-            break;
-        case Qt::AlignRight:
-            fmtText.append("AR");
-            break;
-        case Qt::AlignJustify:
-            fmtText.append("AJ");
-            break;
-        default:
-            fmtText.append("AL");
-            break;
-    }
-
-    if (blockStyles.indent) {
-        fmtText.append("I");
-    } else {
-        fmtText.append("O");
-    }
-
-    return fmtText.join(":").prepend("[").append("]");
 }
 
 /*

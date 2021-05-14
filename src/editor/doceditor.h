@@ -73,7 +73,7 @@ private:
     bool hasDocument = false;
 
     void setColletDoc(const QStringList &content, const DocFormat &format);
-    QStringList toColletDoc(const DocFormat &format);
+    QStringList toColletDoc();
 
 };
 } // namespace Collett

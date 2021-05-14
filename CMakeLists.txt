@@ -65,7 +65,6 @@ list(APPEND Collet_SOURCE
     document/document
     document/linefmt
     editor/doceditor
-    editor/docexporter
     editor/docimporter
     gui/mainmenu
     gui/noveltree

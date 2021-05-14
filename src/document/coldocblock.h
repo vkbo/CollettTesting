@@ -24,6 +24,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <QString>
 #include <QList>
+#include <QTextBlock>
 
 namespace Collett {
 
@@ -63,8 +64,9 @@ public:
     ColDocBlock();
     ~ColDocBlock() {};
 
+    static QString encodeQTextBlock(const QTextBlock &qBlock);
+
     void unpackText(const QString &text);
-    QString packText();
 
     void setBlockType(BlockType blockType);
     void setBlockAlignment(Qt::Alignment alignFlag);

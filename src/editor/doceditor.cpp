@@ -22,7 +22,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "data.h"
 #include "project.h"
 #include "doceditor.h"
-#include "docexporter.h"
 #include "docimporter.h"
 #include "linefmt.h"
 
@@ -148,7 +147,7 @@ bool GuiDocEditor::openDocument(const QString handle) {
 }
 
 bool GuiDocEditor::saveDocument() {
-    auto docText = this->toColletDoc(docFormat);
+    QStringList docText = this->toColletDoc();
     for (int i=0; i < docText.size(); ++i) {
         qInfo() << docText.at(i);
     }
@@ -172,8 +171,14 @@ void GuiDocEditor::setColletDoc(const QStringList &content, const DocFormat &for
     doc->setUndoRedoEnabled(true);
 }
 
-QStringList GuiDocEditor::toColletDoc(const DocFormat &format) {
-    return EditorDocExporter(this->document()).toColletDoc();
+QStringList GuiDocEditor::toColletDoc() {
+    QStringList docText;
+    QTextBlock block = this->document()->firstBlock();
+    while(block.isValid()) {
+        docText.append(ColDocBlock::encodeQTextBlock(block));
+        block = block.next();
+    }
+    return docText;
 }
 
 } // namespace Collett
