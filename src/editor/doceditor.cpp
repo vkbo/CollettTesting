@@ -22,8 +22,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "data.h"
 #include "project.h"
 #include "doceditor.h"
-#include "docimporter.h"
-#include "linefmt.h"
+#include "coldocblock.h"
 
 #include <QDebug>
 #include <QString>
@@ -31,6 +30,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QTextBlock>
 #include <QStringList>
 #include <QTextDocument>
+#include <QTextCursor>
 
 namespace Collett {
 
@@ -132,7 +132,7 @@ bool GuiDocEditor::openDocument(const QString handle) {
     colDoc = new ColDocument(mainData->getProject(), handle);
     hasDocument = true;
 
-    this->setColletDoc(colDoc->paragraphs(), docFormat);
+    this->setColletDoc(colDoc->paragraphs());
 
     // this->setHtml(
     //     "<h1>Hello World</h1>"
@@ -158,19 +158,104 @@ bool GuiDocEditor::saveDocument() {
 }
 
 /*
- * Internal Functions
- */
+    Internal Functions
+    ==================
+*/
 
-void GuiDocEditor::setColletDoc(const QStringList &content, const DocFormat &format) {
+/*
+    Decode Document
+    ===============
+    Populate the editor's QTextDocument by decoding a list of QStrings using
+    the ColDocBlock class.
+*/
+void GuiDocEditor::setColletDoc(const QStringList &content) {
 
     QTextDocument *doc = this->document();
+    QTextCursor cursor = QTextCursor(doc);
+    bool isFirst = true;
 
     doc->setUndoRedoEnabled(false);
     doc->clear();
-    EditorDocImporter(doc, content).import(format);
+
+    cursor.beginEditBlock();
+    for (const QString& line : content) {
+        ColDocBlock newBlock;
+        newBlock.unpackText(line);
+        if (!newBlock.isValid()) {
+            qWarning() << "Invalid block encountered";
+            continue;
+        }
+
+        if (isFirst) {
+            isFirst = false;
+        } else {
+            cursor.insertBlock();
+        }
+
+        QTextBlockFormat textBlockFmt = docFormat.blockDefault;
+        QTextCharFormat textCharFmt = docFormat.charDefault;
+
+        ColDocBlock::Block lineFmt = newBlock.blockStyle();
+        switch (lineFmt.header) {
+            case 1:
+                textBlockFmt = docFormat.blockHeader1;
+                textCharFmt = docFormat.charHeader1;
+                break;
+
+            case 2:
+                textBlockFmt = docFormat.blockHeader2;
+                textCharFmt = docFormat.charHeader2;
+                break;
+
+            case 3:
+                textBlockFmt = docFormat.blockHeader3;
+                textCharFmt = docFormat.charHeader3;
+                break;
+
+            case 4:
+                textBlockFmt = docFormat.blockHeader4;
+                textCharFmt = docFormat.charHeader4;
+                break;
+
+            default:
+                textBlockFmt = docFormat.blockParagraph;
+                textCharFmt = docFormat.charParagraph;
+                break;
+        }
+
+        textBlockFmt.setAlignment(lineFmt.alignemnt);
+        if (lineFmt.indent) {
+            textBlockFmt.setTextIndent(docFormat.blockIndent);
+        }
+
+        cursor.setBlockFormat(textBlockFmt);
+
+        for (const ColDocBlock::Fragment& blockFrag : newBlock.fragments()) {
+            if (blockFrag.plain) {
+                cursor.insertText(blockFrag.text, textCharFmt);
+            } else {
+                auto textFragFmt = textCharFmt;
+                textFragFmt.setFontWeight(blockFrag.bold ? 700 : 400);
+                textFragFmt.setFontItalic(blockFrag.italic);
+                textFragFmt.setFontUnderline(blockFrag.underline);
+                textFragFmt.setFontStrikeOut(blockFrag.strikeout);
+                cursor.insertText(blockFrag.text, textFragFmt);
+            }
+        }
+    }
+    cursor.endEditBlock();
+
     doc->setUndoRedoEnabled(true);
+
+    return;
 }
 
+/*
+    Encode Document
+    ===============
+    Encode the content of the QTextDocument block by block onto a list of
+    QStrings. This uses a static function in the ColFocBlock class.
+*/
 QStringList GuiDocEditor::toColletDoc() {
     QStringList docText;
     QTextBlock block = this->document()->firstBlock();

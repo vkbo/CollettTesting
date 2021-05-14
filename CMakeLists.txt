@@ -63,9 +63,7 @@ include_directories(
 list(APPEND Collet_SOURCE
     document/coldocblock
     document/document
-    document/linefmt
     editor/doceditor
-    editor/docimporter
     gui/mainmenu
     gui/noveltree
     gui/statusbar

@@ -43,20 +43,8 @@ public:
         QString text   = "";
     };
 
-    enum BlockType {
-        Paragraph,  // PP
-        Header1,    // H1
-        Header2,    // H2
-        Header3,    // H3
-        Header4,    // H4
-        KeyWord,    // KW
-        BlockQuote, // BQ
-        Comment,    // CC
-        Title,      // TT
-    };
-
     struct Block {
-        BlockType     type      = BlockType::Paragraph;
+        int           header    = 0;
         Qt::Alignment alignemnt = Qt::AlignLeft;
         bool          indent    = false;
     };
@@ -65,11 +53,7 @@ public:
     ~ColDocBlock() {};
 
     static QString encodeQTextBlock(const QTextBlock &qBlock);
-
     void unpackText(const QString &text);
-
-    void setBlockType(BlockType blockType);
-    void setBlockAlignment(Qt::Alignment alignFlag);
 
     bool isValid() {
         return blockValid;
@@ -84,10 +68,9 @@ public:
     }
 
 private:
+    bool            blockValid;
     Block           blockStyles;
     QList<Fragment> blockFragments;
-
-    bool blockValid;
 
     Block    parseBlockFormat(const QString &format);
     Fragment parseFragment(const QString &text);

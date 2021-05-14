@@ -72,7 +72,7 @@ private:
 
     bool hasDocument = false;
 
-    void setColletDoc(const QStringList &content, const DocFormat &format);
+    void setColletDoc(const QStringList &content);
     QStringList toColletDoc();
 
 };

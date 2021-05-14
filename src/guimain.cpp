@@ -73,7 +73,6 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
     openProject(QDir("../Sample"));
 
     guiDocEditor->openDocument("test");
-    guiDocEditor->saveDocument();
 
     return;
 }
@@ -102,6 +101,8 @@ bool GuiMain::openDocument(const QString handle) {
 */
 
 bool GuiMain::closeMain() {
+
+    guiDocEditor->saveDocument();
 
     // Save Settings
     ColSettings *mainConf = ColSettings::instance();

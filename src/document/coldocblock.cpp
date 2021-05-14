@@ -52,10 +52,10 @@ QString ColDocBlock::encodeQTextBlock(const QTextBlock &qBlock) {
     // Encode Block Type
     int qHLevel = qBlockFmt.headingLevel();
     if (qHLevel > 0 && qHLevel < 5) {
-        QString blockType;
-        blockType.setNum(qHLevel);
-        blockType.prepend('H');
-        blockFmt.append(blockType);
+        QString blockHeader;
+        blockHeader.setNum(qHLevel);
+        blockHeader.prepend('H');
+        blockFmt.append(blockHeader);
     } else {
         blockFmt.append("TX");
     }
@@ -187,19 +187,6 @@ void ColDocBlock::unpackText(const QString &text) {
 }
 
 /*
-    Setters
-    =======
-*/
-
-void ColDocBlock::setBlockType(ColDocBlock::BlockType blockType) {
-    blockStyles.type = blockType;
-}
-
-void ColDocBlock::setBlockAlignment(Qt::Alignment alignFlag) {
-    blockStyles.alignemnt = alignFlag;
-}
-
-/*
     Internal Functions
     ==================
 */
@@ -215,26 +202,18 @@ ColDocBlock::Block ColDocBlock::parseBlockFormat(const QString &format) {
 
     if (fmtBits.length() > 0) {
         QString fmtBit = fmtBits.at(0);
-        if (fmtBit == "PP") {
-            block.type = BlockType::Paragraph;
+        if (fmtBit == "TX") {
+            block.header = 0;
         } else if (fmtBit == "H1") {
-            block.type = BlockType::Header1;
+            block.header = 1;
         } else if (fmtBit == "H2") {
-            block.type = BlockType::Header2;
+            block.header = 2;
         } else if (fmtBit == "H3") {
-            block.type = BlockType::Header3;
+            block.header = 3;
         } else if (fmtBit == "H4") {
-            block.type = BlockType::Header4;
-        } else if (fmtBit == "KW") {
-            block.type = BlockType::KeyWord;
-        } else if (fmtBit == "BQ") {
-            block.type = BlockType::BlockQuote;
-        } else if (fmtBit == "CC") {
-            block.type = BlockType::Comment;
-        } else if (fmtBit == "TT") {
-            block.type = BlockType::Title;
+            block.header = 4;
         } else {
-            block.type = BlockType::Paragraph;
+            block.header = 0;
         }
     }
 

@@ -24,17 +24,13 @@ codes inside square brackets in front of the line.
 
 ### Block Type
 
-| Code | Description            |
-| ---- | ---------------------- |
-| `TT` | Title                  |
-| `H1` | Headers level 1        |
-| `H2` | Headers level 2        |
-| `H3` | Headers level 3        |
-| `H4` | Headers level 4        |
-| `PP` | Regular text paragraph |
-| `BQ` | Block quote            |
-| `KW` | Meta keyword line      |
-| `CC` | Comment line           |
+| Code | Description               |
+| ---- | ------------------------- |
+| `H1` | Headers level 1 (Title)   |
+| `H2` | Headers level 2 (Chapter) |
+| `H3` | Headers level 3 (Scene)   |
+| `H4` | Headers level 4 (Section) |
+| `TX` | Regular text paragraph    |
 
 ### Block Alignment
 
