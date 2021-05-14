@@ -64,8 +64,12 @@ GuiDocEditor::GuiDocEditor(QWidget *parent, ColData *_data)
     defaultBlockFmt.setLineHeight(defaultLineHeight, QTextBlockFormat::SingleHeight);
     defaultBlockFmt.setTopMargin(defaultTopMargin);
     defaultBlockFmt.setBottomMargin(defaultBottomMargin);
+    defaultBlockFmt.setTextIndent(0.0);
 
     defaultCharFmt.setFontPointSize(defaultFontSize);
+
+    // Values
+    docFormat.blockIndent = 2.0*defaultFontSize;
 
     // Default
     docFormat.blockDefault = defaultBlockFmt;
@@ -73,8 +77,6 @@ GuiDocEditor::GuiDocEditor(QWidget *parent, ColData *_data)
 
     // Paragraph
     docFormat.blockParagraph = defaultBlockFmt;
-    docFormat.blockParagraph.setTextIndent(2.0*defaultFontSize);
-
     docFormat.charParagraph = defaultCharFmt;
 
     // Header 1

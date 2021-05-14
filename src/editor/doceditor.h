@@ -56,6 +56,7 @@ public:
         QTextCharFormat  charHeader3;
         QTextBlockFormat blockHeader4;
         QTextCharFormat  charHeader4;
+        qreal blockIndent;
     };
 
     GuiDocEditor(QWidget *parent, ColData *_data);

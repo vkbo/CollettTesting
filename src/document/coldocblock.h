@@ -57,6 +57,7 @@ public:
     struct Block {
         BlockType     type      = BlockType::Paragraph;
         Qt::Alignment alignemnt = Qt::AlignLeft;
+        bool          indent    = false;
     };
 
     ColDocBlock();

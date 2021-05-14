@@ -151,6 +151,12 @@ QString ColDocBlock::packText() {
             break;
     }
 
+    if (blockStyles.indent) {
+        fmtText.append("I");
+    } else {
+        fmtText.append("O");
+    }
+
     return fmtText.join(":").prepend("[").append("]");
 }
 
@@ -219,6 +225,10 @@ ColDocBlock::Block ColDocBlock::parseBlockFormat(const QString &format) {
         } else {
             block.alignemnt = Qt::AlignLeft;
         }
+    }
+
+    if (fmtBits.length() > 2) {
+        block.indent = fmtBits.at(2) == "I";
     }
 
     return block;

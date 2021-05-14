@@ -47,8 +47,6 @@ EditorDocImporter::EditorDocImporter(QTextDocument *_doc, const QStringList &con
 
 void EditorDocImporter::import(const GuiDocEditor::DocFormat &format) {
 
-    bool firstPara = true;
-
     cursor.beginEditBlock();
     for (const QString& line : rawText) {
         ColDocBlock newBlock;
@@ -66,34 +64,26 @@ void EditorDocImporter::import(const GuiDocEditor::DocFormat &format) {
             case ColDocBlock::Paragraph:
                 textBlockFmt = format.blockParagraph;
                 textCharFmt = format.charParagraph;
-                if (firstPara) {
-                    textBlockFmt.setTextIndent(0);
-                }
-                firstPara = false;
                 break;
 
             case ColDocBlock::Header1:
                 textBlockFmt = format.blockHeader1;
                 textCharFmt = format.charHeader1;
-                firstPara = true;
                 break;
 
             case ColDocBlock::Header2:
                 textBlockFmt = format.blockHeader2;
                 textCharFmt = format.charHeader2;
-                firstPara = true;
                 break;
 
             case ColDocBlock::Header3:
                 textBlockFmt = format.blockHeader3;
                 textCharFmt = format.charHeader3;
-                firstPara = true;
                 break;
 
             case ColDocBlock::Header4:
                 textBlockFmt = format.blockHeader4;
                 textCharFmt = format.charHeader4;
-                firstPara = true;
                 break;
 
             case ColDocBlock::KeyWord:
@@ -110,6 +100,10 @@ void EditorDocImporter::import(const GuiDocEditor::DocFormat &format) {
         }
 
         textBlockFmt.setAlignment(lineFmt.alignemnt);
+        if (lineFmt.indent) {
+            textBlockFmt.setTextIndent(format.blockIndent);
+        }
+
         cursor.setBlockFormat(textBlockFmt);
 
         for (const ColDocBlock::Fragment& blockFrag : newBlock.fragments()) {
