@@ -22,6 +22,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef EDITORDOCIMPORTER_H
 #define EDITORDOCIMPORTER_H
 
+#include "doceditor.h"
 #include "coldocblock.h"
 
 #include <QTextDocument>
@@ -35,7 +36,7 @@ class EditorDocImporter
 {
 public:
     EditorDocImporter(QTextDocument *_doc, const QStringList &content);
-    void import();
+    void import(const GuiDocEditor::DocFormat &format);
 
 private:
     QTextDocument *doc;

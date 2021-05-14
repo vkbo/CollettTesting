@@ -32,6 +32,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QString>
 #include <QTextBlock>
 #include <QTextDocument>
+#include <QTextBlockFormat>
+#include <QTextCharFormat>
 
 namespace Collett {
 
@@ -40,6 +42,22 @@ class GuiDocEditor : public QTextEdit
     Q_OBJECT
 
 public:
+
+    struct DocFormat {
+        QTextBlockFormat blockDefault;
+        QTextCharFormat  charDefault;
+        QTextBlockFormat blockParagraph;
+        QTextCharFormat  charParagraph;
+        QTextBlockFormat blockHeader1;
+        QTextCharFormat  charHeader1;
+        QTextBlockFormat blockHeader2;
+        QTextCharFormat  charHeader2;
+        QTextBlockFormat blockHeader3;
+        QTextCharFormat  charHeader3;
+        QTextBlockFormat blockHeader4;
+        QTextCharFormat  charHeader4;
+    };
+
     GuiDocEditor(QWidget *parent, ColData *_data);
     ~GuiDocEditor();
 
@@ -49,11 +67,12 @@ public:
 private:
     ColData     *mainData;
     ColDocument *colDoc;
+    DocFormat    docFormat;
 
     bool hasDocument = false;
 
-    void setColletDoc(const QStringList &content);
-    QStringList toColletDoc();
+    void setColletDoc(const QStringList &content, const DocFormat &format);
+    QStringList toColletDoc(const DocFormat &format);
 
 };
 } // namespace Collett

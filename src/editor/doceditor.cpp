@@ -42,6 +42,77 @@ GuiDocEditor::GuiDocEditor(QWidget *parent, ColData *_data)
     // Settings
     this->setAcceptRichText(true);
 
+    // Set up formats
+    // ==============
+
+    QTextCharFormat  defaultCharFmt;
+    QTextBlockFormat defaultBlockFmt;
+
+    qreal defaultFontSize = 13.0;
+    qreal defaultLineHeight = 1.15;
+    qreal defaultTopMargin = 0.5*defaultFontSize;
+    qreal defaultBottomMargin = 0.5*defaultFontSize;
+
+    qreal header1FontSize = 2.2*defaultFontSize;
+    qreal header2FontSize = 1.9*defaultFontSize;
+    qreal header3FontSize = 1.6*defaultFontSize;
+    qreal header4FontSize = 1.3*defaultFontSize;
+
+    qreal headerBottomMargin = 0.7*defaultFontSize;
+
+    defaultBlockFmt.setHeadingLevel(0);
+    defaultBlockFmt.setLineHeight(defaultLineHeight, QTextBlockFormat::SingleHeight);
+    defaultBlockFmt.setTopMargin(defaultTopMargin);
+    defaultBlockFmt.setBottomMargin(defaultBottomMargin);
+
+    defaultCharFmt.setFontPointSize(defaultFontSize);
+
+    // Default
+    docFormat.blockDefault = defaultBlockFmt;
+    docFormat.charDefault = defaultCharFmt;
+
+    // Paragraph
+    docFormat.blockParagraph = defaultBlockFmt;
+    docFormat.blockParagraph.setTextIndent(2.0*defaultFontSize);
+
+    docFormat.charParagraph = defaultCharFmt;
+
+    // Header 1
+    docFormat.blockHeader1 = defaultBlockFmt;
+    docFormat.blockHeader1.setHeadingLevel(1);
+    docFormat.blockHeader1.setTopMargin(header1FontSize);
+    docFormat.blockHeader1.setBottomMargin(headerBottomMargin);
+
+    docFormat.charHeader1 = defaultCharFmt;
+    docFormat.charHeader1.setFontPointSize(header1FontSize);
+
+    // Header 2
+    docFormat.blockHeader2 = defaultBlockFmt;
+    docFormat.blockHeader2.setHeadingLevel(2);
+    docFormat.blockHeader2.setTopMargin(header2FontSize);
+    docFormat.blockHeader2.setBottomMargin(headerBottomMargin);
+
+    docFormat.charHeader2 = defaultCharFmt;
+    docFormat.charHeader2.setFontPointSize(header2FontSize);
+
+    // Header 3
+    docFormat.blockHeader3 = defaultBlockFmt;
+    docFormat.blockHeader3.setHeadingLevel(3);
+    docFormat.blockHeader3.setTopMargin(header3FontSize);
+    docFormat.blockHeader3.setBottomMargin(headerBottomMargin);
+
+    docFormat.charHeader3 = defaultCharFmt;
+    docFormat.charHeader3.setFontPointSize(header3FontSize);
+
+    // Header 4
+    docFormat.blockHeader4 = defaultBlockFmt;
+    docFormat.blockHeader4.setHeadingLevel(4);
+    docFormat.blockHeader4.setTopMargin(header4FontSize);
+    docFormat.blockHeader4.setBottomMargin(headerBottomMargin);
+
+    docFormat.charHeader4 = defaultCharFmt;
+    docFormat.charHeader4.setFontPointSize(header4FontSize);
+
     return;
 }
 
@@ -60,7 +131,7 @@ bool GuiDocEditor::openDocument(const QString handle) {
     colDoc = new ColDocument(mainData->getProject(), handle);
     hasDocument = true;
 
-    this->setColletDoc(colDoc->paragraphs());
+    this->setColletDoc(colDoc->paragraphs(), docFormat);
 
     // this->setHtml(
     //     "<h1>Hello World</h1>"
@@ -75,7 +146,7 @@ bool GuiDocEditor::openDocument(const QString handle) {
 }
 
 bool GuiDocEditor::saveDocument() {
-    auto docText = this->toColletDoc();
+    auto docText = this->toColletDoc(docFormat);
     for (int i=0; i < docText.size(); ++i) {
         qInfo() << docText.at(i);
     }
@@ -89,17 +160,17 @@ bool GuiDocEditor::saveDocument() {
  * Internal Functions
  */
 
-void GuiDocEditor::setColletDoc(const QStringList &content) {
+void GuiDocEditor::setColletDoc(const QStringList &content, const DocFormat &format) {
 
     QTextDocument *doc = this->document();
 
     doc->setUndoRedoEnabled(false);
     doc->clear();
-    EditorDocImporter(doc, content).import();
+    EditorDocImporter(doc, content).import(format);
     doc->setUndoRedoEnabled(true);
 }
 
-QStringList GuiDocEditor::toColletDoc() {
+QStringList GuiDocEditor::toColletDoc(const DocFormat &format) {
     return EditorDocExporter(this->document()).toColletDoc();
 }
 
