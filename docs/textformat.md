@@ -62,4 +62,5 @@ escape character itself.
 | ------ | ------------------------ |
 | `\lc\` | Left curly bracket, "{"  |
 | `\rc\` | Right curly bracket, "}" |
+| `\br\` | Soft line break          |
 | `\bs\` | Backslash, "\\"          |

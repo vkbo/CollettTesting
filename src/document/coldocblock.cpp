@@ -102,6 +102,7 @@ QString ColDocBlock::encodeQTextBlock(const QTextBlock &qBlock) {
         QString fragTxt = qFrag.text();
 
         fragTxt.replace('\\', "\\bs\\");
+        fragTxt.replace(QChar::LineSeparator, "\\br\\");
         fragTxt.replace('{', "\\lc\\");
         fragTxt.replace('}', "\\rc\\");
 
@@ -308,7 +309,10 @@ ColDocBlock::Fragment ColDocBlock::parseFragment(const QString &text) {
 
     // If there are any backslashes in the fragment text, run the replacements
     if (fragment.text.contains('\\')) {
-        fragment.text.replace("\\rc\\", "}").replace("\\lc\\", "{").replace("\\bs\\", "\\");
+        fragment.text.replace("\\rc\\", "}");
+        fragment.text.replace("\\lc\\", "{");
+        fragment.text.replace("\\br\\", QString(QChar::LineSeparator));
+        fragment.text.replace("\\bs\\", "\\");
     }
 
     return fragment;
