@@ -26,6 +26,7 @@ set(CMAKE_CXX_FLAGS_DEBUG   "-Wall -g -O0 ${CMAKE_CXX_FLAGS_DEBUG}")
 # ===========
 
 # Note: Qt6 include folder must be specified with -DCMAKE_PREFIX_PATH
+set(CMAKE_PREFIX_PATH "lib/qt6")
 
 set(QT_DEFAULT_MAJOR_VERSION 6)
 set(QT_NO_CREATE_VERSIONLESS_FUNCTIONS on)
@@ -62,6 +63,8 @@ list(APPEND Collet_SOURCE
     document/coldocblock
     document/document
     editor/doceditor
+    editor/editarea
+    editor/sceneedit
     gui/mainmenu
     gui/noveltree
     gui/statusbar

@@ -27,6 +27,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "mainmenu.h"
 #include "noveltree.h"
 #include "statusbar.h"
+#include "editarea.h"
 
 #include <QApplication>
 #include <QCloseEvent>
@@ -44,8 +45,9 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
     mainData = new ColData(this);
 
     // Main GUI Elements
+    m_editArea    = new GuiEditArea(this);
     guiMainStatus = new GuiMainStatus(this);
-    guiDocEditor  = new GuiDocEditor(this, mainData);
+    // guiDocEditor  = new GuiDocEditor(this, mainData);
     guiNovelTree  = new GuiNovelTree(this);
     guiMainMenu   = new GuiMainMenu(this);
 
@@ -54,7 +56,7 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
     qtwSplitMain->setContentsMargins(4, 4, 4, 4);
     qtwSplitMain->setOpaqueResize(false);
     qtwSplitMain->addWidget(guiNovelTree);
-    qtwSplitMain->addWidget(guiDocEditor);
+    qtwSplitMain->addWidget(m_editArea);
 
     // Set Main Window Elements
     this->setMenuBar(guiMainMenu);
@@ -74,7 +76,7 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
     // Load Something
     openProject(QDir("../Sample"));
 
-    guiDocEditor->openDocument("test");
+    // guiDocEditor->openDocument("test");
 
     return;
 }
@@ -93,9 +95,9 @@ bool GuiMain::openProject(const QDir projPath) {
     ==================
 */
 
-bool GuiMain::openDocument(const QString handle) {
-    return guiDocEditor->openDocument(handle);
-}
+// bool GuiMain::openDocument(const QString handle) {
+//     return guiDocEditor->openDocument(handle);
+// }
 
 /*
     GUI Functions
@@ -104,7 +106,7 @@ bool GuiMain::openDocument(const QString handle) {
 
 bool GuiMain::closeMain() {
 
-    guiDocEditor->saveDocument();
+    // guiDocEditor->saveDocument();
 
     // Save Settings
     ColSettings *mainConf = ColSettings::instance();

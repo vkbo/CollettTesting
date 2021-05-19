@@ -22,16 +22,12 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef GUIMAIN_H
 #define GUIMAIN_H
 
-// Settings
-#define CNF_WIN_SIZE   "GuiMain/winSize"
-#define CNF_TREE_WIDTH "GuiMain/treeSplit"
-#define CNF_EDIT_WIDTH "GuiMain/editorSplit"
-
 #include "data.h"
 #include "doceditor.h"
 #include "mainmenu.h"
 #include "noveltree.h"
 #include "statusbar.h"
+#include "editarea.h"
 
 #include <QObject>
 #include <QMainWindow>
@@ -52,8 +48,9 @@ private:
     ColData *mainData;
 
     // Main GUI Elements
+    GuiEditArea   *m_editArea;
     GuiMainStatus *guiMainStatus;
-    GuiDocEditor  *guiDocEditor;
+    // GuiDocEditor  *guiDocEditor;
     GuiNovelTree  *guiNovelTree;
     GuiMainMenu   *guiMainMenu;
 
