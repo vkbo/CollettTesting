@@ -67,7 +67,9 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
     qtwSplitMain->setSizes(mainConf->mainSplitSizes());
 
     // Finalise
-    this->setWindowTitle(tr("%1 %2 Version %3").arg(qApp->applicationName(), "–", qApp->applicationVersion()));
+    this->setWindowTitle(
+        tr("%1 %2 Version %3").arg(qApp->applicationName(), "–", qApp->applicationVersion())
+    );
 
     // Load Something
     openProject(QDir("../Sample"));

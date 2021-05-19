@@ -4,7 +4,7 @@
 <context>
     <name>Collett::GuiMain</name>
     <message>
-        <location filename="../src/guimain.cpp" line="70"/>
+        <location filename="../src/guimain.cpp" line="71"/>
         <source>%1 %2 Version %3</source>
         <translation type="unfinished"></translation>
     </message>

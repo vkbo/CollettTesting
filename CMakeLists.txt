@@ -22,12 +22,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS_RELEASE "-Wall -O2 ${CMAKE_CXX_FLAGS_RELEASE}")
 set(CMAKE_CXX_FLAGS_DEBUG   "-Wall -g -O0 ${CMAKE_CXX_FLAGS_DEBUG}")
 
-# Qt6
-# ===
+# Qt6 Library
+# ===========
 
-# Just symlink lib/qt6 to the correct location,
-# or set the path with -DCMAKE_PREFIX_PATH
-set(CMAKE_PREFIX_PATH "lib/qt6")
+# Note: Qt6 include folder must be specified with -DCMAKE_PREFIX_PATH
 
 set(QT_DEFAULT_MAJOR_VERSION 6)
 set(QT_NO_CREATE_VERSIONLESS_FUNCTIONS on)
@@ -84,6 +82,6 @@ endforeach()
 
 qt6_add_executable(Collett ${EXEC_SRC} ${TS_FILES})
 target_link_libraries(Collett PRIVATE Qt6::Widgets)
-set_target_properties(Collett PROPERTIES OUTPUT_NAME "collett-${Collett_RELEASE}")
+set_target_properties(Collett PROPERTIES OUTPUT_NAME "collett")
 
 qt6_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
