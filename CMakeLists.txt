@@ -25,16 +25,15 @@ set(CMAKE_CXX_FLAGS_DEBUG   "-Wall -g -O0 ${CMAKE_CXX_FLAGS_DEBUG}")
 # Qt6 Library
 # ===========
 
-# Note: Qt6 include folder must be specified with -DCMAKE_PREFIX_PATH
+# Note: Qt6 include folder must be available. The following assumes lib/qt6 is#
+# either a local copy or a symlink to it.
+list(APPEND CMAKE_MODULE_PATH "lib/qt6")
 
 set(QT_DEFAULT_MAJOR_VERSION 6)
-set(QT_NO_CREATE_VERSIONLESS_FUNCTIONS on)
-set(QT_NO_CREATE_VERSIONLESS_TARGETS on)
-
 find_package(Qt6 COMPONENTS Core Widgets LinguistTools REQUIRED)
 if(Qt6Widgets_FOUND)
-    message(STATUS "Found Qt6 Version: ${Qt6Widgets_VERSION}")
-    message(STATUS "Found Qt6 Libraries: ${Qt6Widgets_LIBRARIES}")
+    message(STATUS "Found Qt6Widgets Libraries: ${Qt6Widgets_LIBRARIES}")
+    message(STATUS "Found Qt6Widgets Version: ${Qt6Widgets_VERSION}")
 endif()
 
 # i18n
@@ -44,6 +43,7 @@ set(TS_FILES
     i18n/collett_en_US.ts
     i18n/collett_nb_NO.ts
 )
+qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 
 # Sources
 # =======
@@ -80,8 +80,6 @@ endforeach()
 # Targets
 # =======
 
-qt6_add_executable(Collett ${EXEC_SRC} ${TS_FILES})
-target_link_libraries(Collett PRIVATE Qt6::Widgets)
+qt_add_executable(Collett ${EXEC_SRC} ${TS_FILES})
+target_link_libraries(Collett PRIVATE Qt::Widgets)
 set_target_properties(Collett PROPERTIES OUTPUT_NAME "collett")
-
-qt6_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
