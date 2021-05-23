@@ -24,16 +24,26 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <QObject>
 #include <QTextEdit>
+#include <QWidget>
+#include <QVBoxLayout>
+#include <QLineEdit>
 
 namespace Collett {
 
-class GuiSceneEdit : public QTextEdit
+class GuiSceneEdit : public QWidget
 {
     Q_OBJECT
 
 public:
     GuiSceneEdit(QWidget *parent=nullptr);
     ~GuiSceneEdit() {};
+
+private:
+    QVBoxLayout *m_layout;
+    QTextEdit   *m_editor;
+    QWidget     *m_header;
+
+    QLineEdit *m_title;
 
 private slots:
     void newDocumentSize(const QSizeF &size);

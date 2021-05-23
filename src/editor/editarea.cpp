@@ -25,7 +25,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QScrollArea>
 #include <QWidget>
 #include <QVBoxLayout>
-#include <QTextEdit>
 
 namespace Collett {
 
@@ -38,8 +37,8 @@ GuiEditArea::GuiEditArea(QWidget *parent)
     this->setWidget(m_centralWidget);
     m_centralWidget->setLayout(m_centralLayout);
 
-    QTextEdit *editOne = new GuiSceneEdit(this);
-    QTextEdit *editTwo = new GuiSceneEdit(this);
+    QWidget *editOne = new GuiSceneEdit(this);
+    QWidget *editTwo = new GuiSceneEdit(this);
 
     m_centralLayout->addWidget(editOne);
     m_centralLayout->addWidget(editTwo);

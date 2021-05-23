@@ -21,28 +21,47 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "sceneedit.h"
 
+#include <QWidget>
 #include <QTextEdit>
 #include <QSizePolicy>
+#include <QVBoxLayout>
 #include <QAbstractTextDocumentLayout>
 
 namespace Collett {
 
 GuiSceneEdit::GuiSceneEdit(QWidget *parent)
-    : QTextEdit(parent)
+    : QWidget(parent)
 {
-    this->setAcceptRichText(true);
-    this->setText("Hello World!");
+    m_editor = new QTextEdit(this);
+    m_header = new QWidget(this);
+    m_title  = new QLineEdit(this);
 
-    // this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
+    m_editor->setAcceptRichText(true);
+    m_editor->setText("Hello World!");
+
+    QVBoxLayout *hLayout = new QVBoxLayout();
+    hLayout->setContentsMargins(0, 0, 0, 0);
+    hLayout->addWidget(m_title);
+
+    m_header->setLayout(hLayout);
+
+    // Signals and Slots
     connect(
-        this->document()->documentLayout(), SIGNAL(documentSizeChanged(const QSizeF&)),
+        m_editor->document()->documentLayout(), SIGNAL(documentSizeChanged(const QSizeF&)),
         this, SLOT(newDocumentSize(const QSizeF&))
     );
+
+    // Assemble
+    m_layout = new QVBoxLayout();
+    m_layout->addWidget(m_header);
+    m_layout->addWidget(m_editor);
+
+    this->setLayout(m_layout);
 }
 
 void GuiSceneEdit::newDocumentSize(const QSizeF &size) {
     // qInfo() << "Size:" << size;
-    this->setMinimumHeight(int(size.height()) + 10);
+    m_editor->setMinimumHeight(int(size.height()) + 2*m_editor->frameWidth());
 }
 
 } // namespace Collett
