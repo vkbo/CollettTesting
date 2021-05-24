@@ -29,16 +29,24 @@ namespace Collett {
 
 bool ColData::openProject(const QDir path) {
 
-    project = new ColProject(path);
-    // project->openProject();
-    hasProject = true;
+    m_project = new ColProject(path);
+    bool status = m_project->openProject();
+    m_hasProject = m_project->hasProject();
 
-    return true;
+    return status;
+}
+
+bool ColData::saveProject() {
+    if (m_hasProject) {
+        return m_project->saveProject();
+    } else {
+        return false;
+    }
 }
 
 ColProject* ColData::getProject() {
-    if (hasProject) {
-        return project;
+    if (m_hasProject) {
+        return m_project;
     } else {
         return nullptr;
     }

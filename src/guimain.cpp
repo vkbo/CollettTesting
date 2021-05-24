@@ -90,6 +90,10 @@ bool GuiMain::openProject(const QDir projPath) {
     return mainData->openProject(projPath);
 }
 
+bool GuiMain::saveProject() {
+    return mainData->saveProject();
+}
+
 /*
     Document Functions
     ==================
@@ -107,6 +111,7 @@ bool GuiMain::openProject(const QDir projPath) {
 bool GuiMain::closeMain() {
 
     // guiDocEditor->saveDocument();
+    saveProject();
 
     // Save Settings
     ColSettings *mainConf = ColSettings::instance();

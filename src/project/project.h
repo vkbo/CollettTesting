@@ -25,33 +25,55 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "collett.h"
 #include "item.h"
 
-#include <QString>
 #include <QDir>
+#include <QObject>
+#include <QString>
 
 namespace Collett {
 
-class ColProject
+class ColProject : public QObject
 {
+    Q_OBJECT
 
 public:
     ColProject(const QDir path);
     ~ColProject();
 
     // Class Methods
-    bool openProject(bool overrideLock=false);
+    void clearError();
+    bool openProject();
+    bool saveProject();
 
     // Getters
     QDir getProjectPath() {
-        return projectPath;
+        return m_projectPath;
     }
     QDir getContentPath() {
-        return contentPath;
+        return m_contentPath;
+    }
+    bool hasProject() {
+        return m_hasProject;
+    }
+    bool hasError() {
+        return m_hasError;
+    }
+    QString lastError() {
+        return m_lastError;
     }
 
 private:
-    QDir projectFile;
-    QDir projectPath;
-    QDir contentPath;
+    bool    m_hasProject;
+    bool    m_hasError;
+    QString m_lastError;
+
+    QDir m_projectFile;
+    QDir m_projectPath;
+    QDir m_contentPath;
+
+    // Project Values
+    QString m_projectName = "Unnamed Project";
+
+    void setError(const QString &error);
 
 };
 } // namespace Collett

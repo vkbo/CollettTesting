@@ -40,12 +40,13 @@ public:
     ColProject* getProject();
 
     bool openProject(const QDir path);
+    bool saveProject();
 
 private:
-    bool hasProject = false;
+    bool m_hasProject = false;
 
     QWidget    *parent;
-    ColProject *project;
+    ColProject *m_project;
 
 };
 } // namespace Collett
