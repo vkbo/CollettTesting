@@ -20,7 +20,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include "editarea.h"
-#include "sceneedit.h"
+#include "fragmentedit.h"
 
 #include <QScrollArea>
 #include <QWidget>
@@ -37,8 +37,8 @@ GuiEditArea::GuiEditArea(QWidget *parent)
     this->setWidget(m_centralWidget);
     m_centralWidget->setLayout(m_centralLayout);
 
-    QWidget *editOne = new GuiSceneEdit(this);
-    QWidget *editTwo = new GuiSceneEdit(this);
+    QWidget *editOne = new GuiFragmentEdit(this);
+    QWidget *editTwo = new GuiFragmentEdit(this);
 
     m_centralLayout->addWidget(editOne);
     m_centralLayout->addWidget(editTwo);

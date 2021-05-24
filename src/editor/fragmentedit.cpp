@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "sceneedit.h"
+#include "fragmentedit.h"
 
 #include <QWidget>
 #include <QTextEdit>
@@ -29,7 +29,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-GuiSceneEdit::GuiSceneEdit(QWidget *parent)
+GuiFragmentEdit::GuiFragmentEdit(QWidget *parent)
     : QWidget(parent)
 {
     m_editor = new QTextEdit(this);
@@ -59,7 +59,7 @@ GuiSceneEdit::GuiSceneEdit(QWidget *parent)
     this->setLayout(m_layout);
 }
 
-void GuiSceneEdit::newDocumentSize(const QSizeF &size) {
+void GuiFragmentEdit::newDocumentSize(const QSizeF &size) {
     // qInfo() << "Size:" << size;
     m_editor->setMinimumHeight(int(size.height()) + 2*m_editor->frameWidth());
 }

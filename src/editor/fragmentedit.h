@@ -19,8 +19,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef GUISCENEEDIT_H
-#define GUISCENEEDIT_H
+#ifndef GUIFRAGMENTEDIT_H
+#define GUIFRAGMENTEDIT_H
 
 #include <QObject>
 #include <QTextEdit>
@@ -30,13 +30,13 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-class GuiSceneEdit : public QWidget
+class GuiFragmentEdit : public QWidget
 {
     Q_OBJECT
 
 public:
-    GuiSceneEdit(QWidget *parent=nullptr);
-    ~GuiSceneEdit() {};
+    GuiFragmentEdit(QWidget *parent=nullptr);
+    ~GuiFragmentEdit() {};
 
 private:
     QVBoxLayout *m_layout;
@@ -51,4 +51,4 @@ private slots:
 };
 } // namespace Collett
 
-#endif // GUISCENEEDIT_H
+#endif // GUIFRAGMENTEDIT_H
