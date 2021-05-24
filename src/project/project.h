@@ -26,8 +26,10 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "item.h"
 
 #include <QDir>
+#include <QList>
 #include <QObject>
 #include <QString>
+#include <QJsonObject>
 
 namespace Collett {
 
@@ -71,9 +73,16 @@ private:
     QDir m_contentPath;
 
     // Project Values
-    QString m_projectName = "Unnamed Project";
+    QString m_projectTitle = "Unnamed Project";
+    QString m_projectCreated = "";
+    QString m_projectDate = "";
 
     void setError(const QString &error);
+
+    void readProjectValues(QJsonObject &jsonObj);
+
+    QJsonObject writeProjectValues();
+    QJsonObject writeProjectContent();
 
 };
 } // namespace Collett

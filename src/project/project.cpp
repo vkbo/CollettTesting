@@ -32,6 +32,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QJsonDocument>
 #include <QJsonParseError>
 #include <QStringConverter>
+#include <QCoreApplication>
 
 namespace Collett {
 
@@ -119,11 +120,11 @@ bool ColProject::openProject() {
 
     QJsonObject jsonObj = jsonData.object();
 
-    if (jsonObj.contains("projectName")) {
-        auto value = jsonObj.take("projectName");
+    if (jsonObj.contains("projectTitle")) {
+        auto value = jsonObj.take("projectTitle");
         if (value.isString()) {
-            m_projectName = value.toString();
-            qInfo() << "Project name is:" << m_projectName;
+            m_projectTitle = value.toString();
+            qInfo() << "Project name is:" << m_projectTitle;
         }
     }
 
@@ -139,7 +140,11 @@ bool ColProject::saveProject() {
 
     QJsonObject jsonObj;
 
-    jsonObj.insert("projectName", m_projectName);
+    jsonObj.insert("fileType", "Collett Project File");
+    jsonObj.insert("fileVersion", "1.0");
+    jsonObj.insert("appVersion", qApp->applicationVersion());
+    jsonObj.insert("project", writeProjectValues());
+    jsonObj.insert("projectContent", writeProjectContent());
 
     // Save JSON File
     // ==============
@@ -159,6 +164,42 @@ bool ColProject::saveProject() {
     }
 
     return true;
+}
+
+/*
+    Data Readers
+    ============
+*/
+
+/*
+    Data Writers
+    ============
+*/
+
+QJsonObject ColProject::writeProjectValues() {
+
+    QJsonObject jsonObj;
+
+    if (m_projectCreated == "") {
+        m_projectCreated = QDateTime::currentDateTime().toString(Qt::ISODate);
+    }
+
+    jsonObj.insert("title", m_projectTitle);
+    jsonObj.insert("created", m_projectCreated);
+    jsonObj.insert("date", QDateTime::currentDateTime().toString(Qt::ISODate));
+
+    return jsonObj;
+}
+
+QJsonObject ColProject::writeProjectContent() {
+
+    QJsonObject contentObj;
+
+    QJsonObject jsonObj;
+    jsonObj.insert("name", "value");
+    contentObj.insert("1", jsonObj);
+
+    return contentObj;
 }
 
 } // namespace Collett
