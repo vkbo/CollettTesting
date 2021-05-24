@@ -28,6 +28,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QDir>
 #include <QObject>
 #include <QString>
+#include <QXmlStreamReader>
+#include <QXmlStreamWriter>
 
 namespace Collett {
 
@@ -71,9 +73,27 @@ private:
     QDir m_contentPath;
 
     // Project Values
-    QString m_projectName = "Unnamed Project";
+    QString m_projectTitle = "Unnamed Project";
+    QString m_projectCreated = "";
 
     void setError(const QString &error);
+
+    // XML
+    // ===
+
+    // Namespaces
+    // Dublin Core: https://dublincore.org/specifications/dublin-core/dcmi-terms/
+
+    QString m_nsCol = "urn:collett:collett";
+    QString m_nsItm = "urn:collett:item";
+    QString m_nsMta = "urn:collett:meta";
+    QString m_nsDC = "http://purl.org/dc/elements/1.1/";
+
+    // XML Readers
+    void readProjectXML(QXmlStreamReader &xmlReader);
+
+    // XML Writers
+    void writeProjectXML(QXmlStreamWriter &xmlWriter);
 
 };
 } // namespace Collett
