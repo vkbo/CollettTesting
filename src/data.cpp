@@ -27,7 +27,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-bool ColData::openProject(const QDir path) {
+bool ColData::openProject(const QString &path) {
 
     m_project = new ColProject(path);
     bool status = m_project->openProject();

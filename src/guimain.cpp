@@ -73,11 +73,6 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
         tr("%1 %2 Version %3").arg(qApp->applicationName(), "–", qApp->applicationVersion())
     );
 
-    // Load Something
-    openProject(QDir("../Sample"));
-
-    // guiDocEditor->openDocument("test");
-
     return;
 }
 
@@ -86,8 +81,8 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
     =================
 */
 
-bool GuiMain::openProject(const QDir projPath) {
-    return mainData->openProject(projPath);
+void GuiMain::openProject(const QString &path) {
+    mainData->openProject(path);
 }
 
 bool GuiMain::saveProject() {

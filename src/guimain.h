@@ -44,6 +44,16 @@ public:
     GuiMain(QWidget *parent=nullptr);
     ~GuiMain() {};
 
+    void openProject(const QString &path);
+    bool saveProject();
+    bool closeProject();
+
+    bool openDocument(const QString handle);
+    bool saveDocument();
+    bool closeDocument();
+
+    bool closeMain();
+
 private:
     ColData *mainData;
 
@@ -56,16 +66,6 @@ private:
 
     // GUI Widgets
     QSplitter *qtwSplitMain;
-
-    bool openProject(const QDir projPath);
-    bool saveProject();
-    bool closeProject();
-
-    bool openDocument(const QString handle);
-    bool saveDocument();
-    bool closeDocument();
-
-    bool closeMain();
 
     // Events
     virtual void closeEvent(QCloseEvent*);

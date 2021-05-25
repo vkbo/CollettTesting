@@ -26,6 +26,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "project.h"
 
 #include <QWidget>
+#include <QString>
 #include <QDir>
 
 namespace Collett {
@@ -39,7 +40,7 @@ public:
 
     ColProject* getProject();
 
-    bool openProject(const QDir path);
+    bool openProject(const QString &path);
     bool saveProject();
 
 private:

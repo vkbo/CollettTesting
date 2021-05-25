@@ -24,15 +24,35 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "guimain.h"
 
 #include <QApplication>
+#include <QCommandLineParser>
+#include <QCommandLineOption>
 
 int main(int argc, char *argv[]) {
 
-    QApplication collettApp(argc, argv);
+    QApplication app(argc, argv);
+
+    QCoreApplication::setOrganizationName("Collett");
+    QCoreApplication::setOrganizationDomain("vkbo.net");
+    QCoreApplication::setApplicationName("Collett");
+    QCoreApplication::setApplicationVersion(COL_VERSION_STR);
+
+    QCommandLineParser parser;
+    parser.addHelpOption();
+    parser.addVersionOption();
+    
+    QCommandLineOption openFlag(
+        QStringList() << "o" << "open",
+        QCoreApplication::translate("main", "Open the <path> project on launch."),
+        QCoreApplication::translate("main", "path")
+    );
+    parser.addOption(openFlag);
+    parser.process(app);
 
     // Collett::ColSettings *mainConf = Collett::ColSettings::instance();
 
     Collett::GuiMain mainGUI;
     mainGUI.show();
+    mainGUI.openProject(parser.value(openFlag));
 
-    return collettApp.exec();
+    return app.exec();
 }

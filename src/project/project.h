@@ -39,7 +39,7 @@ class ColProject : public QObject
     Q_OBJECT
 
 public:
-    ColProject(const QDir path);
+    ColProject(const QString &path);
     ~ColProject();
 
     // Class Methods
@@ -69,9 +69,10 @@ private:
     bool    m_hasError;
     QString m_lastError;
 
-    QDir m_projectFile;
     QDir m_projectPath;
+    QDir m_projectFile;
     QDir m_contentPath;
+    bool m_pathValid;
 
     // Project Values
     QString m_projectTitle = "Unnamed Project";

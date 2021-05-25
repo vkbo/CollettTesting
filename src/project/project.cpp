@@ -31,25 +31,51 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QFile>
 #include <QIODevice>
 #include <QXmlStreamWriter>
+#include <QFileInfo>
 
 namespace Collett {
 
-ColProject::ColProject(const QDir path) {
+ColProject::ColProject(const QString &path) {
 
-    m_hasProject = false;
     clearError();
+    m_hasProject = false;
+    m_pathValid = false;
 
-    m_projectPath = path.absolutePath();
-    m_projectFile = m_projectPath.absoluteFilePath(COL_PROJECT_FILE_NAME);
+    // If the path is a file, go one level up
+    QFileInfo fObj = QFileInfo(path);
+    if (!fObj.exists()) {
+        setError(tr("Project not found at: %1").arg(path));
+        return;
+    }
+
+    QDir projDir = QDir(path).absolutePath();
+    if (fObj.isFile()) {
+        projDir = fObj.dir().absolutePath();
+    }
+
+    // Check that the folder exists
+    QDir projFile = projDir.filePath(COL_PROJECT_FILE_NAME);
+    if (!QFileInfo::exists(projFile.path())) {
+        setError(tr("Project not found at: %1").arg(projFile.path()));
+        return;
+    }
+
+    // Set the path variables
+    m_projectPath = projDir;
+    m_projectFile = projFile;
     m_contentPath = QDir(m_projectPath.path() + "/content");
 
+    // Verify that the needed project folders exist
     if (!m_contentPath.exists()) {
         if (m_contentPath.mkdir("content")) {
             qDebug() << "Created folder:" << m_contentPath.path();
         } else {
             setError(tr("Could not create folder: %1").arg(m_contentPath.path()));
+            return;
         }
     }
+
+    m_pathValid = true;
 
     qDebug() << "Project Path:" << m_projectPath.path();
     qDebug() << "Project File:" << m_projectFile.path();
@@ -80,6 +106,7 @@ void ColProject::setError(const QString &error) {
 
 bool ColProject::openProject() {
 
+    if (!m_pathValid) return false;
     clearError();
 
     // Open XML File
@@ -127,6 +154,7 @@ bool ColProject::openProject() {
 
 bool ColProject::saveProject() {
 
+    if (!m_pathValid) return false;
     clearError();
 
     if (m_projectCreated == "") {
