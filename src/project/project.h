@@ -26,10 +26,11 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "item.h"
 
 #include <QDir>
-#include <QList>
+#include <QDomNode>
+#include <QLatin1String>
 #include <QObject>
 #include <QString>
-#include <QJsonObject>
+#include <QXmlStreamWriter>
 
 namespace Collett {
 
@@ -75,14 +76,25 @@ private:
     // Project Values
     QString m_projectTitle = "Unnamed Project";
     QString m_projectCreated = "";
-    QString m_projectDate = "";
 
     void setError(const QString &error);
 
-    void readProjectValues(QJsonObject &jsonObj);
+    // XML
+    // ===
 
-    QJsonObject writeProjectValues();
-    QJsonObject writeProjectContent();
+    // Namespaces
+    // Dublin Core: https://dublincore.org/specifications/dublin-core/dcmi-terms/
+
+    QString m_nsCol = QLatin1String("urn:collett:collett");
+    QString m_nsItm = QLatin1String("urn:collett:item");
+    QString m_nsMta = QLatin1String("urn:collett:meta");
+    QString m_nsDC  = QLatin1String("http://purl.org/dc/elements/1.1/");
+
+    // XML Readers
+    void readProjectXML(QDomNode &parent);
+
+    // XML Writers
+    void writeProjectXML(QXmlStreamWriter &xmlWriter);
 
 };
 } // namespace Collett

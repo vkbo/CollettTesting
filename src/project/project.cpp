@@ -22,17 +22,15 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "constants.h"
 #include "project.h"
 
-#include <QDir>
-#include <QFile>
+#include <QDateTime>
 #include <QDebug>
+#include <QDir>
+#include <QDomDocument>
+#include <QDomElement>
+#include <QDomNode>
+#include <QFile>
 #include <QIODevice>
-#include <QByteArray>
-#include <QTextStream>
-#include <QJsonObject>
-#include <QJsonDocument>
-#include <QJsonParseError>
-#include <QStringConverter>
-#include <QCoreApplication>
+#include <QXmlStreamWriter>
 
 namespace Collett {
 
@@ -84,49 +82,45 @@ bool ColProject::openProject() {
 
     clearError();
 
-    // Read JSON File
-    // ==============
+    // Open XML File
 
-    QJsonDocument jsonData;
+    QDomDocument doc;
     QFile inFile(m_projectFile.path());
-    if (inFile.open(QIODevice::ReadOnly)) {
-        QByteArray fileData = inFile.readAll();
-        inFile.close();
-
-        QJsonParseError jsonError;
-        jsonData = QJsonDocument::fromJson(fileData, &jsonError);
-        if (jsonError.error != QJsonParseError::NoError) {
-            setError(tr("Could not parse project file: %1").arg(jsonError.errorString()));
-            return false;
-        }
-    } else {
+    if (!inFile.open(QIODevice::ReadOnly)) {
         setError(tr("Could not read project file: %1").arg(m_projectFile.path()));
         return false;
     }
 
-    if (jsonData.isNull()) {
-        qCritical() << "Document is empty";
-    }
+    // Parse XML
 
-    if (!jsonData.isObject()) {
-        setError(tr("Unknown content of project file: %1").arg(m_projectFile.path()));
+    QString errString = "";
+    int errLine = -1, errCol = -1;
+    if (!doc.setContent(&inFile, true, &errString, &errLine, &errCol)) {
+        setError(tr("Could not parse project file XML content. Error on line %1, column %2: %3").arg(
+            QString().setNum(errLine), QString().setNum(errCol), errString
+        ));
+        inFile.close();
         return false;
+    }
+    inFile.close();
+
+    // Read Content
+    QDomElement root = doc.documentElement();
+    QDomNode node = root.firstChild();
+    while(!node.isNull()) {
+        QDomElement element = node.toElement();
+        if(!element.isNull()) {
+            if (element.namespaceURI() == m_nsCol) {
+                if (element.tagName() == "project") {
+                    readProjectXML(node);
+                }
+            }
+            qInfo() << element.namespaceURI() << element.tagName();
+        }
+        node = node.nextSibling();
     }
 
     m_hasProject = true;
-
-    // Extract Content
-    // ===============
-
-    QJsonObject jsonObj = jsonData.object();
-
-    if (jsonObj.contains("projectTitle")) {
-        auto value = jsonObj.take("projectTitle");
-        if (value.isString()) {
-            m_projectTitle = value.toString();
-            qInfo() << "Project name is:" << m_projectTitle;
-        }
-    }
 
     return true;
 }
@@ -135,71 +129,92 @@ bool ColProject::saveProject() {
 
     clearError();
 
-    // Set Values
-    // ==========
+    if (m_projectCreated == "") {
+        m_projectCreated = QDateTime::currentDateTime().toString(Qt::ISODate);
+    }
 
-    QJsonObject jsonObj;
+    // Open XML File
 
-    jsonObj.insert("fileType", "Collett Project File");
-    jsonObj.insert("fileVersion", "1.0");
-    jsonObj.insert("appVersion", qApp->applicationVersion());
-    jsonObj.insert("project", writeProjectValues());
-    jsonObj.insert("projectContent", writeProjectContent());
-
-    // Save JSON File
-    // ==============
-
-    QJsonDocument jsonData;
-    jsonData.setObject(jsonObj);
-    QByteArray fileData = jsonData.toJson(QJsonDocument::Indented);
     QFile outFile(m_projectFile.path());
-    if (outFile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-        QTextStream ioStream(&outFile);
-        ioStream.setEncoding(QStringConverter::Utf8);
-        ioStream << fileData;
-        outFile.close();
-    } else {
+    bool status = outFile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
+    if (!status) {
         setError(tr("Could not write project file: %1").arg(m_projectFile.path()));
         return false;
     }
+
+    QXmlStreamWriter xmlWriter(&outFile);
+    xmlWriter.setAutoFormatting(true);
+    xmlWriter.setAutoFormattingIndent(2);
+    xmlWriter.writeStartDocument();
+    xmlWriter.writeNamespace(m_nsCol, "col");
+    xmlWriter.writeNamespace(m_nsMta, "meta");
+    xmlWriter.writeNamespace(m_nsItm, "item");
+    xmlWriter.writeNamespace(m_nsDC, "dc");
+    xmlWriter.writeStartElement(m_nsCol, "collettXml");
+
+    // Write Data
+
+    writeProjectXML(xmlWriter);
+
+    // Close XML File
+
+    xmlWriter.writeEndElement(); // Close: collettXml
+    xmlWriter.writeEndDocument(); // Close: Document
+    outFile.close();
 
     return true;
 }
 
 /*
-    Data Readers
-    ============
+    XML Readers
+    ===========
 */
 
-/*
-    Data Writers
-    ============
-*/
+void ColProject::readProjectXML(QDomNode &parent) {
 
-QJsonObject ColProject::writeProjectValues() {
+    QDomNode node = parent.firstChild();
+    while(!node.isNull()) {
+        QDomElement element = node.toElement();
+        if(!element.isNull()) {
 
-    QJsonObject jsonObj;
-
-    if (m_projectCreated == "") {
-        m_projectCreated = QDateTime::currentDateTime().toString(Qt::ISODate);
+            // Dublin Core
+            if (element.namespaceURI() == m_nsDC) {
+                if (element.tagName() == QLatin1String("title")) {
+                    m_projectTitle = element.text();
+                } else if (element.tagName() == QLatin1String("created")) {
+                    m_projectCreated = element.text();
+                }
+            }
+            qInfo() << element.namespaceURI() << element.tagName();
+        }
+        node = node.nextSibling();
     }
-
-    jsonObj.insert("title", m_projectTitle);
-    jsonObj.insert("created", m_projectCreated);
-    jsonObj.insert("date", QDateTime::currentDateTime().toString(Qt::ISODate));
-
-    return jsonObj;
 }
 
-QJsonObject ColProject::writeProjectContent() {
+/*
+    XML Writers
+    ===========
+*/
 
-    QJsonObject contentObj;
+void ColProject::writeProjectXML(QXmlStreamWriter &xmlWriter) {
 
-    QJsonObject jsonObj;
-    jsonObj.insert("name", "value");
-    contentObj.insert("1", jsonObj);
+    xmlWriter.writeStartElement(m_nsCol, "project");
 
-    return contentObj;
+    xmlWriter.writeStartElement(m_nsDC, "title");
+    xmlWriter.writeCharacters(m_projectTitle);
+    xmlWriter.writeEndElement();
+
+    xmlWriter.writeStartElement(m_nsDC, "created");
+    xmlWriter.writeCharacters(m_projectCreated);
+    xmlWriter.writeEndElement();
+
+    xmlWriter.writeStartElement(m_nsDC, "date");
+    xmlWriter.writeCharacters(QDateTime::currentDateTime().toString(Qt::ISODate));
+    xmlWriter.writeEndElement();
+
+    xmlWriter.writeEndElement(); // Close: project
+
+    return;
 }
 
 } // namespace Collett
