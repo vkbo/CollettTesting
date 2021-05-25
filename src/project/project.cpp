@@ -81,6 +81,8 @@ ColProject::ColProject(const QString &path) {
     qDebug() << "Project File:" << m_projectFile.path();
     qDebug() << "Content Path:" << m_contentPath.path();
 
+    m_projectTree.append(new ColItem("Chapter One", "ROOT", ColItem::Chapter));
+
 }
 
 ColProject::~ColProject() {}
@@ -174,7 +176,8 @@ bool ColProject::saveProject() {
     xmlWriter.setAutoFormatting(true);
     xmlWriter.setAutoFormattingIndent(2);
     xmlWriter.writeStartDocument();
-    xmlWriter.writeNamespace(m_nsCol, "col");
+    xmlWriter.writeNamespace(m_nsCol, "collett");
+    xmlWriter.writeNamespace(m_nsPrj, "project");
     xmlWriter.writeNamespace(m_nsMta, "meta");
     xmlWriter.writeNamespace(m_nsItm, "item");
     xmlWriter.writeNamespace(m_nsDC, "dc");
@@ -182,7 +185,9 @@ bool ColProject::saveProject() {
 
     // Write Data
 
+    writeMetatXML(xmlWriter);
     writeProjectXML(xmlWriter);
+    writeContentXML(xmlWriter);
 
     // Close XML File
 
@@ -224,13 +229,9 @@ void ColProject::readProjectXML(QDomNode &parent) {
     ===========
 */
 
-void ColProject::writeProjectXML(QXmlStreamWriter &xmlWriter) {
+void ColProject::writeMetatXML(QXmlStreamWriter &xmlWriter) {
 
-    xmlWriter.writeStartElement(m_nsCol, "project");
-
-    xmlWriter.writeStartElement(m_nsDC, "title");
-    xmlWriter.writeCharacters(m_projectTitle);
-    xmlWriter.writeEndElement();
+    xmlWriter.writeStartElement(m_nsCol, "meta");
 
     xmlWriter.writeStartElement(m_nsDC, "created");
     xmlWriter.writeCharacters(m_projectCreated);
@@ -240,7 +241,41 @@ void ColProject::writeProjectXML(QXmlStreamWriter &xmlWriter) {
     xmlWriter.writeCharacters(QDateTime::currentDateTime().toString(Qt::ISODate));
     xmlWriter.writeEndElement();
 
+    xmlWriter.writeStartElement(m_nsMta, "revisions");
+    xmlWriter.writeCharacters(QString().setNum(m_projectRevisions));
+    xmlWriter.writeEndElement();
+
+    xmlWriter.writeEndElement(); // Close: meta
+
+    return;
+}
+
+void ColProject::writeProjectXML(QXmlStreamWriter &xmlWriter) {
+
+    xmlWriter.writeStartElement(m_nsCol, "project");
+
+    xmlWriter.writeStartElement(m_nsDC, "title");
+    xmlWriter.writeCharacters(m_projectTitle);
+    xmlWriter.writeEndElement();
+
+    xmlWriter.writeStartElement(m_nsPrj, "author");
+    xmlWriter.writeCharacters(m_projectAuthor);
+    xmlWriter.writeEndElement();
+
     xmlWriter.writeEndElement(); // Close: project
+
+    return;
+}
+
+void ColProject::writeContentXML(QXmlStreamWriter &xmlWriter) {
+
+    xmlWriter.writeStartElement(m_nsCol, "content");
+
+    for (ColItem* item : m_projectTree) {
+        item->toXml(m_nsCol, m_nsItm, xmlWriter);
+    }
+
+    xmlWriter.writeEndElement(); // Close: content
 
     return;
 }

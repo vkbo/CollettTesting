@@ -22,15 +22,46 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef COLITEM_H
 #define COLITEM_H
 
+#include <QString>
+#include <QXmlStreamWriter>
+
 namespace Collett {
 
 class ColItem
 {
 public:
-    ColItem() {};
+    enum ItemType {
+        Chapter,
+        Scene,
+        Note,
+    };
+
+    ColItem(const QString &title, const QString &parent, const ItemType &type);
     ~ColItem() {};
 
+    void toXml(const QString &nsCol, const QString &nsItm, QXmlStreamWriter &xmlWriter);
+    static ColItem fromXml();
+
+    // Getters
+    QString  title() const;
+    QString  handle() const;
+    QString  parent() const;
+    ItemType type() const;
+
+    // Setters
+    void setTitle(const QString &title);
+    void setHandle(const QString &handle);
+    void setParent(const QString &parent);
+    void setType(const ItemType &type);
+
 private:
+
+    QString  m_title;
+    QString  m_handle;
+    QString  m_parent;
+    ItemType m_type;
+
+    int m_cursorPos;
 
 };
 } // namespace Collett

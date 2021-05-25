@@ -28,6 +28,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QDir>
 #include <QDomNode>
 #include <QLatin1String>
+#include <QList>
 #include <QObject>
 #include <QString>
 #include <QXmlStreamWriter>
@@ -74,9 +75,16 @@ private:
     QDir m_contentPath;
     bool m_pathValid;
 
+    // Meta Values
+    QString m_projectCreated = "";
+    int     m_projectRevisions = 0;
+
     // Project Values
     QString m_projectTitle = "Unnamed Project";
-    QString m_projectCreated = "";
+    QString m_projectAuthor = "";
+
+    // Content
+    QList<ColItem*> m_projectTree;
 
     void setError(const QString &error);
 
@@ -87,15 +95,18 @@ private:
     // Dublin Core: https://dublincore.org/specifications/dublin-core/dcmi-terms/
 
     QString m_nsCol = QLatin1String("urn:collett:collett");
-    QString m_nsItm = QLatin1String("urn:collett:item");
+    QString m_nsPrj = QLatin1String("urn:collett:project");
     QString m_nsMta = QLatin1String("urn:collett:meta");
+    QString m_nsItm = QLatin1String("urn:collett:item");
     QString m_nsDC  = QLatin1String("http://purl.org/dc/elements/1.1/");
 
     // XML Readers
     void readProjectXML(QDomNode &parent);
 
     // XML Writers
+    void writeMetatXML(QXmlStreamWriter &xmlWriter);
     void writeProjectXML(QXmlStreamWriter &xmlWriter);
+    void writeContentXML(QXmlStreamWriter &xmlWriter);
 
 };
 } // namespace Collett
