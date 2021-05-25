@@ -22,13 +22,14 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "constants.h"
 #include "project.h"
 
-#include <QDir>
-#include <QFile>
-#include <QDebug>
 #include <QDateTime>
+#include <QDebug>
+#include <QDir>
+#include <QDomDocument>
+#include <QDomElement>
+#include <QDomNode>
+#include <QFile>
 #include <QIODevice>
-#include <QStringConverter>
-#include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 
 namespace Collett {
@@ -80,38 +81,44 @@ void ColProject::setError(const QString &error) {
 bool ColProject::openProject() {
 
     clearError();
-    m_hasProject = false;
 
     // Open XML File
 
+    QDomDocument doc;
     QFile inFile(m_projectFile.path());
-    bool status = inFile.open(QIODevice::ReadOnly);
-    if (!status) {
+    if (!inFile.open(QIODevice::ReadOnly)) {
         setError(tr("Could not read project file: %1").arg(m_projectFile.path()));
         return false;
     }
 
-    QXmlStreamReader xmlReader(&inFile);
-    xmlReader.setNamespaceProcessing(true);
+    // Parse XML
 
-    if (xmlReader.readNextStartElement()) {
-        if (xmlReader.name() == QLatin1String("collettXml") && xmlReader.namespaceUri() == m_nsCol) {
-            qInfo() << "collettXml";
-        } else {
-            setError(tr("Not a valid Collett XML file: %1").arg(m_projectFile.path()));
-            inFile.close();
-            return false;
-        }
+    QString errString = "";
+    int errLine = -1, errCol = -1;
+    if (!doc.setContent(&inFile, true, &errString, &errLine, &errCol)) {
+        setError(tr("Could not parse project file XML content. Error on line %1, column %2: %3").arg(
+            QString().setNum(errLine), QString().setNum(errCol), errString
+        ));
+        inFile.close();
+        return false;
     }
-
-    while (xmlReader.readNextStartElement()) {
-        qInfo() << "Element:" << xmlReader.name();
-        if (xmlReader.name() == QLatin1String("project") && xmlReader.namespaceUri() == m_nsCol) {
-            readProjectXML(xmlReader);
-        }
-    }
-
     inFile.close();
+
+    // Read Content
+    QDomElement root = doc.documentElement();
+    QDomNode node = root.firstChild();
+    while(!node.isNull()) {
+        QDomElement element = node.toElement();
+        if(!element.isNull()) {
+            if (element.namespaceURI() == m_nsCol) {
+                if (element.tagName() == "project") {
+                    readProjectXML(node);
+                }
+            }
+            qInfo() << element.namespaceURI() << element.tagName();
+        }
+        node = node.nextSibling();
+    }
 
     m_hasProject = true;
 
@@ -123,7 +130,7 @@ bool ColProject::saveProject() {
     clearError();
 
     if (m_projectCreated == "") {
-        m_projectCreated = QDateTime::currentDateTime().toString("dd.MM.yyyyThh:mm:ss");
+        m_projectCreated = QDateTime::currentDateTime().toString(Qt::ISODate);
     }
 
     // Open XML File
@@ -151,8 +158,8 @@ bool ColProject::saveProject() {
 
     // Close XML File
 
-    xmlWriter.writeEndElement();
-    xmlWriter.writeEndDocument();
+    xmlWriter.writeEndElement(); // Close: collettXml
+    xmlWriter.writeEndDocument(); // Close: Document
     outFile.close();
 
     return true;
@@ -163,16 +170,24 @@ bool ColProject::saveProject() {
     ===========
 */
 
-void ColProject::readProjectXML(QXmlStreamReader &xmlReader) {
+void ColProject::readProjectXML(QDomNode &parent) {
 
-    while (xmlReader.readNextStartElement()) {
-        if (xmlReader.name() == QLatin1String("title") && xmlReader.namespaceUri() == m_nsDC) {
-            m_projectTitle = xmlReader.readElementText();
-        } else if (xmlReader.name() == QLatin1String("created") && xmlReader.namespaceUri() == m_nsDC) {
-            m_projectCreated = xmlReader.readElementText();
-        } else {
-            xmlReader.skipCurrentElement();
+    QDomNode node = parent.firstChild();
+    while(!node.isNull()) {
+        QDomElement element = node.toElement();
+        if(!element.isNull()) {
+
+            // Dublin Core
+            if (element.namespaceURI() == m_nsDC) {
+                if (element.tagName() == QLatin1String("title")) {
+                    m_projectTitle = element.text();
+                } else if (element.tagName() == QLatin1String("created")) {
+                    m_projectCreated = element.text();
+                }
+            }
+            qInfo() << element.namespaceURI() << element.tagName();
         }
+        node = node.nextSibling();
     }
 }
 
@@ -194,11 +209,12 @@ void ColProject::writeProjectXML(QXmlStreamWriter &xmlWriter) {
     xmlWriter.writeEndElement();
 
     xmlWriter.writeStartElement(m_nsDC, "date");
-    xmlWriter.writeCharacters(QDateTime::currentDateTime().toString("dd.MM.yyyyThh:mm:ss"));
+    xmlWriter.writeCharacters(QDateTime::currentDateTime().toString(Qt::ISODate));
     xmlWriter.writeEndElement();
 
-    xmlWriter.writeEndElement();
+    xmlWriter.writeEndElement(); // Close: project
 
+    return;
 }
 
 } // namespace Collett

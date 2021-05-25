@@ -30,7 +30,7 @@ set(CMAKE_CXX_FLAGS_DEBUG   "-Wall -g -O0 ${CMAKE_CXX_FLAGS_DEBUG}")
 set(CMAKE_PREFIX_PATH "lib/qt6")
 
 set(QT_DEFAULT_MAJOR_VERSION 6)
-find_package(Qt6 COMPONENTS Core Widgets LinguistTools REQUIRED)
+find_package(Qt6 COMPONENTS Core Widgets Xml LinguistTools REQUIRED)
 if(Qt6Widgets_FOUND)
     message(STATUS "Found Qt6Widgets Libraries: ${Qt6Widgets_LIBRARIES}")
     message(STATUS "Found Qt6Widgets Version: ${Qt6Widgets_VERSION}")
@@ -83,5 +83,5 @@ endforeach()
 # =======
 
 qt_add_executable(Collett ${EXEC_SRC} ${TS_FILES})
-target_link_libraries(Collett PRIVATE Qt::Widgets)
+target_link_libraries(Collett PRIVATE Qt::Widgets Qt::Xml)
 set_target_properties(Collett PROPERTIES OUTPUT_NAME "collett")
