@@ -48,19 +48,19 @@ public:
     bool saveProject();
 
     // Getters
-    QDir getProjectPath() {
+    QDir projectPath() const {
         return m_projectPath;
     }
-    QDir getContentPath() {
+    QDir contentPath() const {
         return m_contentPath;
     }
-    bool hasProject() {
+    bool hasProject() const {
         return m_hasProject;
     }
-    bool hasError() {
+    bool hasError() const {
         return m_hasError;
     }
-    QString lastError() {
+    QString lastError() const {
         return m_lastError;
     }
 

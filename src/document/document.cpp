@@ -36,7 +36,7 @@ namespace Collett {
 ColDocument::ColDocument(ColProject *_project, const QString _handle)
     : project(_project), handle(_handle)
 {
-    QDir contentPath = project->getContentPath();
+    QDir contentPath = project->contentPath();
     if (!contentPath.exists()) {
         qWarning() << "Cannot initialise document object as content path does not exist";
         docVaild = false;

@@ -48,24 +48,23 @@ public:
     bool saveProject();
     bool closeProject();
 
-    bool openDocument(const QString handle);
+    bool openDocument(const QString &handle);
     bool saveDocument();
     bool closeDocument();
 
     bool closeMain();
 
 private:
-    ColData *mainData;
+    ColData *m_data;
 
     // Main GUI Elements
     GuiEditArea   *m_editArea;
-    GuiMainStatus *guiMainStatus;
-    // GuiDocEditor  *guiDocEditor;
-    GuiNovelTree  *guiNovelTree;
-    GuiMainMenu   *guiMainMenu;
+    GuiMainStatus *m_statusBar;
+    GuiNovelTree  *m_novelTree;
+    GuiMainMenu   *m_mainMenu;
 
     // GUI Widgets
-    QSplitter *qtwSplitMain;
+    QSplitter *m_splitMain;
 
     // Events
     virtual void closeEvent(QCloseEvent*);

@@ -42,31 +42,30 @@ namespace Collett {
 GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
 
     // Create Main Data Object
-    mainData = new ColData(this);
+    m_data = new ColData(this);
 
     // Main GUI Elements
-    m_editArea    = new GuiEditArea(this);
-    guiMainStatus = new GuiMainStatus(this);
-    // guiDocEditor  = new GuiDocEditor(this, mainData);
-    guiNovelTree  = new GuiNovelTree(this);
-    guiMainMenu   = new GuiMainMenu(this);
+    m_mainMenu  = new GuiMainMenu(this);
+    m_novelTree = new GuiNovelTree(this);
+    m_editArea  = new GuiEditArea(this);
+    m_statusBar = new GuiMainStatus(this);
 
     // Assemble Main Window
-    qtwSplitMain = new QSplitter(Qt::Horizontal, this);
-    qtwSplitMain->setContentsMargins(4, 4, 4, 4);
-    qtwSplitMain->setOpaqueResize(false);
-    qtwSplitMain->addWidget(guiNovelTree);
-    qtwSplitMain->addWidget(m_editArea);
+    m_splitMain = new QSplitter(Qt::Horizontal, this);
+    m_splitMain->setContentsMargins(4, 4, 4, 4);
+    m_splitMain->setOpaqueResize(false);
+    m_splitMain->addWidget(m_novelTree);
+    m_splitMain->addWidget(m_editArea);
 
     // Set Main Window Elements
-    this->setMenuBar(guiMainMenu);
-    this->setCentralWidget(qtwSplitMain);
-    this->setStatusBar(guiMainStatus);
+    this->setMenuBar(m_mainMenu);
+    this->setCentralWidget(m_splitMain);
+    this->setStatusBar(m_statusBar);
 
     // Apply Settings
     ColSettings *mainConf = ColSettings::instance();
     this->resize(mainConf->mainWindowSize());
-    qtwSplitMain->setSizes(mainConf->mainSplitSizes());
+    m_splitMain->setSizes(mainConf->mainSplitSizes());
 
     // Finalise
     this->setWindowTitle(
@@ -82,11 +81,11 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
 */
 
 void GuiMain::openProject(const QString &path) {
-    mainData->openProject(path);
+    m_data->openProject(path);
 }
 
 bool GuiMain::saveProject() {
-    return mainData->saveProject();
+    return m_data->saveProject();
 }
 
 /*
@@ -94,7 +93,7 @@ bool GuiMain::saveProject() {
     ==================
 */
 
-// bool GuiMain::openDocument(const QString handle) {
+// bool GuiMain::openDocument(const QString &handle) {
 //     return guiDocEditor->openDocument(handle);
 // }
 
@@ -112,7 +111,7 @@ bool GuiMain::closeMain() {
     ColSettings *mainConf = ColSettings::instance();
     if (!this->isFullScreen()) {
         mainConf->setMainWindowSize(this->size());
-        mainConf->setMainSplitSizes(qtwSplitMain->sizes());
+        mainConf->setMainSplitSizes(m_splitMain->sizes());
     }
     mainConf->flushSettings();
 

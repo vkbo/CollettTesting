@@ -49,9 +49,9 @@ public:
     ColSettingsPrivate() {};
     ~ColSettingsPrivate() {};
 
-    QSize mainWindowSize;
-    int   mainSplitTreeWidth;
-    int   mainSplitEditorWidth;
+    QSize m_mainWindowSize;
+    int   m_mainSplitTreeWidth;
+    int   m_mainSplitEditorWidth;
 };
 
 /*
@@ -76,16 +76,16 @@ ColSettings::ColSettings() : d_ptr(new ColSettingsPrivate()) {
     // Load Settings
     QSettings mainConf;
 
-    d->mainWindowSize       = mainConf.value(CNF_MAIN_WINDOW_SIZE,        QSize(1200, 800)).toSize();
-    d->mainSplitTreeWidth   = mainConf.value(CNF_MAIN_SPLIT_TREE_WIDTH,   QVariant(300)).toInt();
-    d->mainSplitEditorWidth = mainConf.value(CNF_MAIN_SPLIT_EDITOR_WIDTH, QVariant(900)).toInt();
+    d->m_mainWindowSize       = mainConf.value(CNF_MAIN_WINDOW_SIZE,        QSize(1200, 800)).toSize();
+    d->m_mainSplitTreeWidth   = mainConf.value(CNF_MAIN_SPLIT_TREE_WIDTH,   QVariant(300)).toInt();
+    d->m_mainSplitEditorWidth = mainConf.value(CNF_MAIN_SPLIT_EDITOR_WIDTH, QVariant(900)).toInt();
 
     // Check Values
-    if (d->mainWindowSize.width() < 400) {
-        d->mainWindowSize.setWidth(400);
+    if (d->m_mainWindowSize.width() < 400) {
+        d->m_mainWindowSize.setWidth(400);
     }
-    if (d->mainWindowSize.height() < 300) {
-        d->mainWindowSize.setHeight(300);
+    if (d->m_mainWindowSize.height() < 300) {
+        d->m_mainWindowSize.setHeight(300);
     }
 }
 
@@ -103,9 +103,9 @@ void ColSettings::flushSettings() {
 
     QSettings mainConf;
 
-    mainConf.setValue(CNF_MAIN_WINDOW_SIZE,        QVariant(d->mainWindowSize));
-    mainConf.setValue(CNF_MAIN_SPLIT_TREE_WIDTH,   QVariant(d->mainSplitTreeWidth));
-    mainConf.setValue(CNF_MAIN_SPLIT_EDITOR_WIDTH, QVariant(d->mainSplitEditorWidth));
+    mainConf.setValue(CNF_MAIN_WINDOW_SIZE,        QVariant(d->m_mainWindowSize));
+    mainConf.setValue(CNF_MAIN_SPLIT_TREE_WIDTH,   QVariant(d->m_mainSplitTreeWidth));
+    mainConf.setValue(CNF_MAIN_SPLIT_EDITOR_WIDTH, QVariant(d->m_mainSplitEditorWidth));
 
     qDebug() << "ColSettings values saved";
 
@@ -119,17 +119,17 @@ void ColSettings::flushSettings() {
 
 void ColSettings::setMainWindowSize(const QSize size) {
     Q_D(ColSettings);
-    d->mainWindowSize = size;
+    d->m_mainWindowSize = size;
     return;
 }
 
 void ColSettings::setMainSplitSizes(const QList<int> &sizes) {
     Q_D(ColSettings);
     if (sizes.length() > 0) {
-        d->mainSplitTreeWidth = sizes.at(0);
+        d->m_mainSplitTreeWidth = sizes.at(0);
     }
     if (sizes.length() > 1) {
-        d->mainSplitEditorWidth = sizes.at(1);
+        d->m_mainSplitEditorWidth = sizes.at(1);
     }
 }
 
@@ -140,14 +140,14 @@ void ColSettings::setMainSplitSizes(const QList<int> &sizes) {
 
 QSize ColSettings::mainWindowSize() const {
     Q_D(const ColSettings);
-    return d->mainWindowSize;
+    return d->m_mainWindowSize;
 }
 
 QList<int> ColSettings::mainSplitSizes() const {
     Q_D(const ColSettings);
     QList<int> sizes;
-    sizes.append(d->mainSplitTreeWidth);
-    sizes.append(d->mainSplitEditorWidth);
+    sizes.append(d->m_mainSplitTreeWidth);
+    sizes.append(d->m_mainSplitEditorWidth);
     return sizes;
 }
 

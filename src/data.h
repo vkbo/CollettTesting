@@ -35,7 +35,7 @@ class ColData
 {
 
 public:
-    ColData(QWidget *_parent) : parent(_parent) {};
+    ColData(QWidget *parent) : m_parent(parent) {};
     ~ColData() {};
 
     ColProject* getProject();
@@ -46,7 +46,7 @@ public:
 private:
     bool m_hasProject = false;
 
-    QWidget    *parent;
+    QWidget    *m_parent;
     ColProject *m_project;
 
 };
