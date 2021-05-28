@@ -55,7 +55,7 @@ public:
     bool closeMain();
 
 private:
-    ColData *m_data;
+    CollettData *m_data;
 
     // Main GUI Elements
     GuiEditArea   *m_editArea;

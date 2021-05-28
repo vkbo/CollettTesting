@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
     parser.addOption(openFlag);
     parser.process(app);
 
-    // Collett::ColSettings *mainConf = Collett::ColSettings::instance();
+    // Collett::CollettSettings *mainConf = Collett::CollettSettings::instance();
 
     Collett::GuiMain mainGUI;
     mainGUI.show();

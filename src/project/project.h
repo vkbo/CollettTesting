@@ -19,12 +19,12 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef COLPROJECT_H
-#define COLPROJECT_H
+#ifndef COL_PROJECT_H
+#define COL_PROJECT_H
 
 #include "collett.h"
-#include "item.h"
-#include "projecttree.h"
+#include "storyitem.h"
+#include "storytree.h"
 
 #include <QDir>
 #include <QDomNode>
@@ -36,13 +36,13 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-class ColProject : public QObject
+class Project : public QObject
 {
     Q_OBJECT
 
 public:
-    ColProject(const QString &path);
-    ~ColProject();
+    Project(const QString &path);
+    ~Project();
 
     // Class Methods
     void clearError();
@@ -85,7 +85,7 @@ private:
     QString m_projectAuthor = "";
 
     // Content
-    ColProjectTree *m_projectTree;
+    StoryTree *m_storyTree;
 
     void setError(const QString &error);
 
@@ -112,4 +112,4 @@ private:
 };
 } // namespace Collett
 
-#endif // COLPROJECT_H
+#endif // COL_PROJECT_H

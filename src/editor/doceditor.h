@@ -24,7 +24,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "data.h"
 #include "project.h"
-#include "document.h"
+#include "documentstore.h"
 
 #include <QObject>
 #include <QStringList>
@@ -59,15 +59,15 @@ public:
         qreal blockIndent;
     };
 
-    GuiDocEditor(QWidget *parent, ColData *_data);
+    GuiDocEditor(QWidget *parent, CollettData *_data);
     ~GuiDocEditor();
 
     bool openDocument(const QString handle);
     bool saveDocument();
 
 private:
-    ColData     *mainData;
-    ColDocument *colDoc;
+    CollettData     *mainData;
+    DocumentStore *colDoc;
     DocFormat    docFormat;
 
     bool hasDocument = false;

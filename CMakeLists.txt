@@ -59,18 +59,18 @@ include_directories(
 
 # Source Files
 list(APPEND Collet_SOURCE
-    document/coldocblock
-    document/document
+    document/documentblock
+    document/documentstore
     editor/doceditor
     editor/editarea
     editor/fragmentedit
     gui/mainmenu
     gui/noveltree
     gui/statusbar
-    project/item
     project/project
     project/projectmodel
-    project/projecttree
+    project/storyitem
+    project/storytree
     data
     guimain
     main

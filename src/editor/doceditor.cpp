@@ -22,7 +22,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "data.h"
 #include "project.h"
 #include "doceditor.h"
-#include "coldocblock.h"
+#include "documentblock.h"
 
 #include <QDebug>
 #include <QString>
@@ -34,7 +34,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-GuiDocEditor::GuiDocEditor(QWidget *parent, ColData *_data)
+GuiDocEditor::GuiDocEditor(QWidget *parent, CollettData *_data)
     : QTextEdit(parent), mainData(_data)
 {
 
@@ -129,7 +129,7 @@ GuiDocEditor::~GuiDocEditor() {
 
 bool GuiDocEditor::openDocument(const QString handle) {
 
-    colDoc = new ColDocument(mainData->getProject(), handle);
+    colDoc = new DocumentStore(mainData->getProject(), handle);
     hasDocument = true;
 
     this->setColletDoc(colDoc->paragraphs());
@@ -166,7 +166,7 @@ bool GuiDocEditor::saveDocument() {
     Decode Document
     ===============
     Populate the editor's QTextDocument by decoding a list of QStrings using
-    the ColDocBlock class.
+    the DocumentBlock class.
 */
 void GuiDocEditor::setColletDoc(const QStringList &content) {
 
@@ -179,7 +179,7 @@ void GuiDocEditor::setColletDoc(const QStringList &content) {
 
     cursor.beginEditBlock();
     for (const QString& line : content) {
-        ColDocBlock newBlock;
+        DocumentBlock newBlock;
         newBlock.unpackText(line);
         if (!newBlock.isValid()) {
             qWarning() << "Invalid block encountered";
@@ -195,7 +195,7 @@ void GuiDocEditor::setColletDoc(const QStringList &content) {
         QTextBlockFormat textBlockFmt = docFormat.blockDefault;
         QTextCharFormat textCharFmt = docFormat.charDefault;
 
-        ColDocBlock::Block lineFmt = newBlock.blockStyle();
+        DocumentBlock::Block lineFmt = newBlock.blockStyle();
         switch (lineFmt.header) {
             case 1:
                 textBlockFmt = docFormat.blockHeader1;
@@ -230,7 +230,7 @@ void GuiDocEditor::setColletDoc(const QStringList &content) {
 
         cursor.setBlockFormat(textBlockFmt);
 
-        for (const ColDocBlock::Fragment& blockFrag : newBlock.fragments()) {
+        for (const DocumentBlock::Fragment& blockFrag : newBlock.fragments()) {
             if (blockFrag.plain) {
                 cursor.insertText(blockFrag.text, textCharFmt);
             } else {
@@ -260,7 +260,7 @@ QStringList GuiDocEditor::toColletDoc() {
     QStringList docText;
     QTextBlock block = this->document()->firstBlock();
     while(block.isValid()) {
-        docText.append(ColDocBlock::encodeQTextBlock(block));
+        docText.append(DocumentBlock::encodeQTextBlock(block));
         block = block.next();
     }
     return docText;

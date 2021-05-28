@@ -22,7 +22,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "guimain.h"
 #include "data.h"
 #include "settings.h"
-#include "document.h"
+#include "documentstore.h"
 #include "doceditor.h"
 #include "mainmenu.h"
 #include "noveltree.h"
@@ -42,7 +42,7 @@ namespace Collett {
 GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
 
     // Create Main Data Object
-    m_data = new ColData(this);
+    m_data = new CollettData(this);
 
     // Main GUI Elements
     m_mainMenu  = new GuiMainMenu(this);
@@ -63,7 +63,7 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
     this->setStatusBar(m_statusBar);
 
     // Apply Settings
-    ColSettings *mainConf = ColSettings::instance();
+    CollettSettings *mainConf = CollettSettings::instance();
     this->resize(mainConf->mainWindowSize());
     m_splitMain->setSizes(mainConf->mainSplitSizes());
 
@@ -108,7 +108,7 @@ bool GuiMain::closeMain() {
     saveProject();
 
     // Save Settings
-    ColSettings *mainConf = ColSettings::instance();
+    CollettSettings *mainConf = CollettSettings::instance();
     if (!this->isFullScreen()) {
         mainConf->setMainWindowSize(this->size());
         mainConf->setMainSplitSizes(m_splitMain->sizes());

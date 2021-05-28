@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "document.h"
+#include "documentstore.h"
 #include "project.h"
 
 #include <QDir>
@@ -33,7 +33,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-ColDocument::ColDocument(ColProject *_project, const QString _handle)
+DocumentStore::DocumentStore(Project *_project, const QString _handle)
     : project(_project), handle(_handle)
 {
     QDir contentPath = project->contentPath();
@@ -50,14 +50,14 @@ ColDocument::ColDocument(ColProject *_project, const QString _handle)
     docFile = new QFile(filePath);
 }
 
-ColDocument::~ColDocument() {}
+DocumentStore::~DocumentStore() {}
 
 /*
     Methods
     =======
 */
 
-void ColDocument::readMeta() {
+void DocumentStore::readMeta() {
 
     QString line;
 
@@ -78,7 +78,7 @@ void ColDocument::readMeta() {
     return;
 }
 
-QStringList ColDocument::paragraphs() {
+QStringList DocumentStore::paragraphs() {
 
     QStringList content;
     QString line;
@@ -97,11 +97,11 @@ QStringList ColDocument::paragraphs() {
     return content;
 }
 
-QString ColDocument::text() {
+QString DocumentStore::text() {
     return paragraphs().join('\n');
 }
 
-ColDocument::RWStatus ColDocument::write(const QString text) {
+DocumentStore::RWStatus DocumentStore::write(const QString text) {
 
     if (docFile->open(QIODevice::WriteOnly)) {
         QTextStream stream(docFile);
@@ -109,10 +109,10 @@ ColDocument::RWStatus ColDocument::write(const QString text) {
         docFile->close();
         qDebug() << "Wrote document:" << filePath;
     } else {
-        return ColDocument::RWStatus::Fail;
+        return DocumentStore::RWStatus::Fail;
     }
 
-    return ColDocument::RWStatus::OK;
+    return DocumentStore::RWStatus::OK;
 }
 
 } // namespace Collett

@@ -28,28 +28,28 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-ColProjectModel::ColProjectModel(ColProject *project, QObject *parent)
+ProjectModel::ProjectModel(Project *project, QObject *parent)
     : m_project(project), QAbstractItemModel(parent)
 {
 }
 
-QModelIndex ColProjectModel::index(int row, int column, const QModelIndex &parent) const {
+QModelIndex ProjectModel::index(int row, int column, const QModelIndex &parent) const {
     return QModelIndex();
 }
 
-QModelIndex ColProjectModel::parent(const QModelIndex &index) const {
+QModelIndex ProjectModel::parent(const QModelIndex &index) const {
     return QModelIndex();
 }
 
-int ColProjectModel::rowCount(const QModelIndex &parent) const {
+int ProjectModel::rowCount(const QModelIndex &parent) const {
     return 0;
 }
 
-int ColProjectModel::columnCount(const QModelIndex &parent) const {
-    return 0;
+int ProjectModel::columnCount(const QModelIndex &parent) const {
+    return 2;
 }
 
-QVariant ColProjectModel::data(const QModelIndex &index, int role) const {
+QVariant ProjectModel::data(const QModelIndex &index, int role) const {
     return QVariant();
 }
 

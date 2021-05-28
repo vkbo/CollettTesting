@@ -19,8 +19,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef COLSETTINGS_H
-#define COLSETTINGS_H
+#ifndef COLLETTSETTINGS_H
+#define COLLETTSETTINGS_H
 
 #include "collett.h"
 
@@ -31,19 +31,19 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-class ColSettingsPrivate;
-class ColSettings : public QObject
+class CollettSettingsPrivate;
+class CollettSettings : public QObject
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(ColSettings)
+    Q_DECLARE_PRIVATE(CollettSettings)
 
 public:
-    static ColSettings *instance();
-    ~ColSettings();
+    static CollettSettings *instance();
+    ~CollettSettings();
 
 private:
-    QScopedPointer<ColSettingsPrivate> d_ptr;
-    ColSettings();
+    QScopedPointer<CollettSettingsPrivate> d_ptr;
+    CollettSettings();
 
 public:
     void flushSettings();
@@ -58,4 +58,4 @@ public:
 };
 } // namespace Collett
 
-#endif // COLSETTINGS_H
+#endif // COLLETTSETTINGS_H

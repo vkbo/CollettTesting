@@ -19,8 +19,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef COLDOCBLOCK_H
-#define COLDOCBLOCK_H
+#ifndef COL_DOCUMENTBLOCK_H
+#define COL_DOCUMENTBLOCK_H
 
 #include <QString>
 #include <QList>
@@ -28,7 +28,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-class ColDocBlock
+class DocumentBlock
 {
 
 public:
@@ -49,8 +49,8 @@ public:
         bool          indent    = false;
     };
 
-    ColDocBlock();
-    ~ColDocBlock() {};
+    DocumentBlock();
+    ~DocumentBlock() {};
 
     static QString encodeQTextBlock(const QTextBlock &qBlock);
     void unpackText(const QString &text);
@@ -78,4 +78,4 @@ private:
 };
 } // namespace Collett
 
-#endif // COLDOCBLOCK_H
+#endif // COL_DOCUMENTBLOCK_H

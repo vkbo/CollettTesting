@@ -19,8 +19,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef COLDATA_H
-#define COLDATA_H
+#ifndef COLLETTDATA_H
+#define COLLETTDATA_H
 
 #include "collett.h"
 #include "project.h"
@@ -31,14 +31,14 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-class ColData
+class CollettData
 {
 
 public:
-    ColData(QWidget *parent) : m_parent(parent) {};
-    ~ColData() {};
+    CollettData(QWidget *parent) : m_parent(parent) {};
+    ~CollettData() {};
 
-    ColProject* getProject();
+    Project* getProject();
 
     bool openProject(const QString &path);
     bool saveProject();
@@ -47,9 +47,9 @@ private:
     bool m_hasProject = false;
 
     QWidget    *m_parent;
-    ColProject *m_project;
+    Project *m_project;
 
 };
 } // namespace Collett
 
-#endif // COLDATA_H
+#endif // COLLETTDATA_H

@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "item.h"
+#include "storyitem.h"
 
 #include <QString>
 #include <QUuid>
@@ -27,15 +27,15 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-ColItem::ColItem() {
+StoryItem::StoryItem() {
     m_empty  = true;
     m_title  = "";
-    m_handle = QUuid();
+    m_handle = "";
     m_type = ItemType::None;
     m_cursorPosition = 0;
 }
 
-void ColItem::populateItem(ItemType type, const QString &title, const QUuid &handle, ColItem *parent) {
+void StoryItem::populateItem(ItemType type, const QString &title, const QString &handle, StoryItem *parent) {
     m_empty = false;
     m_type = type;
     m_title = title;
@@ -43,12 +43,12 @@ void ColItem::populateItem(ItemType type, const QString &title, const QUuid &han
     m_parentItem = parent;
 }
 
-void ColItem::initItem(ItemType type, const QString &title, ColItem *parent) {
-    QUuid newHandle = QUuid().createUuid();
+void StoryItem::initItem(ItemType type, const QString &title, StoryItem *parent) {
+    QString newHandle = QUuid().createUuid().toString(QUuid::WithoutBraces);
     populateItem(type, title, newHandle, parent);
 }
 
-bool ColItem::addChild(ColItem *item, int position) {
+bool StoryItem::addChild(StoryItem *item, int position) {
     if (m_type != ItemType::Root && m_type != ItemType::Chapter && m_type != ItemType::Section) {
         return false;
     }
@@ -69,23 +69,23 @@ bool ColItem::addChild(ColItem *item, int position) {
     =======
 */
 
-QString ColItem::title() const {
+QString StoryItem::title() const {
     return m_title;
 }
 
-QString ColItem::handleAsString() const {
-    return m_handle.toString(QUuid::WithoutBraces);
+QString StoryItem::handle() const {
+    return m_handle;
 }
 
-ColItem *ColItem::parent() const {
+StoryItem *StoryItem::parent() const {
     return m_parentItem;
 }
 
-ColItem::ItemType ColItem::type() const {
+StoryItem::ItemType StoryItem::type() const {
     return m_type;
 }
 
-QString ColItem::typeAsString() const {
+QString StoryItem::typeAsString() const {
     switch (m_type) {
         case ItemType::None:
             return "none";
@@ -105,14 +105,11 @@ QString ColItem::typeAsString() const {
         case ItemType::Page:
             return "page";
             break;
-        case ItemType::Note:
-            return "note";
-            break;
     }
     return "none";
 }
 
-int ColItem::cursorPosition() {
+int StoryItem::cursorPosition() {
     return m_cursorPosition;
 }
 
@@ -121,23 +118,23 @@ int ColItem::cursorPosition() {
     =======
 */
 
-void ColItem::setTitle(const QString &title) {
+void StoryItem::setTitle(const QString &title) {
     m_title = title;
 }
 
-void ColItem::setHandle(const QUuid &handle) {
+void StoryItem::setHandle(const QString &handle) {
     m_handle = handle;
 }
 
-void ColItem::setParent(ColItem *parent) {
+void StoryItem::setParent(StoryItem *parent) {
     m_parentItem = parent;
 }
 
-void ColItem::setType(ItemType type) {
+void StoryItem::setType(ItemType type) {
     m_type = type;
 }
 
-void ColItem::setCursorPosition(int position) {
+void StoryItem::setCursorPosition(int position) {
     if (position >= 0) {
         m_cursorPosition = position;
     } else {
@@ -150,7 +147,7 @@ void ColItem::setCursorPosition(int position) {
     =============
 */
 
-void ColItem::toXml(const QString &ns, QXmlStreamWriter &xmlWriter) {
+void StoryItem::toXml(const QString &ns, QXmlStreamWriter &xmlWriter) {
 
     xmlWriter.writeStartElement(ns, "title");
     xmlWriter.writeCharacters(m_title);
@@ -162,9 +159,9 @@ void ColItem::toXml(const QString &ns, QXmlStreamWriter &xmlWriter) {
 
     if (!m_childItems.isEmpty()) {
         xmlWriter.writeStartElement(ns, "children");
-        for (ColItem *item : m_childItems) {
+        for (StoryItem *item : m_childItems) {
             xmlWriter.writeStartElement(ns, typeAsString());
-            xmlWriter.writeAttribute(ns, "handle", item->handleAsString());
+            xmlWriter.writeAttribute(ns, "handle", item->handle());
             item->toXml(ns, xmlWriter);
             xmlWriter.writeEndElement();
         }

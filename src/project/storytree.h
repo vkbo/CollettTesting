@@ -19,10 +19,10 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef COLPROJECTTREE_H
-#define COLPROJECTTREE_H
+#ifndef COL_STORYTREE_H
+#define COL_STORYTREE_H
 
-#include "item.h"
+#include "storyitem.h"
 
 #include <QHash>
 #include <QList>
@@ -34,30 +34,28 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-class ColProjectTree : public QObject
+class StoryTree : public QObject
 {
     Q_OBJECT
 
 public:
-    ColProjectTree(QObject *parent=nullptr);
-    ~ColProjectTree();
+    StoryTree(QObject *parent=nullptr);
+    ~StoryTree();
 
-    ColItem *itemWithHandle(const QString &handle);
+    StoryItem *itemWithHandle(const QString &handle);
     int count() const;
 
-    ColItem *createItem(ColItem::ItemType type, const QString &title, ColItem *parent, int position=-1);
+    StoryItem *createItem(StoryItem::ItemType type, const QString &title, StoryItem *parent, int position=-1);
     void toXML(const QString &ns, QXmlStreamWriter &xmlWriter);
 
-    ColItem *storyRootItem();
-    ColItem *notesRootItem();
+    StoryItem *storyRootItem();
 
 private:
-    QHash<QString, ColItem *> m_tree;
+    QHash<QString, StoryItem *> m_tree;
 
-    ColItem *m_storyRoot;
-    ColItem *m_notesRoot;
+    StoryItem *m_rootItem;
 
 };
 } // namespace Collett
 
-#endif // COLPROJECTTREE_H
+#endif // COL_STORYTREE_H

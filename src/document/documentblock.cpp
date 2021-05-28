@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "coldocblock.h"
+#include "documentblock.h"
 
 #include <QString>
 #include <QStringList>
@@ -32,11 +32,11 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-ColDocBlock::ColDocBlock() {
+DocumentBlock::DocumentBlock() {
     blockValid = false;
 }
 
-QString ColDocBlock::encodeQTextBlock(const QTextBlock &qBlock) {
+QString DocumentBlock::encodeQTextBlock(const QTextBlock &qBlock) {
 
     QString blockText = "";
     if (!qBlock.isValid()) {
@@ -129,7 +129,7 @@ QString ColDocBlock::encodeQTextBlock(const QTextBlock &qBlock) {
     =======
 */
 
-void ColDocBlock::unpackText(const QString &text) {
+void DocumentBlock::unpackText(const QString &text) {
 
     if (!text.startsWith('[')) {
         blockValid = false;
@@ -192,7 +192,7 @@ void ColDocBlock::unpackText(const QString &text) {
     ==================
 */
 
-ColDocBlock::Block ColDocBlock::parseBlockFormat(const QString &format) {
+DocumentBlock::Block DocumentBlock::parseBlockFormat(const QString &format) {
 
     Block block;
 
@@ -247,7 +247,7 @@ ColDocBlock::Block ColDocBlock::parseBlockFormat(const QString &format) {
     as possible and return the text with the tags. In principle, it should not
     be possible to lose any text if there are any errors.
 */
-ColDocBlock::Fragment ColDocBlock::parseFragment(const QString &text) {
+DocumentBlock::Fragment DocumentBlock::parseFragment(const QString &text) {
 
     Fragment fragment;
 

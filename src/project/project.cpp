@@ -21,7 +21,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "constants.h"
 #include "project.h"
-#include "projecttree.h"
+#include "storytree.h"
 
 #include <QDateTime>
 #include <QDebug>
@@ -36,12 +36,12 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-ColProject::ColProject(const QString &path) {
+Project::Project(const QString &path) {
 
     clearError();
     m_hasProject = false;
     m_pathValid = false;
-    m_projectTree = new ColProjectTree(this);
+    m_storyTree = new StoryTree(this);
 
     // If the path is a file, go one level up
     QFileInfo fObj = QFileInfo(path);
@@ -83,26 +83,26 @@ ColProject::ColProject(const QString &path) {
     qDebug() << "Project File:" << m_projectFile.path();
     qDebug() << "Content Path:" << m_contentPath.path();
 
-    ColItem *chOne = m_projectTree->createItem(ColItem::Chapter, "Chapter One", m_projectTree->storyRootItem());
-    ColItem *scTwo = m_projectTree->createItem(ColItem::Scene, "Scene Two", chOne);
-    ColItem *scOne = m_projectTree->createItem(ColItem::Scene, "Scene One", chOne, 0);
+    StoryItem *chOne = m_storyTree->createItem(StoryItem::Chapter, "Chapter One", m_storyTree->storyRootItem());
+    StoryItem *scTwo = m_storyTree->createItem(StoryItem::Scene, "Scene Two", chOne);
+    StoryItem *scOne = m_storyTree->createItem(StoryItem::Scene, "Scene One", chOne, 0);
 
 }
 
-ColProject::~ColProject() {
-    delete m_projectTree;
+Project::~Project() {
+    delete m_storyTree;
 }
 
 /*
     Error Handling
 */
 
-void ColProject::clearError() {
+void Project::clearError() {
     m_hasError = false;
     m_lastError = "";
 }
 
-void ColProject::setError(const QString &error) {
+void Project::setError(const QString &error) {
     m_hasError = true;
     m_lastError = error;
     qCritical() << error;
@@ -112,7 +112,7 @@ void ColProject::setError(const QString &error) {
     Project File I/O
 */
 
-bool ColProject::openProject() {
+bool Project::openProject() {
 
     if (!m_pathValid) return false;
     clearError();
@@ -160,7 +160,7 @@ bool ColProject::openProject() {
     return true;
 }
 
-bool ColProject::saveProject() {
+bool Project::saveProject() {
 
     if (!m_pathValid) return false;
     clearError();
@@ -209,7 +209,7 @@ bool ColProject::saveProject() {
     ===========
 */
 
-void ColProject::readProjectXML(QDomNode &parent) {
+void Project::readProjectXML(QDomNode &parent) {
 
     QDomNode node = parent.firstChild();
     while(!node.isNull()) {
@@ -235,7 +235,7 @@ void ColProject::readProjectXML(QDomNode &parent) {
     ===========
 */
 
-void ColProject::writeMetatXML(QXmlStreamWriter &xmlWriter) {
+void Project::writeMetatXML(QXmlStreamWriter &xmlWriter) {
 
     xmlWriter.writeStartElement(m_nsCol, "meta");
 
@@ -256,7 +256,7 @@ void ColProject::writeMetatXML(QXmlStreamWriter &xmlWriter) {
     return;
 }
 
-void ColProject::writeProjectXML(QXmlStreamWriter &xmlWriter) {
+void Project::writeProjectXML(QXmlStreamWriter &xmlWriter) {
 
     xmlWriter.writeStartElement(m_nsCol, "project");
 
@@ -273,10 +273,10 @@ void ColProject::writeProjectXML(QXmlStreamWriter &xmlWriter) {
     return;
 }
 
-void ColProject::writeContentXML(QXmlStreamWriter &xmlWriter) {
+void Project::writeContentXML(QXmlStreamWriter &xmlWriter) {
 
     xmlWriter.writeStartElement(m_nsCol, "content");
-    m_projectTree->toXML(m_nsItm, xmlWriter);
+    m_storyTree->toXML(m_nsItm, xmlWriter);
     xmlWriter.writeEndElement(); // Close: content
 
     return;

@@ -19,8 +19,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef COLPROJECTMODEL_H
-#define COLPROJECTMODEL_H
+#ifndef COL_PROJECTMODEL_H
+#define COL_PROJECTMODEL_H
 
 #include "project.h"
 
@@ -30,13 +30,13 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-class ColProjectModel : public QAbstractItemModel
+class ProjectModel : public QAbstractItemModel
 {
     Q_OBJECT
 
 public:
-    explicit ColProjectModel(ColProject *project, QObject *parent=nullptr);
-    ~ColProjectModel() {};
+    explicit ProjectModel(Project *project, QObject *parent=nullptr);
+    ~ProjectModel() {};
 
     QModelIndex index(int row, int column, const QModelIndex &parent=QModelIndex()) const override;
     QModelIndex parent(const QModelIndex &index) const;
@@ -45,9 +45,9 @@ public:
     QVariant data(const QModelIndex &index, int role=Qt::DisplayRole) const;
 
 private:
-    const ColProject *m_project;
+    const Project *m_project;
 
 };
 } // namespace Collett
 
-#endif // COLPROJECTMODEL_H
+#endif // COL_PROJECTMODEL_H

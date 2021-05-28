@@ -19,8 +19,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef COLITEM_H
-#define COLITEM_H
+#ifndef COL_STORYITEM_H
+#define COL_STORYITEM_H
 
 #include <QList>
 #include <QString>
@@ -29,7 +29,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-class ColItem
+class StoryItem
 {
 public:
     enum ItemType {
@@ -39,18 +39,17 @@ public:
         Section = 3,
         Scene = 4,
         Page = 5,
-        Note = 6,
     };
 
-    ColItem();
-    ~ColItem() {};
+    StoryItem();
+    ~StoryItem() {};
 
-    void populateItem(ItemType type, const QString &title, const QUuid &handle, ColItem *parent);
-    void initItem(ItemType type, const QString &title, ColItem *parent);
-    bool addChild(ColItem *item, int position=-1);
+    void populateItem(ItemType type, const QString &title, const QString &handle, StoryItem *parent);
+    void initItem(ItemType type, const QString &title, StoryItem *parent);
+    bool addChild(StoryItem *item, int position=-1);
 
     void toXml(const QString &ns, QXmlStreamWriter &xmlWriter);
-    static ColItem fromXml();
+    static StoryItem fromXml();
 
     bool isEmpty() {
         return m_empty;
@@ -58,28 +57,28 @@ public:
 
     // Getters
     QString  title() const;
-    QString  handleAsString() const;
-    ColItem *parent() const;
+    QString  handle() const;
+    StoryItem *parent() const;
     ItemType type() const;
     QString  typeAsString() const;
     int      cursorPosition();
 
     // Setters
     void setTitle(const QString &title);
-    void setHandle(const QUuid &handle);
-    void setParent(ColItem *parent);
+    void setHandle(const QString &handle);
+    void setParent(StoryItem *parent);
     void setType(ItemType type);
     void setCursorPosition(int position);
 
 private:
 
-    QList<ColItem *> m_childItems;
-    ColItem *m_parentItem;
+    QList<StoryItem *> m_childItems;
+    StoryItem *m_parentItem;
 
     bool m_empty;
 
     QString  m_title;
-    QUuid    m_handle;
+    QString  m_handle;
     ItemType m_type;
 
     int m_cursorPosition;
@@ -87,4 +86,4 @@ private:
 };
 } // namespace Collett
 
-#endif // COLITEM_H
+#endif // COL_STORYITEM_H
