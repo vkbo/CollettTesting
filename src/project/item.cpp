@@ -22,15 +22,46 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "item.h"
 
 #include <QString>
+#include <QUuid>
 #include <QXmlStreamWriter>
 
 namespace Collett {
 
-ColItem::ColItem(const QString &title, const QString &handle, const QString &parent, const ItemType &type) {
-    m_title  = title;
+ColItem::ColItem() {
+    m_empty  = true;
+    m_title  = "";
+    m_handle = QUuid();
+    m_type = ItemType::None;
+    m_cursorPosition = 0;
+}
+
+void ColItem::populateItem(ItemType type, const QString &title, const QUuid &handle, ColItem *parent) {
+    m_empty = false;
+    m_type = type;
+    m_title = title;
     m_handle = handle;
-    m_parent = parent;
-    m_type   = type;
+    m_parentItem = parent;
+}
+
+void ColItem::initItem(ItemType type, const QString &title, ColItem *parent) {
+    QUuid newHandle = QUuid().createUuid();
+    populateItem(type, title, newHandle, parent);
+}
+
+bool ColItem::addChild(ColItem *item, int position) {
+    if (m_type != ItemType::Root && m_type != ItemType::Chapter && m_type != ItemType::Section) {
+        return false;
+    }
+
+    if (position < 0) {
+        m_childItems.append(item);
+        return true;
+    } else if (position >= 0 && position <= m_childItems.size()) {
+        m_childItems.insert(position, item);
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /*
@@ -42,16 +73,47 @@ QString ColItem::title() const {
     return m_title;
 }
 
-QString ColItem::handle() const {
-    return m_handle;
+QString ColItem::handleAsString() const {
+    return m_handle.toString(QUuid::WithoutBraces);
 }
 
-QString ColItem::parent() const {
-    return m_parent;
+ColItem *ColItem::parent() const {
+    return m_parentItem;
 }
 
 ColItem::ItemType ColItem::type() const {
     return m_type;
+}
+
+QString ColItem::typeAsString() const {
+    switch (m_type) {
+        case ItemType::None:
+            return "none";
+            break;
+        case ItemType::Root:
+            return "root";
+            break;
+        case ItemType::Chapter:
+            return "chapter";
+            break;
+        case ItemType::Section:
+            return "section";
+            break;
+        case ItemType::Scene:
+            return "scene";
+            break;
+        case ItemType::Page:
+            return "page";
+            break;
+        case ItemType::Note:
+            return "note";
+            break;
+    }
+    return "none";
+}
+
+int ColItem::cursorPosition() {
+    return m_cursorPosition;
 }
 
 /*
@@ -63,16 +125,24 @@ void ColItem::setTitle(const QString &title) {
     m_title = title;
 }
 
-void ColItem::setHandle(const QString &handle) {
+void ColItem::setHandle(const QUuid &handle) {
     m_handle = handle;
 }
 
-void ColItem::setParent(const QString &parent) {
-    m_parent = parent;
+void ColItem::setParent(ColItem *parent) {
+    m_parentItem = parent;
 }
 
-void ColItem::setType(const ItemType &type) {
+void ColItem::setType(ItemType type) {
     m_type = type;
+}
+
+void ColItem::setCursorPosition(int position) {
+    if (position >= 0) {
+        m_cursorPosition = position;
+    } else {
+        m_cursorPosition = 0;
+    }
 }
 
 /*
@@ -80,38 +150,26 @@ void ColItem::setType(const ItemType &type) {
     =============
 */
 
-void ColItem::toXml(const QString &nsCol, const QString &nsItm, QXmlStreamWriter &xmlWriter) {
+void ColItem::toXml(const QString &ns, QXmlStreamWriter &xmlWriter) {
 
-    xmlWriter.writeStartElement(nsCol, "item");
-    xmlWriter.writeAttribute(nsItm, "handle", m_handle);
-    xmlWriter.writeAttribute(nsItm, "parent", m_parent);
-
-    xmlWriter.writeStartElement(nsItm, "title");
+    xmlWriter.writeStartElement(ns, "title");
     xmlWriter.writeCharacters(m_title);
     xmlWriter.writeEndElement();
 
-    xmlWriter.writeStartElement(nsItm, "type");
-    switch (m_type) {
-        case ItemType::Chapter:
-            xmlWriter.writeCharacters("CHAPTER");
-            break;
-        case ItemType::Section:
-            xmlWriter.writeCharacters("SECTION");
-            break;
-        case ItemType::Scene:
-            xmlWriter.writeCharacters("SCENE");
-            break;
-        case ItemType::Note:
-            xmlWriter.writeCharacters("NOTE");
-            break;
+    xmlWriter.writeStartElement(ns, "cursorPos");
+    xmlWriter.writeCharacters(QString().setNum(m_cursorPosition));
+    xmlWriter.writeEndElement();
+
+    if (!m_childItems.isEmpty()) {
+        xmlWriter.writeStartElement(ns, "children");
+        for (ColItem *item : m_childItems) {
+            xmlWriter.writeStartElement(ns, typeAsString());
+            xmlWriter.writeAttribute(ns, "handle", item->handleAsString());
+            item->toXml(ns, xmlWriter);
+            xmlWriter.writeEndElement();
+        }
+        xmlWriter.writeEndElement();
     }
-    xmlWriter.writeEndElement();
-
-    xmlWriter.writeStartElement(nsItm, "cursorPos");
-    xmlWriter.writeCharacters(QString().setNum(m_cursorPos));
-    xmlWriter.writeEndElement();
-
-    xmlWriter.writeEndElement(); // Close: item
 }
 
 } // namespace Collett

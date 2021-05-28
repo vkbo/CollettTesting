@@ -24,10 +24,13 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "item.h"
 
-#include <QObject>
 #include <QHash>
+#include <QList>
+#include <QObject>
 #include <QString>
 #include <QStringList>
+#include <QUuid>
+#include <QXmlStreamWriter>
 
 namespace Collett {
 
@@ -37,17 +40,22 @@ class ColProjectTree : public QObject
 
 public:
     ColProjectTree(QObject *parent=nullptr);
-    ~ColProjectTree() {};
+    ~ColProjectTree();
 
     ColItem *itemWithHandle(const QString &handle);
-    QStringList handles() const;
+    int count() const;
 
-    void addItem(const QString &title, const QString &parent, const ColItem::ItemType &type);
-    void addItem(const QString &title, const QString &handle, const QString &parent, const ColItem::ItemType &type);
+    ColItem *createItem(ColItem::ItemType type, const QString &title, ColItem *parent, int position=-1);
+    void toXML(const QString &ns, QXmlStreamWriter &xmlWriter);
+
+    ColItem *storyRootItem();
+    ColItem *notesRootItem();
 
 private:
     QHash<QString, ColItem *> m_tree;
-    QStringList               m_order;
+
+    ColItem *m_storyRoot;
+    ColItem *m_notesRoot;
 
 };
 } // namespace Collett

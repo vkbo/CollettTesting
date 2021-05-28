@@ -22,7 +22,9 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef COLITEM_H
 #define COLITEM_H
 
+#include <QList>
 #include <QString>
+#include <QUuid>
 #include <QXmlStreamWriter>
 
 namespace Collett {
@@ -31,38 +33,56 @@ class ColItem
 {
 public:
     enum ItemType {
-        Chapter,
-        Section,
-        Scene,
-        Note,
+        None = 0,
+        Root = 1,
+        Chapter = 2,
+        Section = 3,
+        Scene = 4,
+        Page = 5,
+        Note = 6,
     };
 
-    ColItem(const QString &title, const QString &handle, const QString &parent, const ItemType &type);
+    ColItem();
     ~ColItem() {};
 
-    void toXml(const QString &nsCol, const QString &nsItm, QXmlStreamWriter &xmlWriter);
+    void populateItem(ItemType type, const QString &title, const QUuid &handle, ColItem *parent);
+    void initItem(ItemType type, const QString &title, ColItem *parent);
+    bool addChild(ColItem *item, int position=-1);
+
+    void toXml(const QString &ns, QXmlStreamWriter &xmlWriter);
     static ColItem fromXml();
+
+    bool isEmpty() {
+        return m_empty;
+    }
 
     // Getters
     QString  title() const;
-    QString  handle() const;
-    QString  parent() const;
+    QString  handleAsString() const;
+    ColItem *parent() const;
     ItemType type() const;
+    QString  typeAsString() const;
+    int      cursorPosition();
 
     // Setters
     void setTitle(const QString &title);
-    void setHandle(const QString &handle);
-    void setParent(const QString &parent);
-    void setType(const ItemType &type);
+    void setHandle(const QUuid &handle);
+    void setParent(ColItem *parent);
+    void setType(ItemType type);
+    void setCursorPosition(int position);
 
 private:
 
+    QList<ColItem *> m_childItems;
+    ColItem *m_parentItem;
+
+    bool m_empty;
+
     QString  m_title;
-    QString  m_handle;
-    QString  m_parent;
+    QUuid    m_handle;
     ItemType m_type;
 
-    int m_cursorPos;
+    int m_cursorPosition;
 
 };
 } // namespace Collett

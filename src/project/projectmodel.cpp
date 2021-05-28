@@ -21,9 +21,10 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "projectmodel.h"
 
-#include <QObject>
 #include <QAbstractItemModel>
 #include <QModelIndex>
+#include <QObject>
+#include <QVariant>
 
 namespace Collett {
 
@@ -34,6 +35,22 @@ ColProjectModel::ColProjectModel(ColProject *project, QObject *parent)
 
 QModelIndex ColProjectModel::index(int row, int column, const QModelIndex &parent) const {
     return QModelIndex();
+}
+
+QModelIndex ColProjectModel::parent(const QModelIndex &index) const {
+    return QModelIndex();
+}
+
+int ColProjectModel::rowCount(const QModelIndex &parent) const {
+    return 0;
+}
+
+int ColProjectModel::columnCount(const QModelIndex &parent) const {
+    return 0;
+}
+
+QVariant ColProjectModel::data(const QModelIndex &index, int role) const {
+    return QVariant();
 }
 
 } // namespace Collett

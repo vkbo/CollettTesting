@@ -30,9 +30,9 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QDomElement>
 #include <QDomNode>
 #include <QFile>
+#include <QFileInfo>
 #include <QIODevice>
 #include <QXmlStreamWriter>
-#include <QFileInfo>
 
 namespace Collett {
 
@@ -83,7 +83,9 @@ ColProject::ColProject(const QString &path) {
     qDebug() << "Project File:" << m_projectFile.path();
     qDebug() << "Content Path:" << m_contentPath.path();
 
-    m_projectTree->addItem("Chapter One", "ROOT", ColItem::Chapter);
+    ColItem *chOne = m_projectTree->createItem(ColItem::Chapter, "Chapter One", m_projectTree->storyRootItem());
+    ColItem *scTwo = m_projectTree->createItem(ColItem::Scene, "Scene Two", chOne);
+    ColItem *scOne = m_projectTree->createItem(ColItem::Scene, "Scene One", chOne, 0);
 
 }
 
@@ -274,12 +276,7 @@ void ColProject::writeProjectXML(QXmlStreamWriter &xmlWriter) {
 void ColProject::writeContentXML(QXmlStreamWriter &xmlWriter) {
 
     xmlWriter.writeStartElement(m_nsCol, "content");
-
-    for (QString handle : m_projectTree->handles()) {
-        ColItem *item = m_projectTree->itemWithHandle(handle);
-        item->toXml(m_nsCol, m_nsItm, xmlWriter);
-    }
-
+    m_projectTree->toXML(m_nsItm, xmlWriter);
     xmlWriter.writeEndElement(); // Close: content
 
     return;

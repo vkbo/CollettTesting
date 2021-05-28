@@ -23,15 +23,22 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "item.h"
 
 #include <QObject>
-#include <QUuid>
 #include <QString>
-#include <QStringList>
+#include <QUuid>
+#include <QXmlStreamWriter>
 
 namespace Collett {
 
 ColProjectTree::ColProjectTree(QObject *parent)
     : QObject(parent)
 {
+    m_storyRoot = new ColItem();
+    m_notesRoot = new ColItem();
+}
+
+ColProjectTree::~ColProjectTree() {
+    delete m_storyRoot;
+    delete m_notesRoot;
 }
 
 /*
@@ -43,8 +50,27 @@ ColItem *ColProjectTree::itemWithHandle(const QString &handle) {
     return m_tree.value(handle, nullptr);
 }
 
-QStringList ColProjectTree::handles() const {
-    return m_order;
+int ColProjectTree::count() const {
+    return m_tree.count();
+}
+
+/*
+    Root Items
+    ==========
+*/
+
+ColItem *ColProjectTree::storyRootItem() {
+    if (m_storyRoot->isEmpty()) {
+        m_storyRoot->initItem(ColItem::Root, tr("Story"), new ColItem());
+    }
+    return m_storyRoot;
+}
+
+ColItem *ColProjectTree::notesRootItem() {
+    if (m_notesRoot->isEmpty()) {
+        m_notesRoot->initItem(ColItem::Root, tr("Notes"), new ColItem());
+    }
+    return m_notesRoot;
 }
 
 /*
@@ -52,15 +78,35 @@ QStringList ColProjectTree::handles() const {
     =============
 */
 
-void ColProjectTree::addItem(const QString &title, const QString &parent, const ColItem::ItemType &type) {
-    QString handle = QUuid::createUuid().toString(QUuid::WithoutBraces);
-    addItem(title, handle, parent, type);
+ColItem *ColProjectTree::createItem(ColItem::ItemType type, const QString &title, ColItem *parent, int position) {
+    ColItem *item = new ColItem();
+    item->initItem(type, title, parent);
+    parent->addChild(item, position);
+    return item;
 }
 
-void ColProjectTree::addItem(const QString &title, const QString &handle, const QString &parent, const ColItem::ItemType &type) {
-    ColItem *item = new ColItem(title, handle, parent, type);
-    m_order.append(item->handle());
-    m_tree.insert(item->handle(), item);
+/*
+    XML Functions
+    =============
+*/
+
+void ColProjectTree::toXML(const QString &ns, QXmlStreamWriter &xmlWriter) {
+
+    if (!m_storyRoot->isEmpty()) {
+        xmlWriter.writeStartElement(ns, "story");
+        xmlWriter.writeAttribute(ns, "handle", m_storyRoot->handleAsString());
+        m_storyRoot->toXml(ns, xmlWriter);
+        xmlWriter.writeEndElement();
+    }
+
+    if (!m_notesRoot->isEmpty()) {
+        xmlWriter.writeStartElement(ns, "notes");
+        xmlWriter.writeAttribute(ns, "handle", m_notesRoot->handleAsString());
+        m_notesRoot->toXml(ns, xmlWriter);
+        xmlWriter.writeEndElement();
+    }
+
+    return;
 }
 
 } // namespace Collett
