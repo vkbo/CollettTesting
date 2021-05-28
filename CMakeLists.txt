@@ -69,6 +69,8 @@ list(APPEND Collet_SOURCE
     gui/statusbar
     project/item
     project/project
+    project/projectmodel
+    project/projecttree
     data
     guimain
     main

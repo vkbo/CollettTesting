@@ -32,11 +32,12 @@ class ColItem
 public:
     enum ItemType {
         Chapter,
+        Section,
         Scene,
         Note,
     };
 
-    ColItem(const QString &title, const QString &parent, const ItemType &type);
+    ColItem(const QString &title, const QString &handle, const QString &parent, const ItemType &type);
     ~ColItem() {};
 
     void toXml(const QString &nsCol, const QString &nsItm, QXmlStreamWriter &xmlWriter);

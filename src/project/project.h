@@ -24,6 +24,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "collett.h"
 #include "item.h"
+#include "projecttree.h"
 
 #include <QDir>
 #include <QDomNode>
@@ -84,7 +85,7 @@ private:
     QString m_projectAuthor = "";
 
     // Content
-    QList<ColItem*> m_projectTree;
+    ColProjectTree *m_projectTree;
 
     void setError(const QString &error);
 

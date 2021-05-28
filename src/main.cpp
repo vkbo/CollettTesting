@@ -52,7 +52,9 @@ int main(int argc, char *argv[]) {
 
     Collett::GuiMain mainGUI;
     mainGUI.show();
-    mainGUI.openProject(parser.value(openFlag));
+    if (parser.isSet(openFlag)) {
+        mainGUI.openProject(parser.value(openFlag));
+    }
 
     return app.exec();
 }

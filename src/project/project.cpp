@@ -21,6 +21,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "constants.h"
 #include "project.h"
+#include "projecttree.h"
 
 #include <QDateTime>
 #include <QDebug>
@@ -40,6 +41,7 @@ ColProject::ColProject(const QString &path) {
     clearError();
     m_hasProject = false;
     m_pathValid = false;
+    m_projectTree = new ColProjectTree(this);
 
     // If the path is a file, go one level up
     QFileInfo fObj = QFileInfo(path);
@@ -81,11 +83,13 @@ ColProject::ColProject(const QString &path) {
     qDebug() << "Project File:" << m_projectFile.path();
     qDebug() << "Content Path:" << m_contentPath.path();
 
-    m_projectTree.append(new ColItem("Chapter One", "ROOT", ColItem::Chapter));
+    m_projectTree->addItem("Chapter One", "ROOT", ColItem::Chapter);
 
 }
 
-ColProject::~ColProject() {}
+ColProject::~ColProject() {
+    delete m_projectTree;
+}
 
 /*
     Error Handling
@@ -271,7 +275,8 @@ void ColProject::writeContentXML(QXmlStreamWriter &xmlWriter) {
 
     xmlWriter.writeStartElement(m_nsCol, "content");
 
-    for (ColItem* item : m_projectTree) {
+    for (QString handle : m_projectTree->handles()) {
+        ColItem *item = m_projectTree->itemWithHandle(handle);
         item->toXml(m_nsCol, m_nsItm, xmlWriter);
     }
 

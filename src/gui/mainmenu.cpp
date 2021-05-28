@@ -28,6 +28,7 @@ namespace Collett {
 GuiMainMenu::GuiMainMenu(QWidget *parent) : QMenuBar(parent) {
 
     buildProjectMenu();
+    buildContentMenu();
     buildFormatMenu();
 
 }
@@ -42,12 +43,49 @@ GuiMainMenu::~GuiMainMenu() {
 void GuiMainMenu::buildProjectMenu() {
 
     // Project
-    projMenu = this->addMenu(tr("&Project"));
+    m_menuProject = this->addMenu(tr("&Project"));
 
     // Project > New Project
-    QAction *aNewProject = new QAction(tr("New Project"), this);
-    aNewProject->setStatusTip(tr("Create new project"));
-    projMenu->addAction(aNewProject);
+    a_projNew = m_menuProject->addAction(tr("&New Project"));
+    a_projNew->setStatusTip(tr("Create new project"));
+
+    // Project > Open Project
+    a_projOpen = m_menuProject->addAction(tr("&Open Project"));
+    a_projOpen->setStatusTip(tr("Open project"));
+    a_projOpen->setShortcut(QKeySequence("Ctrl+O"));
+
+    // Project > Save Project
+    a_projSave = m_menuProject->addAction(tr("&Save Project"));
+    a_projSave->setStatusTip(tr("Save project"));
+    a_projSave->setShortcut(QKeySequence("Ctrl+S"));
+
+    return;
+}
+
+void GuiMainMenu::buildContentMenu() {
+
+    // Content
+    m_menuContent = this->addMenu(tr("&Content"));
+
+    // Content > New Page
+    a_contNewPage = m_menuContent->addAction(tr("New &Page"));
+    a_contNewPage->setStatusTip(tr("Create a new page in the project"));
+    a_contNewPage->setShortcut(QKeySequence("Ctrl+N, P"));
+
+    // Content > New Chapter
+    a_contNewChapter = m_menuContent->addAction(tr("New &Chapter"));
+    a_contNewChapter->setStatusTip(tr("Create a new chapter in the project"));
+    a_contNewChapter->setShortcut(QKeySequence("Ctrl+N, C"));
+
+    // Content > New Scene
+    a_contNewScene = m_menuContent->addAction(tr("New &Scene"));
+    a_contNewScene->setStatusTip(tr("Create a new scene in the project"));
+    a_contNewScene->setShortcut(QKeySequence("Ctrl+N, S"));
+
+    // Content > New Note
+    a_contNewNote = m_menuContent->addAction(tr("New &Note"));
+    a_contNewNote->setStatusTip(tr("Create a new note in the project"));
+    a_contNewNote->setShortcut(QKeySequence("Ctrl+N, N"));
 
     return;
 }
@@ -55,11 +93,11 @@ void GuiMainMenu::buildProjectMenu() {
 void GuiMainMenu::buildFormatMenu() {
 
     // Format Menu
-    fmtMenu = this->addMenu(tr("&Format"));
+    m_menuFormat = this->addMenu(tr("&Format"));
 
     // Format > Emphasis
-    aFmtEmph = fmtMenu->addAction(tr("Emphasis"));
-    aFmtEmph->setShortcut(QKeySequence("Ctrl+I"));
+    a_fmtEmphasis = m_menuFormat->addAction(tr("Emphasis"));
+    a_fmtEmphasis->setShortcut(QKeySequence("Ctrl+I"));
 
     return;
 }

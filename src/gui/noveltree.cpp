@@ -25,14 +25,16 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-GuiNovelTree::GuiNovelTree(QWidget *parent) : QTreeWidget(parent) {
+GuiNovelTree::GuiNovelTree(QWidget *parent)
+    : QTreeWidget(parent)
+{
 
     // Build GUI
     this->setIconSize(QSize(13,13));
     this->setExpandsOnDoubleClick(true);
     this->setIndentation(13);
-    this->setColumnCount(4);
-    this->setHeaderLabels(QStringList() << "Label" << "Words" << "Flags" << "Handle");
+    this->setColumnCount(2);
+    this->setHeaderLabels(QStringList() << "Title" << "Words");
     this->hideColumn(3);
 
     QTreeWidgetItem *treeHead = this->headerItem();
@@ -48,7 +50,5 @@ GuiNovelTree::GuiNovelTree(QWidget *parent) : QTreeWidget(parent) {
 
     return;
 }
-
-GuiNovelTree::~GuiNovelTree() {}
 
 } // namespace Collett

@@ -1,6 +1,6 @@
 /*
-Collett – GUI Novel Tree Class
-==============================
+Collett – Project Tree Class
+============================
 
 This file is a part of Collett
 Copyright 2020–2021, Veronica Berglyd Olsen
@@ -19,25 +19,37 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef GUINOVELTREE_H
-#define GUINOVELTREE_H
+#ifndef COLPROJECTTREE_H
+#define COLPROJECTTREE_H
+
+#include "item.h"
 
 #include <QObject>
-#include <QTreeWidget>
+#include <QHash>
+#include <QString>
+#include <QStringList>
 
 namespace Collett {
 
-class GuiNovelTree : public QTreeWidget
+class ColProjectTree : public QObject
 {
     Q_OBJECT
 
 public:
-    GuiNovelTree(QWidget *parent=nullptr);
-    ~GuiNovelTree() {};
+    ColProjectTree(QObject *parent=nullptr);
+    ~ColProjectTree() {};
+
+    ColItem *itemWithHandle(const QString &handle);
+    QStringList handles() const;
+
+    void addItem(const QString &title, const QString &parent, const ColItem::ItemType &type);
+    void addItem(const QString &title, const QString &handle, const QString &parent, const ColItem::ItemType &type);
 
 private:
+    QHash<QString, ColItem *> m_tree;
+    QStringList               m_order;
 
 };
 } // namespace Collett
 
-#endif // GUINOVELTREE_H
+#endif // COLPROJECTTREE_H

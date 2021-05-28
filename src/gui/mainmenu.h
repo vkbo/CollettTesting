@@ -38,7 +38,7 @@ public:
 
 private:
     void buildProjectMenu();
-    void buildDocumentMenu();
+    void buildContentMenu();
     void buildEditMenu();
     void buildViewMenu();
     void buildFormatMenu();
@@ -46,11 +46,23 @@ private:
     void buildHelpMenu();
 
     // Menus
-    QMenu *projMenu;
-    QMenu *fmtMenu;
+    QMenu *m_menuProject;
+    QMenu *m_menuContent;
+    QMenu *m_menuFormat;
+
+    // Project Menu
+    QAction *a_projNew;
+    QAction *a_projOpen;
+    QAction *a_projSave;
+
+    // Content Menu
+    QAction *a_contNewPage;
+    QAction *a_contNewChapter;
+    QAction *a_contNewScene;
+    QAction *a_contNewNote;
 
     // Format Menu
-    QAction *aFmtEmph;
+    QAction *a_fmtEmphasis;
     QAction *aFmtStrong;
     QAction *aFmtStike;
 

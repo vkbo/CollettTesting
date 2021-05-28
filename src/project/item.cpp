@@ -22,19 +22,63 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "item.h"
 
 #include <QString>
-#include <QUuid>
 #include <QXmlStreamWriter>
 
 namespace Collett {
 
-ColItem::ColItem(const QString &title, const QString &parent, const ItemType &type){
-
+ColItem::ColItem(const QString &title, const QString &handle, const QString &parent, const ItemType &type) {
     m_title  = title;
-    m_handle = QUuid::createUuid().toString(QUuid::WithoutBraces);
+    m_handle = handle;
     m_parent = parent;
     m_type   = type;
-
 }
+
+/*
+    Getters
+    =======
+*/
+
+QString ColItem::title() const {
+    return m_title;
+}
+
+QString ColItem::handle() const {
+    return m_handle;
+}
+
+QString ColItem::parent() const {
+    return m_parent;
+}
+
+ColItem::ItemType ColItem::type() const {
+    return m_type;
+}
+
+/*
+    Setters
+    =======
+*/
+
+void ColItem::setTitle(const QString &title) {
+    m_title = title;
+}
+
+void ColItem::setHandle(const QString &handle) {
+    m_handle = handle;
+}
+
+void ColItem::setParent(const QString &parent) {
+    m_parent = parent;
+}
+
+void ColItem::setType(const ItemType &type) {
+    m_type = type;
+}
+
+/*
+    XML Functions
+    =============
+*/
 
 void ColItem::toXml(const QString &nsCol, const QString &nsItm, QXmlStreamWriter &xmlWriter) {
 
@@ -50,6 +94,9 @@ void ColItem::toXml(const QString &nsCol, const QString &nsItm, QXmlStreamWriter
     switch (m_type) {
         case ItemType::Chapter:
             xmlWriter.writeCharacters("CHAPTER");
+            break;
+        case ItemType::Section:
+            xmlWriter.writeCharacters("SECTION");
             break;
         case ItemType::Scene:
             xmlWriter.writeCharacters("SCENE");

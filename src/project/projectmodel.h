@@ -1,6 +1,6 @@
 /*
-Collett – GUI Novel Tree Class
-==============================
+Collett – Project Model Class
+=============================
 
 This file is a part of Collett
 Copyright 2020–2021, Veronica Berglyd Olsen
@@ -19,25 +19,31 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef GUINOVELTREE_H
-#define GUINOVELTREE_H
+#ifndef COLPROJECTMODEL_H
+#define COLPROJECTMODEL_H
+
+#include "project.h"
 
 #include <QObject>
-#include <QTreeWidget>
+#include <QAbstractItemModel>
+#include <QModelIndex>
 
 namespace Collett {
 
-class GuiNovelTree : public QTreeWidget
+class ColProjectModel : public QAbstractItemModel
 {
     Q_OBJECT
 
 public:
-    GuiNovelTree(QWidget *parent=nullptr);
-    ~GuiNovelTree() {};
+    explicit ColProjectModel(ColProject *project, QObject *parent=nullptr);
+    ~ColProjectModel() {};
+
+    QModelIndex index(int row, int column, const QModelIndex &parent=QModelIndex()) const override;
 
 private:
+    const ColProject *m_project;
 
 };
 } // namespace Collett
 
-#endif // GUINOVELTREE_H
+#endif // COLPROJECTMODEL_H
