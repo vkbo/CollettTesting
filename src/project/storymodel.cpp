@@ -59,7 +59,7 @@ QVariant StoryModel::data(const QModelIndex &index, int role) const {
             return QVariant(item->handle());
             break;
         case Qt::DisplayRole:
-            return QVariant(item->title());
+            return QVariant(item->toJson());
             break;
         default:
             return QVariant();

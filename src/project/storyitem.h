@@ -22,15 +22,19 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef COL_STORYITEM_H
 #define COL_STORYITEM_H
 
+#include <QJsonObject>
 #include <QList>
 #include <QString>
 #include <QUuid>
 #include <QXmlStreamWriter>
+#include <QObject>
 
 namespace Collett {
 
-class StoryItem
+class StoryItem : public QObject
 {
+    Q_OBJECT
+
 public:
     enum ItemType {Title, Partition, Chapter, Section, Scene, Page};
 
@@ -43,6 +47,8 @@ public:
     void toXml(const QString &nsCol, const QString &nsItm, QXmlStreamWriter &xmlWriter);
     static StoryItem fromXml();
 
+    QJsonObject toJson();
+
     bool isEmpty() {
         return m_empty;
     }
@@ -52,6 +58,7 @@ public:
     QString  handle() const;
     ItemType type() const;
     QString  typeAsString() const;
+    QString  typeAsLocal() const;
 
     int cursorPosition() const;
     int charCount() const;

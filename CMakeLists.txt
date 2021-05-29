@@ -66,6 +66,7 @@ list(APPEND Collet_SOURCE
     editor/fragmentedit
     gui/mainmenu
     gui/noveltree
+    gui/noveltreedelegate
     gui/statusbar
     project/project
     project/storyitem

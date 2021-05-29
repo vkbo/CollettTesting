@@ -21,6 +21,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "noveltree.h"
 #include "data.h"
+#include "noveltreedelegate.h"
 
 #include <QListView>
 
@@ -31,6 +32,7 @@ GuiNovelTree::GuiNovelTree(QWidget *parent)
 {
 
     m_data = CollettData::instance();
+    setItemDelegate(new GuiNovelTreeDelegate(this));
 
     // Build GUI
     // this->setIconSize(QSize(13,13));

@@ -55,6 +55,16 @@ void StoryItem::initItem(ItemType type, const QString &title) {
     populateItem(type, title, newHandle);
 }
 
+QJsonObject StoryItem::toJson() {
+    QJsonObject data;
+
+    data.insert("title", m_title);
+    data.insert("handle", m_handle);
+    data.insert("type", typeAsLocal());
+
+    return data;
+}
+
 /*
     Getters
     =======
@@ -94,6 +104,30 @@ QString StoryItem::typeAsString() const {
             break;
     }
     return "scene";
+}
+
+QString StoryItem::typeAsLocal() const {
+    switch (m_type) {
+        case ItemType::Title:
+            return tr("Title");
+            break;
+        case ItemType::Partition:
+            return tr("Partition");
+            break;
+        case ItemType::Chapter:
+            return tr("Chapter");
+            break;
+        case ItemType::Section:
+            return tr("Section");
+            break;
+        case ItemType::Scene:
+            return tr("Scene");
+            break;
+        case ItemType::Page:
+            return tr("Page");
+            break;
+    }
+    return tr("Scene");
 }
 
 int StoryItem::cursorPosition() const {
