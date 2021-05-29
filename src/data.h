@@ -24,30 +24,35 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "collett.h"
 #include "project.h"
+#include "storymodel.h"
 
 #include <QWidget>
+#include <QObject>
 #include <QString>
 #include <QDir>
 
 namespace Collett {
 
-class CollettData
+class CollettDataPrivate;
+class CollettData : public QObject
 {
+    Q_OBJECT
+    Q_DECLARE_PRIVATE(CollettData)
 
 public:
-    CollettData(QWidget *parent) : m_parent(parent) {};
-    ~CollettData() {};
+    static CollettData *instance();
+    ~CollettData();
 
-    Project* getProject();
+private:
+    QScopedPointer<CollettDataPrivate> d_ptr;
+    CollettData();
 
+public:
     bool openProject(const QString &path);
     bool saveProject();
 
-private:
-    bool m_hasProject = false;
-
-    QWidget    *m_parent;
-    Project *m_project;
+    Project    *project();
+    StoryModel *storyModel();
 
 };
 } // namespace Collett

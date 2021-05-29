@@ -21,32 +21,99 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "data.h"
 #include "project.h"
+#include "storymodel.h"
 
 #include <QWidget>
 #include <QDir>
 
 namespace Collett {
 
-bool CollettData::openProject(const QString &path) {
+/*
+    Private Class Declaration
+    =========================
+*/
 
-    m_project = new Project(path);
-    bool status = m_project->openProject();
-    m_hasProject = m_project->hasProject();
+class CollettDataPrivate
+{
+public:
+    static CollettData *instance;
+
+    CollettDataPrivate() {};
+    ~CollettDataPrivate() {
+        qDebug() << "Deconstructing: CollettDataPrivate";
+        delete m_project;
+        delete m_storyModel;
+    };
+
+    Project    *m_project;
+    StoryModel *m_storyModel;
+
+    bool m_hasProject = false;
+};
+
+/*
+    Public Class Contruction/Deconstruction
+    =======================================
+*/
+
+CollettData *CollettDataPrivate::instance = nullptr;
+
+CollettData *CollettData::instance() {
+    if (nullptr == CollettDataPrivate::instance) {
+        CollettDataPrivate::instance = new CollettData();
+        qDebug() << "CollettData instance created";
+    }
+    return CollettDataPrivate::instance;
+}
+
+CollettData::CollettData() : d_ptr(new CollettDataPrivate()) {
+    Q_D(CollettData);
+}
+
+CollettData::~CollettData() {}
+
+/*
+    Public Class Methods
+    ====================
+*/
+
+bool CollettData::openProject(const QString &path) {
+    Q_D(CollettData);
+
+    d->m_project = new Project(path);
+    bool status = d->m_project->openProject();
+    d->m_hasProject = d->m_project->hasProject();
+
+    d->m_storyModel = new StoryModel(d->m_project);
 
     return status;
 }
 
 bool CollettData::saveProject() {
-    if (m_hasProject) {
-        return m_project->saveProject();
+    Q_D(CollettData);
+
+    if (d->m_hasProject) {
+        return d->m_project->saveProject();
     } else {
         return false;
     }
 }
 
-Project* CollettData::getProject() {
-    if (m_hasProject) {
-        return m_project;
+Project *CollettData::project() {
+    Q_D(CollettData);
+
+    if (d->m_hasProject) {
+        return d->m_project;
+    } else {
+        return nullptr;
+    }
+}
+
+StoryModel *CollettData::storyModel() {
+    Q_D(CollettData);
+
+    if (d->m_hasProject) {
+        return d->m_storyModel;
     } else {
         return nullptr;
     }
