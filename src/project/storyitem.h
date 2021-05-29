@@ -58,9 +58,10 @@ public:
     QString  handle() const;
     ItemType type() const;
     QString  typeAsString() const;
-    QString  typeAsLocal() const;
+    QString  typeForDisplay() const;
 
     int cursorPosition() const;
+    int itemCount() const;
     int charCount() const;
     int wordCount() const;
     int paraCount() const;
@@ -71,6 +72,7 @@ public:
     void setType(ItemType type);
 
     void setCursorPosition(int position);
+    void setItemCount(int count);
     void setCharCount(int count);
     void setWordCount(int count);
     void setParaCount(int count);
@@ -84,6 +86,7 @@ private:
     QString  m_handle;
     ItemType m_type;
 
+    int m_itemCount;
     int m_cursorPos;
     int m_charCount;
     int m_wordCount;

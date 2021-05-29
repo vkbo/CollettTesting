@@ -59,6 +59,36 @@ int StoryTree::count() const {
 }
 
 /*
+    Public Slots
+    ============
+*/
+
+void StoryTree::updateItemCounts() {
+
+    int pCount = 0;
+    int cCount = 0;
+    int sCount = 0;
+
+    for (QString handle : m_order) {
+        StoryItem *item = itemWithHandle(handle);
+        if (item) {
+            switch (item->type()) {
+                case StoryItem::Partition:
+                    item->setItemCount(++pCount);
+                    break;
+                case StoryItem::Chapter:
+                    item->setItemCount(++cCount);
+                    break;
+                case StoryItem::Scene:
+                    item->setItemCount(++sCount);
+                    break;
+            }
+        }
+    }
+
+}
+
+/*
     Add Functions
     =============
 */

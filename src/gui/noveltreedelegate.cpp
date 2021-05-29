@@ -33,6 +33,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QFont>
 #include <QRect>
 #include <QFontMetrics>
+#include <QPen>
 
 namespace Collett {
 
@@ -61,19 +62,28 @@ void GuiNovelTreeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     int y = option.rect.y();
     int w = option.rect.width();
 
-    QRect pRect1(2, y+2, w, m_typeHeight);
+    int y1 = y + 2;
+    int y2 = y1 + 2 + m_typeHeight;
+    int y3 = y2 + 2 + m_titleHeight;
+
+    QRect pRect1(2, y1, w, m_typeHeight);
     painter->setFont(m_typeFont);
     painter->drawText(pRect1, Qt::TextSingleLine, data.value("type").toString());
 
-    QRect pRect2(2, y+4+m_typeHeight, w, m_titleHeight);
+    QRect pRect2(2, y2, w, m_titleHeight);
     painter->setFont(m_titleFont);
     painter->drawText(pRect2, Qt::TextSingleLine, data.value("title").toString());
+
+    QPen pen = painter->pen();
+    pen.setStyle(Qt::DotLine);
+    painter->setPen(pen);
+    painter->drawLine(0, y3, w, y3);
 
     painter->restore();
 }
 
 QSize GuiNovelTreeDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const {
-    return QSize(option.rect.width(), m_typeHeight + m_titleHeight + 6);
+    return QSize(option.rect.width(), m_typeHeight + m_titleHeight + 7);
 }
 
 } // namespace Collett

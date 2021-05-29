@@ -32,6 +32,7 @@ StoryItem::StoryItem() {
     m_title  = "";
     m_handle = "";
     m_type = ItemType::Scene;
+    m_itemCount = 0;
     m_cursorPos = 0;
     m_charCount = 0;
     m_wordCount = 0;
@@ -60,7 +61,7 @@ QJsonObject StoryItem::toJson() {
 
     data.insert("title", m_title);
     data.insert("handle", m_handle);
-    data.insert("type", typeAsLocal());
+    data.insert("type", typeForDisplay());
 
     return data;
 }
@@ -106,22 +107,22 @@ QString StoryItem::typeAsString() const {
     return "scene";
 }
 
-QString StoryItem::typeAsLocal() const {
+QString StoryItem::typeForDisplay() const {
     switch (m_type) {
         case ItemType::Title:
-            return tr("Title");
+            return tr("Title Page");
             break;
         case ItemType::Partition:
-            return tr("Partition");
+            return tr("Part %1").arg(m_itemCount);
             break;
         case ItemType::Chapter:
-            return tr("Chapter");
+            return tr("Chapter %1").arg(m_itemCount);
             break;
         case ItemType::Section:
             return tr("Section");
             break;
         case ItemType::Scene:
-            return tr("Scene");
+            return tr("Scene %1").arg(m_itemCount);
             break;
         case ItemType::Page:
             return tr("Page");
@@ -132,6 +133,10 @@ QString StoryItem::typeAsLocal() const {
 
 int StoryItem::cursorPosition() const {
     return m_cursorPos;
+}
+
+int StoryItem::itemCount() const {
+    return m_itemCount;
 }
 
 int StoryItem::charCount() const {
@@ -168,6 +173,14 @@ void StoryItem::setCursorPosition(int position) {
         m_cursorPos = position;
     } else {
         m_cursorPos = 0;
+    }
+}
+
+void StoryItem::setItemCount(int count) {
+    if (count > 0) {
+        m_itemCount = count;
+    } else {
+        m_itemCount = 0;
     }
 }
 

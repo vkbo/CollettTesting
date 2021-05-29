@@ -49,6 +49,9 @@ public:
     void createItem(StoryItem::ItemType type, const QString &title, qsizetype position=-1);
     void toXML(const QString &nsCol, const QString &nsItm, QXmlStreamWriter &xmlWriter);
 
+public slots:
+    void updateItemCounts();
+
 private:
     QHash<QString, StoryItem *> m_tree;
     QStringList m_order;
