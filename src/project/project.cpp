@@ -83,9 +83,13 @@ Project::Project(const QString &path) {
     qDebug() << "Project File:" << m_projectFile.path();
     qDebug() << "Content Path:" << m_contentPath.path();
 
-    StoryItem *chOne = m_storyTree->createItem(StoryItem::Chapter, "Chapter One", m_storyTree->storyRootItem());
-    StoryItem *scTwo = m_storyTree->createItem(StoryItem::Scene, "Scene Two", chOne);
-    StoryItem *scOne = m_storyTree->createItem(StoryItem::Scene, "Scene One", chOne, 0);
+    m_storyTree->createItem(StoryItem::Title, "Title Page");
+    m_storyTree->createItem(StoryItem::Chapter, "Chapter One");
+    m_storyTree->createItem(StoryItem::Scene, "Scene One");
+    m_storyTree->createItem(StoryItem::Scene, "Scene Two");
+    m_storyTree->createItem(StoryItem::Chapter, "Chapter Two");
+    m_storyTree->createItem(StoryItem::Scene, "Scene Three");
+    m_storyTree->createItem(StoryItem::Scene, "Scene Four");
 
 }
 
@@ -276,7 +280,7 @@ void Project::writeProjectXML(QXmlStreamWriter &xmlWriter) {
 void Project::writeContentXML(QXmlStreamWriter &xmlWriter) {
 
     xmlWriter.writeStartElement(m_nsCol, "content");
-    m_storyTree->toXML(m_nsItm, xmlWriter);
+    m_storyTree->toXML(m_nsCol, m_nsItm, xmlWriter);
     xmlWriter.writeEndElement(); // Close: content
 
     return;

@@ -24,19 +24,18 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <QObject>
 #include <QString>
-#include <QUuid>
 #include <QXmlStreamWriter>
+#include <QDebug>
 
 namespace Collett {
 
 StoryTree::StoryTree(QObject *parent)
     : QObject(parent)
 {
-    m_rootItem = new StoryItem();
 }
 
 StoryTree::~StoryTree() {
-    delete m_rootItem;
+    qDeleteAll(m_tree);
 }
 
 /*
@@ -53,30 +52,19 @@ int StoryTree::count() const {
 }
 
 /*
-    Root Items
-    ==========
-*/
-
-StoryItem *StoryTree::storyRootItem() {
-    if (m_rootItem->isEmpty()) {
-        m_rootItem->initItem(StoryItem::Root, tr("Story"), new StoryItem());
-    }
-    return m_rootItem;
-}
-
-/*
     Add Functions
     =============
 */
 
-StoryItem *StoryTree::createItem(StoryItem::ItemType type, const QString &title, StoryItem *parent, int position) {
+void StoryTree::createItem(StoryItem::ItemType type, const QString &title, qsizetype position) {
     StoryItem *item = new StoryItem();
-    item->initItem(type, title, parent);
-    if (parent->addChild(item, position)) {
-        m_tree.insert(item->handle(), item);
-        return item;
+    item->initItem(type, title);
+    m_tree.insert(item->handle(), item);
+    if (position < 0 || position >= m_order.size()) {
+        m_order.append(item->handle());
+    } else {
+        m_order.insert(position, item->handle());
     }
-    return nullptr;
 }
 
 /*
@@ -84,14 +72,17 @@ StoryItem *StoryTree::createItem(StoryItem::ItemType type, const QString &title,
     =============
 */
 
-void StoryTree::toXML(const QString &ns, QXmlStreamWriter &xmlWriter) {
+void StoryTree::toXML(const QString &nsCol, const QString &nsItm, QXmlStreamWriter &xmlWriter) {
 
-    if (!m_rootItem->isEmpty()) {
-        xmlWriter.writeStartElement(ns, "story");
-        xmlWriter.writeAttribute(ns, "handle", m_rootItem->handle());
-        m_rootItem->toXml(ns, xmlWriter);
-        xmlWriter.writeEndElement();
+    xmlWriter.writeStartElement(nsCol, "story");
+    xmlWriter.writeAttribute(nsItm, "count", QString::number(m_tree.size()));
+    for (QString handle : m_order) {
+        StoryItem *item = itemWithHandle(handle);
+        if (item) {
+            item->toXml(nsCol, nsItm, xmlWriter);
+        }
     }
+    xmlWriter.writeEndElement();
 
     return;
 }

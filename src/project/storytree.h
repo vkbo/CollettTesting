@@ -45,15 +45,12 @@ public:
     StoryItem *itemWithHandle(const QString &handle);
     int count() const;
 
-    StoryItem *createItem(StoryItem::ItemType type, const QString &title, StoryItem *parent, int position=-1);
-    void toXML(const QString &ns, QXmlStreamWriter &xmlWriter);
-
-    StoryItem *storyRootItem();
+    void createItem(StoryItem::ItemType type, const QString &title, qsizetype position=-1);
+    void toXML(const QString &nsCol, const QString &nsItm, QXmlStreamWriter &xmlWriter);
 
 private:
     QHash<QString, StoryItem *> m_tree;
-
-    StoryItem *m_rootItem;
+    QStringList m_order;
 
 };
 } // namespace Collett

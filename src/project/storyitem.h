@@ -32,23 +32,15 @@ namespace Collett {
 class StoryItem
 {
 public:
-    enum ItemType {
-        None = 0,
-        Root = 1,
-        Chapter = 2,
-        Section = 3,
-        Scene = 4,
-        Page = 5,
-    };
+    enum ItemType {Title, Partition, Chapter, Section, Scene, Page};
 
     StoryItem();
     ~StoryItem() {};
 
-    void populateItem(ItemType type, const QString &title, const QString &handle, StoryItem *parent);
-    void initItem(ItemType type, const QString &title, StoryItem *parent);
-    bool addChild(StoryItem *item, int position=-1);
+    void populateItem(ItemType type, const QString &title, const QString &handle);
+    void initItem(ItemType type, const QString &title);
 
-    void toXml(const QString &ns, QXmlStreamWriter &xmlWriter);
+    void toXml(const QString &nsCol, const QString &nsItm, QXmlStreamWriter &xmlWriter);
     static StoryItem fromXml();
 
     bool isEmpty() {
@@ -58,22 +50,26 @@ public:
     // Getters
     QString  title() const;
     QString  handle() const;
-    StoryItem *parent() const;
     ItemType type() const;
     QString  typeAsString() const;
-    int      cursorPosition();
+
+    int cursorPosition() const;
+    int charCount() const;
+    int wordCount() const;
+    int paraCount() const;
 
     // Setters
     void setTitle(const QString &title);
     void setHandle(const QString &handle);
-    void setParent(StoryItem *parent);
     void setType(ItemType type);
+
     void setCursorPosition(int position);
+    void setCharCount(int count);
+    void setWordCount(int count);
+    void setParaCount(int count);
+    void setCounts(int cCount, int wCount, int pCount);
 
 private:
-
-    QList<StoryItem *> m_childItems;
-    StoryItem *m_parentItem;
 
     bool m_empty;
 
@@ -81,7 +77,10 @@ private:
     QString  m_handle;
     ItemType m_type;
 
-    int m_cursorPosition;
+    int m_cursorPos;
+    int m_charCount;
+    int m_wordCount;
+    int m_paraCount;
 
 };
 } // namespace Collett

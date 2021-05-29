@@ -31,37 +31,28 @@ StoryItem::StoryItem() {
     m_empty  = true;
     m_title  = "";
     m_handle = "";
-    m_type = ItemType::None;
-    m_cursorPosition = 0;
+    m_type = ItemType::Scene;
+    m_cursorPos = 0;
+    m_charCount = 0;
+    m_wordCount = 0;
+    m_paraCount = 0;
 }
 
-void StoryItem::populateItem(ItemType type, const QString &title, const QString &handle, StoryItem *parent) {
+/*
+    Methods
+    =======
+*/
+
+void StoryItem::populateItem(ItemType type, const QString &title, const QString &handle) {
     m_empty = false;
     m_type = type;
     m_title = title;
     m_handle = handle;
-    m_parentItem = parent;
 }
 
-void StoryItem::initItem(ItemType type, const QString &title, StoryItem *parent) {
+void StoryItem::initItem(ItemType type, const QString &title) {
     QString newHandle = QUuid().createUuid().toString(QUuid::WithoutBraces);
-    populateItem(type, title, newHandle, parent);
-}
-
-bool StoryItem::addChild(StoryItem *item, int position) {
-    if (m_type != ItemType::Root && m_type != ItemType::Chapter && m_type != ItemType::Section) {
-        return false;
-    }
-
-    if (position < 0) {
-        m_childItems.append(item);
-        return true;
-    } else if (position >= 0 && position <= m_childItems.size()) {
-        m_childItems.insert(position, item);
-        return true;
-    } else {
-        return false;
-    }
+    populateItem(type, title, newHandle);
 }
 
 /*
@@ -77,21 +68,17 @@ QString StoryItem::handle() const {
     return m_handle;
 }
 
-StoryItem *StoryItem::parent() const {
-    return m_parentItem;
-}
-
 StoryItem::ItemType StoryItem::type() const {
     return m_type;
 }
 
 QString StoryItem::typeAsString() const {
     switch (m_type) {
-        case ItemType::None:
-            return "none";
+        case ItemType::Title:
+            return "title";
             break;
-        case ItemType::Root:
-            return "root";
+        case ItemType::Partition:
+            return "partition";
             break;
         case ItemType::Chapter:
             return "chapter";
@@ -106,11 +93,23 @@ QString StoryItem::typeAsString() const {
             return "page";
             break;
     }
-    return "none";
+    return "scene";
 }
 
-int StoryItem::cursorPosition() {
-    return m_cursorPosition;
+int StoryItem::cursorPosition() const {
+    return m_cursorPos;
+}
+
+int StoryItem::charCount() const {
+    return m_charCount;
+}
+
+int StoryItem::wordCount() const {
+    return m_wordCount;
+}
+
+int StoryItem::paraCount() const {
+    return m_paraCount;
 }
 
 /*
@@ -126,20 +125,46 @@ void StoryItem::setHandle(const QString &handle) {
     m_handle = handle;
 }
 
-void StoryItem::setParent(StoryItem *parent) {
-    m_parentItem = parent;
-}
-
 void StoryItem::setType(ItemType type) {
     m_type = type;
 }
 
 void StoryItem::setCursorPosition(int position) {
     if (position >= 0) {
-        m_cursorPosition = position;
+        m_cursorPos = position;
     } else {
-        m_cursorPosition = 0;
+        m_cursorPos = 0;
     }
+}
+
+void StoryItem::setCharCount(int count) {
+    if (count >= 0) {
+        m_charCount = count;
+    } else {
+        m_charCount = 0;
+    }
+}
+
+void StoryItem::setWordCount(int count) {
+    if (count >= 0) {
+        m_wordCount = count;
+    } else {
+        m_wordCount = 0;
+    }
+}
+
+void StoryItem::setParaCount(int count) {
+    if (count >= 0) {
+        m_paraCount = count;
+    } else {
+        m_paraCount = 0;
+    }
+}
+
+void StoryItem::setCounts(int cCount, int wCount, int pCount) {
+    setCharCount(cCount);
+    setWordCount(wCount);
+    setParaCount(pCount);
 }
 
 /*
@@ -147,26 +172,37 @@ void StoryItem::setCursorPosition(int position) {
     =============
 */
 
-void StoryItem::toXml(const QString &ns, QXmlStreamWriter &xmlWriter) {
+void StoryItem::toXml(const QString &nsCol, const QString &nsItm, QXmlStreamWriter &xmlWriter) {
 
-    xmlWriter.writeStartElement(ns, "title");
+    if (m_empty) {
+        return;
+    }
+
+    xmlWriter.writeStartElement(nsCol, "item");
+    xmlWriter.writeAttribute(nsItm, "type", typeAsString());
+    xmlWriter.writeAttribute(nsItm, "handle", handle());
+
+    xmlWriter.writeStartElement(nsItm, "title");
     xmlWriter.writeCharacters(m_title);
     xmlWriter.writeEndElement();
 
-    xmlWriter.writeStartElement(ns, "cursorPos");
-    xmlWriter.writeCharacters(QString().setNum(m_cursorPosition));
+    xmlWriter.writeStartElement(nsItm, "cursorPos");
+    xmlWriter.writeCharacters(QString::number(m_cursorPos));
     xmlWriter.writeEndElement();
 
-    if (!m_childItems.isEmpty()) {
-        xmlWriter.writeStartElement(ns, "children");
-        for (StoryItem *item : m_childItems) {
-            xmlWriter.writeStartElement(ns, typeAsString());
-            xmlWriter.writeAttribute(ns, "handle", item->handle());
-            item->toXml(ns, xmlWriter);
-            xmlWriter.writeEndElement();
-        }
-        xmlWriter.writeEndElement();
-    }
+    xmlWriter.writeStartElement(nsItm, "charCount");
+    xmlWriter.writeCharacters(QString::number(m_charCount));
+    xmlWriter.writeEndElement();
+
+    xmlWriter.writeStartElement(nsItm, "wordCount");
+    xmlWriter.writeCharacters(QString::number(m_wordCount));
+    xmlWriter.writeEndElement();
+
+    xmlWriter.writeStartElement(nsItm, "paraCount");
+    xmlWriter.writeCharacters(QString::number(m_paraCount));
+    xmlWriter.writeEndElement();
+
+    xmlWriter.writeEndElement(); // Close item
 }
 
 } // namespace Collett

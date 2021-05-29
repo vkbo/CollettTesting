@@ -95,11 +95,11 @@ private:
     // Namespaces
     // Dublin Core: https://dublincore.org/specifications/dublin-core/dcmi-terms/
 
-    QString m_nsCol = QLatin1String("urn:collett:collett");
-    QString m_nsPrj = QLatin1String("urn:collett:project");
-    QString m_nsMta = QLatin1String("urn:collett:meta");
-    QString m_nsItm = QLatin1String("urn:collett:item");
-    QString m_nsDC  = QLatin1String("http://purl.org/dc/elements/1.1/");
+    QString m_nsCol = "urn:collett:collett";
+    QString m_nsPrj = "urn:collett:project";
+    QString m_nsMta = "urn:collett:meta";
+    QString m_nsItm = "urn:collett:item";
+    QString m_nsDC  = "http://purl.org/dc/elements/1.1/";
 
     // XML Readers
     void readProjectXML(QDomNode &parent);
