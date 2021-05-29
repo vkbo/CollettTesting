@@ -22,12 +22,14 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef GUINOVELTREE_H
 #define GUINOVELTREE_H
 
+#include "data.h"
+
 #include <QObject>
-#include <QTreeWidget>
+#include <QListView>
 
 namespace Collett {
 
-class GuiNovelTree : public QTreeWidget
+class GuiNovelTree : public QListView
 {
     Q_OBJECT
 
@@ -36,6 +38,7 @@ public:
     ~GuiNovelTree() {};
 
 private:
+    CollettData *m_data;
 
 };
 } // namespace Collett

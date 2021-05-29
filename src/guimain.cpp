@@ -42,7 +42,7 @@ namespace Collett {
 GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
 
     // Create Main Data Object
-    m_data = new CollettData(this);
+    m_data = CollettData::instance();
 
     // Main GUI Elements
     m_mainMenu  = new GuiMainMenu(this);
@@ -82,6 +82,9 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
 
 void GuiMain::openProject(const QString &path) {
     m_data->openProject(path);
+    QItemSelectionModel *m = m_novelTree->selectionModel();
+    m_novelTree->setModel(m_data->storyModel());
+    delete m;
 }
 
 bool GuiMain::saveProject() {

@@ -34,9 +34,10 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-GuiDocEditor::GuiDocEditor(QWidget *parent, CollettData *_data)
-    : QTextEdit(parent), mainData(_data)
+GuiDocEditor::GuiDocEditor(QWidget *parent)
+    : QTextEdit(parent)
 {
+    mainData = CollettData::instance();
 
     // Settings
     this->setAcceptRichText(true);
@@ -129,7 +130,7 @@ GuiDocEditor::~GuiDocEditor() {
 
 bool GuiDocEditor::openDocument(const QString handle) {
 
-    colDoc = new DocumentStore(mainData->getProject(), handle);
+    colDoc = new DocumentStore(mainData->project(), handle);
     hasDocument = true;
 
     this->setColletDoc(colDoc->paragraphs());

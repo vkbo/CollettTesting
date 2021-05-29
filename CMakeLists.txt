@@ -61,15 +61,15 @@ include_directories(
 list(APPEND Collet_SOURCE
     document/documentblock
     document/documentstore
-    editor/doceditor
+    # editor/doceditor
     editor/editarea
     editor/fragmentedit
     gui/mainmenu
     gui/noveltree
     gui/statusbar
     project/project
-    project/projectmodel
     project/storyitem
+    project/storymodel
     project/storytree
     data
     guimain

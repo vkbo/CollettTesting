@@ -65,6 +65,9 @@ public:
     QString lastError() const {
         return m_lastError;
     }
+    StoryTree *storyTree() {
+        return m_storyTree;
+    }
 
 private:
     bool    m_hasProject;

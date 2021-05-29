@@ -22,6 +22,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "constants.h"
 #include "project.h"
 #include "storytree.h"
+#include "storymodel.h"
 
 #include <QDateTime>
 #include <QDebug>

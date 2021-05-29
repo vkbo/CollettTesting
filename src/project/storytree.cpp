@@ -47,6 +47,13 @@ StoryItem *StoryTree::itemWithHandle(const QString &handle) {
     return m_tree.value(handle, nullptr);
 }
 
+StoryItem *StoryTree::itemAt(int position) {
+    if (position < 0 || position >= m_order.size()) {
+        return nullptr;
+    }
+    return m_tree.value(m_order.at(position), nullptr);
+}
+
 int StoryTree::count() const {
     return m_tree.count();
 }

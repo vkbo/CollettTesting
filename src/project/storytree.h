@@ -43,6 +43,7 @@ public:
     ~StoryTree();
 
     StoryItem *itemWithHandle(const QString &handle);
+    StoryItem *itemAt(int position);
     int count() const;
 
     void createItem(StoryItem::ItemType type, const QString &title, qsizetype position=-1);

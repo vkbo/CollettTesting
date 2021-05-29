@@ -19,35 +19,32 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef COL_PROJECTMODEL_H
-#define COL_PROJECTMODEL_H
+#ifndef COL_STORYMODEL_H
+#define COL_STORYMODEL_H
 
 #include "project.h"
 
-#include <QAbstractItemModel>
+#include <QAbstractListModel>
 #include <QModelIndex>
 #include <QObject>
 
 namespace Collett {
 
-class ProjectModel : public QAbstractItemModel
+class StoryModel : public QAbstractListModel
 {
     Q_OBJECT
 
 public:
-    explicit ProjectModel(Project *project, QObject *parent=nullptr);
-    ~ProjectModel() {};
+    explicit StoryModel(Project *project, QObject *parent=nullptr);
+    ~StoryModel() {};
 
-    QModelIndex index(int row, int column, const QModelIndex &parent=QModelIndex()) const override;
-    QModelIndex parent(const QModelIndex &index) const;
     int rowCount(const QModelIndex &parent=QModelIndex()) const;
-    int columnCount(const QModelIndex &parent=QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role=Qt::DisplayRole) const;
 
 private:
-    const Project *m_project;
+    Project *m_project;
 
 };
 } // namespace Collett
 
-#endif // COL_PROJECTMODEL_H
+#endif // COL_STORYMODEL_H

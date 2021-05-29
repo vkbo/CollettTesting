@@ -23,7 +23,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #define GUIMAIN_H
 
 #include "data.h"
-#include "doceditor.h"
 #include "mainmenu.h"
 #include "noveltree.h"
 #include "statusbar.h"

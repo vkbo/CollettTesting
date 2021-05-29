@@ -59,7 +59,7 @@ public:
         qreal blockIndent;
     };
 
-    GuiDocEditor(QWidget *parent, CollettData *_data);
+    GuiDocEditor(QWidget *parent=nullptr);
     ~GuiDocEditor();
 
     bool openDocument(const QString handle);
