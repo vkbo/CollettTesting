@@ -23,11 +23,9 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #define COL_STORYITEM_H
 
 #include <QJsonObject>
-#include <QList>
-#include <QString>
-#include <QUuid>
-#include <QXmlStreamWriter>
 #include <QObject>
+#include <QString>
+#include <QXmlStreamWriter>
 
 namespace Collett {
 
@@ -59,6 +57,7 @@ public:
     ItemType type() const;
     QString  typeAsString() const;
     QString  typeForDisplay() const;
+    QString  typeBackground() const;
 
     int cursorPosition() const;
     int itemCount() const;

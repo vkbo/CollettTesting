@@ -52,13 +52,19 @@ GuiNovelTreeDelegate::GuiNovelTreeDelegate(QWidget *parent)
 
 void GuiNovelTreeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
 
+    QJsonObject data = index.model()->data(index, Qt::DisplayRole).toJsonObject();
+
+    QColor col(data.value("background").toString());
     if (option.state & QStyle::State_Selected) {
-        painter->fillRect(option.rect, option.palette.highlight());
+        col.setAlpha(108);
+        painter->fillRect(option.rect, QBrush(col, Qt::SolidPattern));
+    } else {
+        col.setAlpha(24);
+        painter->fillRect(option.rect, QBrush(col, Qt::SolidPattern));
     }
 
     painter->save();
 
-    QJsonObject data = index.model()->data(index, Qt::DisplayRole).toJsonObject();
     int y = option.rect.y();
     int w = option.rect.width();
 

@@ -85,6 +85,7 @@ Project::Project(const QString &path) {
     qDebug() << "Content Path:" << m_contentPath.path();
 
     m_storyTree->createItem(StoryItem::Title, "Title Page");
+    m_storyTree->createItem(StoryItem::Page, "Acknowledgements");
     m_storyTree->createItem(StoryItem::Section, "Prologue");
     m_storyTree->createItem(StoryItem::Partition, "Part One");
     m_storyTree->createItem(StoryItem::Chapter, "Chapter One");

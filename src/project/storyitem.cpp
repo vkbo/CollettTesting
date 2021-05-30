@@ -21,6 +21,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "storyitem.h"
 
+#include <QJsonObject>
 #include <QString>
 #include <QUuid>
 #include <QXmlStreamWriter>
@@ -62,6 +63,7 @@ QJsonObject StoryItem::toJson() {
     data.insert("title", m_title);
     data.insert("handle", m_handle);
     data.insert("type", typeForDisplay());
+    data.insert("background", typeBackground());
 
     return data;
 }
@@ -129,6 +131,30 @@ QString StoryItem::typeForDisplay() const {
             break;
     }
     return tr("Scene");
+}
+
+QString StoryItem::typeBackground() const {
+    switch (m_type) {
+        case ItemType::Title:
+            return "#00ff00";
+            break;
+        case ItemType::Partition:
+            return "#00ff00";
+            break;
+        case ItemType::Chapter:
+            return "#ff0000";
+            break;
+        case ItemType::Section:
+            return "#ff0000";
+            break;
+        case ItemType::Scene:
+            return "#0000ff";
+            break;
+        case ItemType::Page:
+            return "#ffff00";
+            break;
+    }
+    return "#ffffff";
 }
 
 int StoryItem::cursorPosition() const {
