@@ -47,6 +47,7 @@ public:
     int count() const;
 
     void createItem(StoryItem::ItemType type, const QString &title, qsizetype position=-1);
+    void fromXML(const QString &nsCol, const QString &nsItm, QDomNode &content);
     void toXML(const QString &nsCol, const QString &nsItm, QXmlStreamWriter &xmlWriter);
 
 public slots:

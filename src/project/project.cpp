@@ -84,18 +84,6 @@ Project::Project(const QString &path) {
     qDebug() << "Project File:" << m_projectFile.path();
     qDebug() << "Content Path:" << m_contentPath.path();
 
-    m_storyTree->createItem(StoryItem::Title, "Title Page");
-    m_storyTree->createItem(StoryItem::Page, "Acknowledgements");
-    m_storyTree->createItem(StoryItem::Section, "Prologue");
-    m_storyTree->createItem(StoryItem::Partition, "Part One");
-    m_storyTree->createItem(StoryItem::Chapter, "Chapter One");
-    m_storyTree->createItem(StoryItem::Scene, "Scene One");
-    m_storyTree->createItem(StoryItem::Scene, "Scene Two");
-    m_storyTree->createItem(StoryItem::Chapter, "Chapter Two");
-    m_storyTree->createItem(StoryItem::Scene, "Scene Three");
-    m_storyTree->createItem(StoryItem::Scene, "Scene Four");
-    m_storyTree->updateItemCounts();
-
 }
 
 Project::~Project() {
@@ -157,6 +145,8 @@ bool Project::openProject() {
             if (element.namespaceURI() == m_nsCol) {
                 if (element.tagName() == "project") {
                     readProjectXML(node);
+                } else if (element.tagName() == "content") {
+                    readContentXML(node);
                 }
             }
             qInfo() << element.namespaceURI() << element.tagName();
@@ -231,6 +221,23 @@ void Project::readProjectXML(QDomNode &parent) {
                     m_projectTitle = element.text();
                 } else if (element.tagName() == QLatin1String("created")) {
                     m_projectCreated = element.text();
+                }
+            }
+            qInfo() << element.namespaceURI() << element.tagName();
+        }
+        node = node.nextSibling();
+    }
+}
+
+void Project::readContentXML(QDomNode &parent) {
+
+    QDomNode node = parent.firstChild();
+    while(!node.isNull()) {
+        QDomElement element = node.toElement();
+        if(!element.isNull()) {
+            if (element.namespaceURI() == m_nsCol) {
+                if (element.tagName() == QLatin1String("story")) {
+                    m_storyTree->fromXML(m_nsCol, m_nsItm, node);
                 }
             }
             qInfo() << element.namespaceURI() << element.tagName();

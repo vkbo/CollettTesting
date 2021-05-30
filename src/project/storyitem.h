@@ -26,6 +26,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QObject>
 #include <QString>
 #include <QXmlStreamWriter>
+#include <QDomNode>
 
 namespace Collett {
 
@@ -43,7 +44,7 @@ public:
     void initItem(ItemType type, const QString &title);
 
     void toXml(const QString &nsCol, const QString &nsItm, QXmlStreamWriter &xmlWriter);
-    static StoryItem fromXml();
+    void fromXml(const QString &nsCol, const QString &nsItm, QDomNode &node);
 
     QJsonObject toJson();
 

@@ -109,6 +109,26 @@ void StoryTree::createItem(StoryItem::ItemType type, const QString &title, qsize
     =============
 */
 
+void StoryTree::fromXML(const QString &nsCol, const QString &nsItm, QDomNode &content) {
+
+    m_order.clear();
+    m_tree.clear();
+
+    QDomNode node = content.firstChild();
+    while(!node.isNull()) {
+        StoryItem *item = new StoryItem();
+        item->fromXml(nsCol, nsItm, node);
+        if (!item->isEmpty()) {
+            qDebug() << "Loaded item:" << item->handle();
+            m_order.append(item->handle());
+            m_tree.insert(item->handle(), item);
+        }
+        node = node.nextSibling();
+    }
+
+    updateItemCounts();
+}
+
 void StoryTree::toXML(const QString &nsCol, const QString &nsItm, QXmlStreamWriter &xmlWriter) {
 
     xmlWriter.writeStartElement(nsCol, "story");

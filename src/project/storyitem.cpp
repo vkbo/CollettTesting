@@ -278,4 +278,66 @@ void StoryItem::toXml(const QString &nsCol, const QString &nsItm, QXmlStreamWrit
     xmlWriter.writeEndElement(); // Close item
 }
 
+void StoryItem::fromXml(const QString &nsCol, const QString &nsItm, QDomNode &node) {
+
+    if (!node.isElement()) {
+        return;
+    }
+
+    QDomElement eItem = node.toElement();
+
+    // Minimal Required
+
+    QDomAttr aType = eItem.attributeNodeNS(nsItm, "type");
+    QDomAttr aHandle = eItem.attributeNodeNS(nsItm, "handle");
+
+    if (aType.isNull() || aHandle.isNull()) {
+        qWarning() << "Story item is missing type or handle, skipping";
+    }
+
+    ItemType type = ItemType::Scene;
+    if (aType.value() == "title") {
+        type = ItemType::Title;
+    } else if (aType.value() == "partition") {
+        type = ItemType::Partition;
+    } else if (aType.value() == "chapter") {
+        type = ItemType::Chapter;
+    } else if (aType.value() == "section") {
+        type = ItemType::Section;
+    } else if (aType.value() == "scene") {
+        type = ItemType::Scene;
+    } else if (aType.value() == "page") {
+        type = ItemType::Page;
+    }
+
+    populateItem(type, QString(""), aHandle.value());
+
+    // Set Values
+
+    QDomNode child = node.firstChild();
+    while(!child.isNull()) {
+        QDomElement element = child.toElement();
+        if(!element.isNull()) {
+
+            // Dublin Core
+            if (element.namespaceURI() == nsItm) {
+                if (element.tagName() == QLatin1String("title")) {
+                    setTitle(element.text());
+                } else if (element.tagName() == QLatin1String("cursorPos")) {
+                    setCursorPosition(element.text().toInt());
+                } else if (element.tagName() == QLatin1String("charCount")) {
+                    setCharCount(element.text().toInt());
+                } else if (element.tagName() == QLatin1String("wordCount")) {
+                    setWordCount(element.text().toInt());
+                } else if (element.tagName() == QLatin1String("paraCount")) {
+                    setParaCount(element.text().toInt());
+                }
+            }
+        }
+        child = child.nextSibling();
+    }
+
+    return;
+}
+
 } // namespace Collett

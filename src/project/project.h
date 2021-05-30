@@ -106,6 +106,7 @@ private:
 
     // XML Readers
     void readProjectXML(QDomNode &parent);
+    void readContentXML(QDomNode &parent);
 
     // XML Writers
     void writeMetatXML(QXmlStreamWriter &xmlWriter);
