@@ -62,9 +62,7 @@ public:
 
     int cursorPosition() const;
     int itemCount() const;
-    int charCount() const;
     int wordCount() const;
-    int paraCount() const;
 
     // Setters
     void setTitle(const QString &title);
@@ -73,10 +71,7 @@ public:
 
     void setCursorPosition(int position);
     void setItemCount(int count);
-    void setCharCount(int count);
     void setWordCount(int count);
-    void setParaCount(int count);
-    void setCounts(int cCount, int wCount, int pCount);
 
 private:
 
@@ -88,9 +83,7 @@ private:
 
     int m_itemCount;
     int m_cursorPos;
-    int m_charCount;
     int m_wordCount;
-    int m_paraCount;
 
 };
 } // namespace Collett

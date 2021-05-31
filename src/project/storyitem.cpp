@@ -21,6 +21,9 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "storyitem.h"
 
+#include <QDomAttr>
+#include <QDomElement>
+#include <QDomNode>
 #include <QJsonObject>
 #include <QString>
 #include <QUuid>
@@ -29,15 +32,13 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 namespace Collett {
 
 StoryItem::StoryItem() {
-    m_empty  = true;
-    m_title  = "";
-    m_handle = "";
-    m_type = ItemType::Scene;
+    m_empty     = true;
+    m_title     = "";
+    m_handle    = "";
+    m_type      = ItemType::Scene;
     m_itemCount = 0;
     m_cursorPos = 0;
-    m_charCount = 0;
     m_wordCount = 0;
-    m_paraCount = 0;
 }
 
 /*
@@ -46,9 +47,9 @@ StoryItem::StoryItem() {
 */
 
 void StoryItem::populateItem(ItemType type, const QString &title, const QString &handle) {
-    m_empty = false;
-    m_type = type;
-    m_title = title;
+    m_empty  = false;
+    m_type   = type;
+    m_title  = title;
     m_handle = handle;
 }
 
@@ -59,12 +60,10 @@ void StoryItem::initItem(ItemType type, const QString &title) {
 
 QJsonObject StoryItem::toJson() {
     QJsonObject data;
-
     data.insert("title", m_title);
     data.insert("handle", m_handle);
     data.insert("type", typeForDisplay());
     data.insert("background", typeBackground());
-
     return data;
 }
 
@@ -165,16 +164,8 @@ int StoryItem::itemCount() const {
     return m_itemCount;
 }
 
-int StoryItem::charCount() const {
-    return m_charCount;
-}
-
 int StoryItem::wordCount() const {
     return m_wordCount;
-}
-
-int StoryItem::paraCount() const {
-    return m_paraCount;
 }
 
 /*
@@ -210,34 +201,12 @@ void StoryItem::setItemCount(int count) {
     }
 }
 
-void StoryItem::setCharCount(int count) {
-    if (count >= 0) {
-        m_charCount = count;
-    } else {
-        m_charCount = 0;
-    }
-}
-
 void StoryItem::setWordCount(int count) {
     if (count >= 0) {
         m_wordCount = count;
     } else {
         m_wordCount = 0;
     }
-}
-
-void StoryItem::setParaCount(int count) {
-    if (count >= 0) {
-        m_paraCount = count;
-    } else {
-        m_paraCount = 0;
-    }
-}
-
-void StoryItem::setCounts(int cCount, int wCount, int pCount) {
-    setCharCount(cCount);
-    setWordCount(wCount);
-    setParaCount(pCount);
 }
 
 /*
@@ -263,16 +232,8 @@ void StoryItem::toXml(const QString &nsCol, const QString &nsItm, QXmlStreamWrit
     xmlWriter.writeCharacters(QString::number(m_cursorPos));
     xmlWriter.writeEndElement();
 
-    xmlWriter.writeStartElement(nsItm, "charCount");
-    xmlWriter.writeCharacters(QString::number(m_charCount));
-    xmlWriter.writeEndElement();
-
     xmlWriter.writeStartElement(nsItm, "wordCount");
     xmlWriter.writeCharacters(QString::number(m_wordCount));
-    xmlWriter.writeEndElement();
-
-    xmlWriter.writeStartElement(nsItm, "paraCount");
-    xmlWriter.writeCharacters(QString::number(m_paraCount));
     xmlWriter.writeEndElement();
 
     xmlWriter.writeEndElement(); // Close item
@@ -310,7 +271,7 @@ void StoryItem::fromXml(const QString &nsCol, const QString &nsItm, QDomNode &no
         type = ItemType::Page;
     }
 
-    populateItem(type, QString(""), aHandle.value());
+    populateItem(type, tr("Untitled"), aHandle.value());
 
     // Set Values
 
@@ -318,19 +279,13 @@ void StoryItem::fromXml(const QString &nsCol, const QString &nsItm, QDomNode &no
     while(!child.isNull()) {
         QDomElement element = child.toElement();
         if(!element.isNull()) {
-
-            // Dublin Core
             if (element.namespaceURI() == nsItm) {
                 if (element.tagName() == QLatin1String("title")) {
                     setTitle(element.text());
                 } else if (element.tagName() == QLatin1String("cursorPos")) {
                     setCursorPosition(element.text().toInt());
-                } else if (element.tagName() == QLatin1String("charCount")) {
-                    setCharCount(element.text().toInt());
                 } else if (element.tagName() == QLatin1String("wordCount")) {
                     setWordCount(element.text().toInt());
-                } else if (element.tagName() == QLatin1String("paraCount")) {
-                    setParaCount(element.text().toInt());
                 }
             }
         }

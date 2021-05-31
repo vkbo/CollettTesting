@@ -22,18 +22,17 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "noveltreedelegate.h"
 #include "storyitem.h"
 
-#include <QApplication>
 #include <QAbstractItemDelegate>
+#include <QApplication>
+#include <QFont>
+#include <QFontMetrics>
 #include <QJsonObject>
 #include <QModelIndex>
-#include <QObject>
 #include <QPainter>
+#include <QPen>
+#include <QRect>
 #include <QSize>
 #include <QStyleOptionViewItem>
-#include <QFont>
-#include <QRect>
-#include <QFontMetrics>
-#include <QPen>
 
 namespace Collett {
 
