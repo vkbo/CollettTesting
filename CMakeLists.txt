@@ -61,9 +61,7 @@ include_directories(
 list(APPEND Collet_SOURCE
     document/documentblock
     document/documentstore
-    # editor/doceditor
-    editor/editarea
-    editor/fragmentedit
+    editor/doceditor
     gui/mainmenu
     gui/noveltree
     gui/noveltreedelegate

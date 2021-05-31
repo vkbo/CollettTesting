@@ -27,7 +27,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "mainmenu.h"
 #include "noveltree.h"
 #include "statusbar.h"
-#include "editarea.h"
 
 #include <QApplication>
 #include <QCloseEvent>
@@ -47,7 +46,7 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
     // Main GUI Elements
     m_mainMenu  = new GuiMainMenu(this);
     m_novelTree = new GuiNovelTree(this);
-    m_editArea  = new GuiEditArea(this);
+    m_docEditor = new GuiDocEditor(this);
     m_statusBar = new GuiMainStatus(this);
 
     // Assemble Main Window
@@ -55,7 +54,7 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
     m_splitMain->setContentsMargins(4, 4, 4, 4);
     m_splitMain->setOpaqueResize(false);
     m_splitMain->addWidget(m_novelTree);
-    m_splitMain->addWidget(m_editArea);
+    m_splitMain->addWidget(m_docEditor);
 
     // Set Main Window Elements
     this->setMenuBar(m_mainMenu);

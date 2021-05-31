@@ -66,9 +66,9 @@ public:
     bool saveDocument();
 
 private:
-    CollettData     *mainData;
-    DocumentStore *colDoc;
-    DocFormat    docFormat;
+    CollettData   *m_data;
+    DocumentStore *m_document;
+    DocFormat      m_format;
 
     bool hasDocument = false;
 

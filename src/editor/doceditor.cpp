@@ -37,7 +37,7 @@ namespace Collett {
 GuiDocEditor::GuiDocEditor(QWidget *parent)
     : QTextEdit(parent)
 {
-    mainData = CollettData::instance();
+    m_data = CollettData::instance();
 
     // Settings
     this->setAcceptRichText(true);
@@ -69,57 +69,57 @@ GuiDocEditor::GuiDocEditor(QWidget *parent)
     defaultCharFmt.setFontPointSize(defaultFontSize);
 
     // Values
-    docFormat.blockIndent = 2.0*defaultFontSize;
+    m_format.blockIndent = 2.0*defaultFontSize;
 
     // Default
-    docFormat.blockDefault = defaultBlockFmt;
-    docFormat.charDefault = defaultCharFmt;
+    m_format.blockDefault = defaultBlockFmt;
+    m_format.charDefault = defaultCharFmt;
 
     // Paragraph
-    docFormat.blockParagraph = defaultBlockFmt;
-    docFormat.charParagraph = defaultCharFmt;
+    m_format.blockParagraph = defaultBlockFmt;
+    m_format.charParagraph = defaultCharFmt;
 
     // Header 1
-    docFormat.blockHeader1 = defaultBlockFmt;
-    docFormat.blockHeader1.setHeadingLevel(1);
-    docFormat.blockHeader1.setTopMargin(header1FontSize);
-    docFormat.blockHeader1.setBottomMargin(headerBottomMargin);
+    m_format.blockHeader1 = defaultBlockFmt;
+    m_format.blockHeader1.setHeadingLevel(1);
+    m_format.blockHeader1.setTopMargin(header1FontSize);
+    m_format.blockHeader1.setBottomMargin(headerBottomMargin);
 
-    docFormat.charHeader1 = defaultCharFmt;
-    docFormat.charHeader1.setFontPointSize(header1FontSize);
+    m_format.charHeader1 = defaultCharFmt;
+    m_format.charHeader1.setFontPointSize(header1FontSize);
 
     // Header 2
-    docFormat.blockHeader2 = defaultBlockFmt;
-    docFormat.blockHeader2.setHeadingLevel(2);
-    docFormat.blockHeader2.setTopMargin(header2FontSize);
-    docFormat.blockHeader2.setBottomMargin(headerBottomMargin);
+    m_format.blockHeader2 = defaultBlockFmt;
+    m_format.blockHeader2.setHeadingLevel(2);
+    m_format.blockHeader2.setTopMargin(header2FontSize);
+    m_format.blockHeader2.setBottomMargin(headerBottomMargin);
 
-    docFormat.charHeader2 = defaultCharFmt;
-    docFormat.charHeader2.setFontPointSize(header2FontSize);
+    m_format.charHeader2 = defaultCharFmt;
+    m_format.charHeader2.setFontPointSize(header2FontSize);
 
     // Header 3
-    docFormat.blockHeader3 = defaultBlockFmt;
-    docFormat.blockHeader3.setHeadingLevel(3);
-    docFormat.blockHeader3.setTopMargin(header3FontSize);
-    docFormat.blockHeader3.setBottomMargin(headerBottomMargin);
+    m_format.blockHeader3 = defaultBlockFmt;
+    m_format.blockHeader3.setHeadingLevel(3);
+    m_format.blockHeader3.setTopMargin(header3FontSize);
+    m_format.blockHeader3.setBottomMargin(headerBottomMargin);
 
-    docFormat.charHeader3 = defaultCharFmt;
-    docFormat.charHeader3.setFontPointSize(header3FontSize);
+    m_format.charHeader3 = defaultCharFmt;
+    m_format.charHeader3.setFontPointSize(header3FontSize);
 
     // Header 4
-    docFormat.blockHeader4 = defaultBlockFmt;
-    docFormat.blockHeader4.setHeadingLevel(4);
-    docFormat.blockHeader4.setTopMargin(header4FontSize);
-    docFormat.blockHeader4.setBottomMargin(headerBottomMargin);
+    m_format.blockHeader4 = defaultBlockFmt;
+    m_format.blockHeader4.setHeadingLevel(4);
+    m_format.blockHeader4.setTopMargin(header4FontSize);
+    m_format.blockHeader4.setBottomMargin(headerBottomMargin);
 
-    docFormat.charHeader4 = defaultCharFmt;
-    docFormat.charHeader4.setFontPointSize(header4FontSize);
+    m_format.charHeader4 = defaultCharFmt;
+    m_format.charHeader4.setFontPointSize(header4FontSize);
 
     return;
 }
 
 GuiDocEditor::~GuiDocEditor() {
-    delete colDoc;
+    // delete m_document;
     hasDocument = false;
 }
 
@@ -130,10 +130,10 @@ GuiDocEditor::~GuiDocEditor() {
 
 bool GuiDocEditor::openDocument(const QString handle) {
 
-    colDoc = new DocumentStore(mainData->project(), handle);
+    m_document = new DocumentStore(m_data->project(), handle);
     hasDocument = true;
 
-    this->setColletDoc(colDoc->paragraphs());
+    this->setColletDoc(m_document->paragraphs());
 
     // this->setHtml(
     //     "<h1>Hello World</h1>"
@@ -153,7 +153,7 @@ bool GuiDocEditor::saveDocument() {
         qInfo() << docText.at(i);
     }
     if (hasDocument) {
-        colDoc->write(docText.join("\n"));
+        m_document->write(docText.join("\n"));
     }
     return true;
 }
@@ -193,40 +193,40 @@ void GuiDocEditor::setColletDoc(const QStringList &content) {
             cursor.insertBlock();
         }
 
-        QTextBlockFormat textBlockFmt = docFormat.blockDefault;
-        QTextCharFormat textCharFmt = docFormat.charDefault;
+        QTextBlockFormat textBlockFmt = m_format.blockDefault;
+        QTextCharFormat textCharFmt = m_format.charDefault;
 
         DocumentBlock::Block lineFmt = newBlock.blockStyle();
         switch (lineFmt.header) {
             case 1:
-                textBlockFmt = docFormat.blockHeader1;
-                textCharFmt = docFormat.charHeader1;
+                textBlockFmt = m_format.blockHeader1;
+                textCharFmt = m_format.charHeader1;
                 break;
 
             case 2:
-                textBlockFmt = docFormat.blockHeader2;
-                textCharFmt = docFormat.charHeader2;
+                textBlockFmt = m_format.blockHeader2;
+                textCharFmt = m_format.charHeader2;
                 break;
 
             case 3:
-                textBlockFmt = docFormat.blockHeader3;
-                textCharFmt = docFormat.charHeader3;
+                textBlockFmt = m_format.blockHeader3;
+                textCharFmt = m_format.charHeader3;
                 break;
 
             case 4:
-                textBlockFmt = docFormat.blockHeader4;
-                textCharFmt = docFormat.charHeader4;
+                textBlockFmt = m_format.blockHeader4;
+                textCharFmt = m_format.charHeader4;
                 break;
 
             default:
-                textBlockFmt = docFormat.blockParagraph;
-                textCharFmt = docFormat.charParagraph;
+                textBlockFmt = m_format.blockParagraph;
+                textCharFmt = m_format.charParagraph;
                 break;
         }
 
         textBlockFmt.setAlignment(lineFmt.alignemnt);
         if (lineFmt.indent) {
-            textBlockFmt.setTextIndent(docFormat.blockIndent);
+            textBlockFmt.setTextIndent(m_format.blockIndent);
         }
 
         cursor.setBlockFormat(textBlockFmt);

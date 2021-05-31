@@ -26,7 +26,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "mainmenu.h"
 #include "noveltree.h"
 #include "statusbar.h"
-#include "editarea.h"
+#include "doceditor.h"
 
 #include <QObject>
 #include <QMainWindow>
@@ -57,7 +57,7 @@ private:
     CollettData *m_data;
 
     // Main GUI Elements
-    GuiEditArea   *m_editArea;
+    GuiDocEditor  *m_docEditor;
     GuiMainStatus *m_statusBar;
     GuiNovelTree  *m_novelTree;
     GuiMainMenu   *m_mainMenu;
