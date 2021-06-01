@@ -21,14 +21,14 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "documentblock.h"
 
+#include <QChar>
+#include <QDebug>
+#include <QFont>
 #include <QString>
 #include <QStringList>
-#include <QChar>
 #include <QTextBlock>
 #include <QTextBlockFormat>
 #include <QTextFragment>
-
-#include <QDebug>
 
 namespace Collett {
 
@@ -102,22 +102,23 @@ QString DocumentBlock::encodeQTextBlock(const QTextBlock &qBlock) {
         QString fragFmt = "";
         QString fragTxt = qFrag.text();
 
-        fragTxt.replace('\\', "\\bs\\");
-        fragTxt.replace(QChar::LineSeparator, "\\br\\");
-        fragTxt.replace('{', "\\lc\\");
-        fragTxt.replace('}', "\\rc\\");
-
-        if (chrFmt.fontWeight() > 500) fragFmt += "b";
-        if (chrFmt.fontItalic()) fragFmt += "i";
-        if (chrFmt.fontUnderline()) fragFmt += "u";
-        if (chrFmt.fontStrikeOut()) fragFmt += "s";
-
-        if (fragFmt != "") {
-            fragTxt.prepend("{f"+fragFmt+"}");
-            fragTxt.append("{/f}");
-        }
-
         if (fragTxt != "") {
+
+            fragTxt.replace('\\', "\\bs\\");
+            fragTxt.replace(QChar::LineSeparator, "\\br\\");
+            fragTxt.replace('{', "\\lc\\");
+            fragTxt.replace('}', "\\rc\\");
+
+            if (chrFmt.fontWeight() > QFont::Medium) fragFmt += "b";
+            if (chrFmt.fontItalic()) fragFmt += "i";
+            if (chrFmt.fontUnderline()) fragFmt += "u";
+            if (chrFmt.fontStrikeOut()) fragFmt += "s";
+
+            if (fragFmt != "") {
+                fragTxt.prepend("{f"+fragFmt+"}");
+                fragTxt.append("{/f}");
+            }
+
             blockText.append(fragTxt);
         }
     }
@@ -131,8 +132,8 @@ QString DocumentBlock::encodeQTextBlock(const QTextBlock &qBlock) {
 */
 
 /*
-    Parse an encoded line if text into a block format and a series of fragments
-    with character formats. Also generate a plain text version of the line.
+    Parse an encoded line of text into a block format and a series of fragments
+    with character formats. Also generates a plain text version of the block.
 */
 DocumentBlock::Block DocumentBlock::decodeText(const QString &text) {
 
@@ -169,7 +170,7 @@ DocumentBlock::Block DocumentBlock::decodeText(const QString &text) {
             inFragment = true;
             if (buffer != "") {
                 textFrags.append(buffer);
-                buffer = "";
+                buffer.clear();
             }
         }
 
@@ -177,7 +178,7 @@ DocumentBlock::Block DocumentBlock::decodeText(const QString &text) {
         if (inFragment && c == '}' && buffer.startsWith("{f") && buffer.endsWith("{/f}")) {
             inFragment = false;
             textFrags.append(buffer);
-            buffer = "";
+            buffer.clear();
         }
     }
     if (buffer != "") {
@@ -221,7 +222,7 @@ DocumentBlock::Styles DocumentBlock::parseBlockFormat(const QString &format) {
         return styles;
     }
 
-    // The first key must be a text format key, otherwise this isn't a text block.
+    // The first key must be a text format key, otherwise this isn't a text block
     if (fmtBits.length() > 0) {
         QString fmtBit = fmtBits.at(0);
         if (fmtBit == "TX") {
@@ -245,8 +246,8 @@ DocumentBlock::Styles DocumentBlock::parseBlockFormat(const QString &format) {
         }
     }
 
-    // Further keys are technically optional, but in a pre-defined order.
-    // This is mstly to allow future extensions to the format.
+    // Further keys are technically optional, but in a pre-defined order
+    // This is mstly to allow future extensions to the format
 
     if (fmtBits.length() > 1) {
         QString fmtBit = fmtBits.at(1);
@@ -302,7 +303,7 @@ DocumentBlock::Fragment DocumentBlock::parseFragment(const QString &text) {
         }
 
         // Also check that the opening formatting tag is closed
-        auto endFmt = text.indexOf('}');
+        qsizetype endFmt = text.indexOf('}');
         if (endFmt < 0 || endFmt > text.length() - 5) {
             fragment.valid = false;
         }
@@ -328,11 +329,16 @@ DocumentBlock::Fragment DocumentBlock::parseFragment(const QString &text) {
                 } else if (text.at(i) == 's') {
                     fragment.strikeout = true;
                 } else {
+                    // Format tag contains junk, so we send the whole thing to
+                    // the user and let them figure it out
                     fragment.text = text;
                     break;
                 }
             }
+
         } else {
+            // Fragment is invalid, so we send the whole thing to the user and
+            // let them figure it out
             fragment.text = text;
         }
     }

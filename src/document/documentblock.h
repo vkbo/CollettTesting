@@ -22,8 +22,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef COL_DOCUMENTBLOCK_H
 #define COL_DOCUMENTBLOCK_H
 
-#include <QString>
 #include <QList>
+#include <QString>
 #include <QTextBlock>
 
 namespace Collett {
