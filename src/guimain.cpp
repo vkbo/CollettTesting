@@ -84,6 +84,8 @@ void GuiMain::openProject(const QString &path) {
     QItemSelectionModel *m = m_novelTree->selectionModel();
     m_novelTree->setModel(m_data->storyModel());
     delete m;
+
+    openDocument("test");
 }
 
 bool GuiMain::saveProject() {
@@ -95,9 +97,9 @@ bool GuiMain::saveProject() {
     ==================
 */
 
-// bool GuiMain::openDocument(const QString &handle) {
-//     return guiDocEditor->openDocument(handle);
-// }
+bool GuiMain::openDocument(const QString &handle) {
+    return m_docEditor->openDocument(handle);
+}
 
 /*
     GUI Functions

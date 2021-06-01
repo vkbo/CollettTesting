@@ -29,9 +29,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-StoryTree::StoryTree(QObject *parent)
-    : QObject(parent)
-{
+StoryTree::StoryTree(QObject *parent) : QObject(parent) {
 }
 
 StoryTree::~StoryTree() {
@@ -82,10 +80,11 @@ void StoryTree::updateItemCounts() {
                 case StoryItem::Scene:
                     item->setItemCount(++sCount);
                     break;
+                default:
+                    break;
             }
         }
     }
-
 }
 
 /*
@@ -140,8 +139,6 @@ void StoryTree::toXML(const QString &nsCol, const QString &nsItm, QXmlStreamWrit
         }
     }
     xmlWriter.writeEndElement();
-
-    return;
 }
 
 } // namespace Collett
