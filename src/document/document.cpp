@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "documentstore.h"
+#include "document.h"
 #include "project.h"
 
 #include <QDir>
@@ -33,37 +33,37 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-DocumentStore::DocumentStore(Project *_project, const QString _handle)
-    : project(_project), handle(_handle)
+Document::Document(Project *_project, const QString _handle)
+    : project(_project), m_handle(_handle)
 {
     QDir contentPath = project->contentPath();
     if (!contentPath.exists()) {
         qWarning() << "Cannot initialise document object as content path does not exist";
-        docVaild = false;
-        docEmpty = true;
+        m_valid = false;
+        m_empty = true;
         return;
     }
 
-    fileName = handle+".ctxt";
-    filePath = contentPath.absoluteFilePath(fileName);
+    m_fileName = m_handle+".ctxt";
+    m_filePath = contentPath.absoluteFilePath(m_fileName);
 
-    docFile = new QFile(filePath);
+    m_file = new QFile(m_filePath);
 }
 
-DocumentStore::~DocumentStore() {}
+Document::~Document() {}
 
 /*
     Methods
     =======
 */
 
-void DocumentStore::readMeta() {
+void Document::readMeta() {
 
     QString line;
 
     rawMeta.clear();
-    if (docFile->open(QIODevice::ReadOnly)) {
-        QTextStream inStream(docFile);
+    if (m_file->open(QIODevice::ReadOnly)) {
+        QTextStream inStream(m_file);
         while (!inStream.atEnd()) {
             line = inStream.readLine();
             if (line.startsWith("[META:")) {
@@ -72,47 +72,47 @@ void DocumentStore::readMeta() {
                 break;
             }
         }
-        docFile->close();
+        m_file->close();
     }
 
     return;
 }
 
-QStringList DocumentStore::paragraphs() {
+QStringList Document::paragraphs() {
 
     QStringList content;
     QString line;
 
-    if (docFile->open(QIODevice::ReadOnly)) {
-        QTextStream inStream(docFile);
+    if (m_file->open(QIODevice::ReadOnly)) {
+        QTextStream inStream(m_file);
         while (!inStream.atEnd()) {
             line = inStream.readLine();
             if (!line.startsWith("[META:")) {
                 content.append(line);
             }
         }
-        docFile->close();
+        m_file->close();
     }
 
     return content;
 }
 
-QString DocumentStore::text() {
+QString Document::text() {
     return paragraphs().join('\n');
 }
 
-DocumentStore::RWStatus DocumentStore::write(const QString text) {
+Document::RWStatus Document::write(const QString &text) {
 
-    if (docFile->open(QIODevice::WriteOnly)) {
-        QTextStream stream(docFile);
+    if (m_file->open(QIODevice::WriteOnly)) {
+        QTextStream stream(m_file);
         stream << text << '\n';
-        docFile->close();
-        qDebug() << "Wrote document:" << filePath;
+        m_file->close();
+        qDebug() << "Wrote document:" << m_filePath;
     } else {
-        return DocumentStore::RWStatus::Fail;
+        return Document::RWStatus::Fail;
     }
 
-    return DocumentStore::RWStatus::OK;
+    return Document::RWStatus::OK;
 }
 
 } // namespace Collett

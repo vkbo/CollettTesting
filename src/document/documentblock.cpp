@@ -32,9 +32,10 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-DocumentBlock::DocumentBlock() {
-    blockValid = false;
-}
+/*
+    Public Methods
+    ==============
+*/
 
 QString DocumentBlock::encodeQTextBlock(const QTextBlock &qBlock) {
 
@@ -125,28 +126,38 @@ QString DocumentBlock::encodeQTextBlock(const QTextBlock &qBlock) {
 }
 
 /*
-    Methods
-    =======
+    Private Methods
+    ===============
 */
 
-void DocumentBlock::unpackText(const QString &text) {
+/*
+    Parse an encoded line if text into a block format and a series of fragments
+    with character formats. Also generate a plain text version of the line.
+*/
+DocumentBlock::Block DocumentBlock::decodeText(const QString &text) {
+
+    Block block;
 
     if (!text.startsWith('[')) {
-        blockValid = false;
-        return;
+        block.valid = false;
+        return block;
     }
 
-    auto endFmt = text.indexOf(']');
+    qsizetype endFmt = text.indexOf(']');
     if (endFmt < 0) {
-        blockValid = false;
-        return;
+        block.valid = false;
+        return block;
     }
 
     QString blockFmt = text.first(endFmt+1);
     QString blockText = text.sliced(endFmt+1);
 
     // Parse block format
-    blockStyles = parseBlockFormat(blockFmt);
+    block.styles = parseBlockFormat(blockFmt);
+    if (!block.styles.valid) {
+        block.valid = false;
+        return block;
+    }
 
     // Parse block text
     QStringList textFrags;
@@ -162,7 +173,7 @@ void DocumentBlock::unpackText(const QString &text) {
             }
         }
 
-        buffer += c;
+        buffer.append(c);
         if (inFragment && c == '}' && buffer.startsWith("{f") && buffer.endsWith("{/f}")) {
             inFragment = false;
             textFrags.append(buffer);
@@ -173,71 +184,90 @@ void DocumentBlock::unpackText(const QString &text) {
         textFrags.append(buffer);
     }
 
-    qDebug() << "Format:" << blockFmt;
+    block.fragments.clear();
+    block.text.clear();
+    for (const QString& textFrag : textFrags) {
+        Fragment parsed = parseFragment(textFrag);
+        block.fragments.append(parsed);
+        block.text.append(parsed.text);
+    }
+    block.valid = true;
+
+    qDebug() << "Block:" << blockFmt;
     qDebug() << "Text:" << blockText;
     qDebug() << "Fragments:" << textFrags;
+    qDebug() << "Plain:" << block.text;
 
-    blockFragments.clear();
-    for (const QString& textFrag : textFrags) {
-        blockFragments.append(parseFragment(textFrag));
-    }
-
-    blockValid = true;
-
-    return;
+    return block;
 }
 
 /*
-    Internal Functions
-    ==================
+    Parse a colon separated string of codes for the block format of a document
+    text block. The block must start with a text block code to be a valid text
+    block.
 */
+DocumentBlock::Styles DocumentBlock::parseBlockFormat(const QString &format) {
 
-DocumentBlock::Block DocumentBlock::parseBlockFormat(const QString &format) {
-
-    Block block;
+    Styles styles;
 
     QString fmtCore = format.sliced(1);
     fmtCore.chop(1);
 
     QStringList fmtBits = fmtCore.split(':', Qt::SkipEmptyParts);
 
+    // A valid block contains at least one formatting key
+    if (fmtBits.length() == 0) {
+        styles.valid = false;
+        return styles;
+    }
+
+    // The first key must be a text format key, otherwise this isn't a text block.
     if (fmtBits.length() > 0) {
         QString fmtBit = fmtBits.at(0);
         if (fmtBit == "TX") {
-            block.header = 0;
+            styles.valid = true;
+            styles.header = 0;
         } else if (fmtBit == "H1") {
-            block.header = 1;
+            styles.valid = true;
+            styles.header = 1;
         } else if (fmtBit == "H2") {
-            block.header = 2;
+            styles.valid = true;
+            styles.header = 2;
         } else if (fmtBit == "H3") {
-            block.header = 3;
+            styles.valid = true;
+            styles.header = 3;
         } else if (fmtBit == "H4") {
-            block.header = 4;
+            styles.valid = true;
+            styles.header = 4;
         } else {
-            block.header = 0;
+            styles.valid = false;
+            return styles;
         }
     }
+
+    // Further keys are technically optional, but in a pre-defined order.
+    // This is mstly to allow future extensions to the format.
 
     if (fmtBits.length() > 1) {
         QString fmtBit = fmtBits.at(1);
         if (fmtBit == "AL") {
-            block.alignemnt = Qt::AlignLeft;
+            styles.alignemnt = Qt::AlignLeft;
         } else if (fmtBit == "AC") {
-            block.alignemnt = Qt::AlignCenter;
+            styles.alignemnt = Qt::AlignCenter;
         } else if (fmtBit == "AR") {
-            block.alignemnt = Qt::AlignRight;
+            styles.alignemnt = Qt::AlignRight;
         } else if (fmtBit == "AJ") {
-            block.alignemnt = Qt::AlignJustify;
+            styles.alignemnt = Qt::AlignJustify;
         } else {
-            block.alignemnt = Qt::AlignLeft;
+            styles.alignemnt = Qt::AlignLeft;
         }
     }
 
     if (fmtBits.length() > 2) {
-        block.indent = fmtBits.at(2) == "I";
+        styles.indent = fmtBits.at(2) == "I";
     }
 
-    return block;
+    return styles;
 }
 
 /*

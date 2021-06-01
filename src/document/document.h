@@ -19,8 +19,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef COL_DOCUMENTSTORE_H
-#define COL_DOCUMENTSTORE_H
+#ifndef COL_DOCUMENT_H
+#define COL_DOCUMENT_H
 
 #include "project.h"
 
@@ -30,49 +30,52 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
-class DocumentStore
+class Document
 {
 public:
+    enum DocumentType {
+        Story, Note
+    };
 
     enum RWStatus {
         OK, New, Fail
     };
 
-    DocumentStore(Project *_project, const QString _handle);
-    ~DocumentStore();
+    Document(Project *_project, const QString _handle);
+    ~Document();
 
     void readMeta();
 
-    RWStatus    write(const QString text);
+    RWStatus    write(const QString &text);
     QStringList paragraphs();
     QString     text();
 
-    bool isValid() {
-        return docVaild;
+    bool isValid() const {
+        return m_valid;
     }
 
-    bool isEmpty() {
-        return docEmpty;
+    bool isEmpty() const {
+        return m_empty;
     }
 
-    bool exists() {
-        return docFile->exists();
+    bool exists() const {
+        return m_file->exists();
     }
 
 private:
     Project *project;
-    const QString handle;
+    const QString m_handle;
 
     QStringList rawMeta;
 
-    bool docVaild;
-    bool docEmpty;
+    bool m_valid;
+    bool m_empty;
 
-    QFile  *docFile;
-    QString fileName;
-    QString filePath;
+    QFile  *m_file;
+    QString m_fileName;
+    QString m_filePath;
 
 };
 } // namespace Collett
 
-#endif // COL_DOCUMENTSTORE_H
+#endif // COL_DOCUMENT_H

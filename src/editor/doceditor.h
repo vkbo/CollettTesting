@@ -24,7 +24,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "data.h"
 #include "project.h"
-#include "documentstore.h"
+#include "document.h"
 
 #include <QObject>
 #include <QStringList>
@@ -67,7 +67,7 @@ public:
 
 private:
     CollettData   *m_data;
-    DocumentStore *m_document;
+    Document *m_document;
     DocFormat      m_format;
 
     bool hasDocument = false;

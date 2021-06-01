@@ -22,7 +22,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "guimain.h"
 #include "data.h"
 #include "settings.h"
-#include "documentstore.h"
+#include "document.h"
 #include "doceditor.h"
 #include "mainmenu.h"
 #include "noveltree.h"

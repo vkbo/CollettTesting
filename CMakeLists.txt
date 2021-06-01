@@ -60,7 +60,7 @@ include_directories(
 # Source Files
 list(APPEND Collet_SOURCE
     document/documentblock
-    document/documentstore
+    document/document
     editor/doceditor
     gui/mainmenu
     gui/noveltree

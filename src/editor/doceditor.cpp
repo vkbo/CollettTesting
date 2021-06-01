@@ -130,7 +130,7 @@ GuiDocEditor::~GuiDocEditor() {
 
 bool GuiDocEditor::openDocument(const QString handle) {
 
-    m_document = new DocumentStore(m_data->project(), handle);
+    m_document = new Document(m_data->project(), handle);
     hasDocument = true;
 
     this->setColletDoc(m_document->paragraphs());
@@ -180,9 +180,8 @@ void GuiDocEditor::setColletDoc(const QStringList &content) {
 
     cursor.beginEditBlock();
     for (const QString& line : content) {
-        DocumentBlock newBlock;
-        newBlock.unpackText(line);
-        if (!newBlock.isValid()) {
+        DocumentBlock::Block newBlock = DocumentBlock::decodeText(line);
+        if (!newBlock.valid) {
             qWarning() << "Invalid block encountered";
             continue;
         }
@@ -196,7 +195,7 @@ void GuiDocEditor::setColletDoc(const QStringList &content) {
         QTextBlockFormat textBlockFmt = m_format.blockDefault;
         QTextCharFormat textCharFmt = m_format.charDefault;
 
-        DocumentBlock::Block lineFmt = newBlock.blockStyle();
+        DocumentBlock::Styles lineFmt = newBlock.styles;
         switch (lineFmt.header) {
             case 1:
                 textBlockFmt = m_format.blockHeader1;
@@ -231,7 +230,7 @@ void GuiDocEditor::setColletDoc(const QStringList &content) {
 
         cursor.setBlockFormat(textBlockFmt);
 
-        for (const DocumentBlock::Fragment& blockFrag : newBlock.fragments()) {
+        for (const DocumentBlock::Fragment& blockFrag : newBlock.fragments) {
             if (blockFrag.plain) {
                 cursor.insertText(blockFrag.text, textCharFmt);
             } else {

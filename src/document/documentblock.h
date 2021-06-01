@@ -32,7 +32,6 @@ class DocumentBlock
 {
 
 public:
-
     struct Fragment {
         bool plain     = false;
         bool valid     = false;
@@ -43,37 +42,29 @@ public:
         QString text   = "";
     };
 
-    struct Block {
+    struct Styles {
+        bool          valid     = false;
         int           header    = 0;
         Qt::Alignment alignemnt = Qt::AlignLeft;
         bool          indent    = false;
     };
 
-    DocumentBlock();
-    ~DocumentBlock() {};
+    struct Block {
+        bool            valid = false;
+        Styles          styles;
+        QList<Fragment> fragments;
+        QString         text;
+    };
 
     static QString encodeQTextBlock(const QTextBlock &qBlock);
-    void unpackText(const QString &text);
-
-    bool isValid() {
-        return blockValid;
-    }
-
-    Block blockStyle() {
-        return blockStyles;
-    }
-
-    QList<Fragment> fragments() {
-        return blockFragments;
-    }
+    static Block decodeText(const QString &text);
 
 private:
-    bool            blockValid;
-    Block           blockStyles;
-    QList<Fragment> blockFragments;
+    DocumentBlock() {};
+    ~DocumentBlock() {};
 
-    Block    parseBlockFormat(const QString &format);
-    Fragment parseFragment(const QString &text);
+    static Styles parseBlockFormat(const QString &format);
+    static Fragment parseFragment(const QString &text);
 
 };
 } // namespace Collett
