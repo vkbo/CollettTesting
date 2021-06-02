@@ -66,11 +66,11 @@ public:
     bool saveDocument();
 
 private:
-    CollettData   *m_data;
-    Document *m_document;
-    DocFormat      m_format;
+    CollettData *m_data;
+    Document    *m_document;
+    DocFormat    m_format;
 
-    bool hasDocument = false;
+    bool m_hasDocument;
 
     void setColletDoc(const QStringList &content);
     QStringList toColletDoc();

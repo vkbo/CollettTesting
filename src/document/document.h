@@ -27,11 +27,14 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QString>
 #include <QStringList>
 #include <QFile>
+#include <QObject>
 
 namespace Collett {
 
-class Document
+class Document : public QObject
 {
+    Q_OBJECT
+
 public:
     enum DocumentType {
         Story, Note
@@ -46,30 +49,29 @@ public:
 
     void readMeta();
 
-    RWStatus    write(const QString &text);
-    QStringList paragraphs();
-    QString     text();
+    RWStatus write(const QString &text);
+    RWStatus read();
 
-    bool isValid() const {
-        return m_valid;
-    }
+    bool isValid() const;
+    bool isEmpty() const;
+    bool exists() const;
 
-    bool isEmpty() const {
-        return m_empty;
-    }
+    QStringList paragraphs() const;
+    QString     toPlainText();
 
-    bool exists() const {
-        return m_file->exists();
-    }
+    void clearError();
 
 private:
     Project *project;
     const QString m_handle;
 
-    QStringList rawMeta;
+    QStringList m_rawMeta;
+    QStringList m_rawText;
 
-    bool m_valid;
-    bool m_empty;
+    bool    m_valid;
+    bool    m_empty;
+    bool    m_hasError;
+    QString m_errMessage;
 
     QFile  *m_file;
     QString m_fileName;

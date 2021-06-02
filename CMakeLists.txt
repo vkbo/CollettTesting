@@ -70,6 +70,7 @@ list(APPEND Collet_SOURCE
     project/storyitem
     project/storymodel
     project/storytree
+    tools/textutils
     data
     guimain
     main

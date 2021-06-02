@@ -25,12 +25,13 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "documentblock.h"
 
 #include <QDebug>
+#include <QFont>
 #include <QString>
-#include <QTextEdit>
-#include <QTextBlock>
 #include <QStringList>
-#include <QTextDocument>
+#include <QTextBlock>
 #include <QTextCursor>
+#include <QTextDocument>
+#include <QTextEdit>
 
 namespace Collett {
 
@@ -38,6 +39,7 @@ GuiDocEditor::GuiDocEditor(QWidget *parent)
     : QTextEdit(parent)
 {
     m_data = CollettData::instance();
+    m_hasDocument = false;
 
     // Settings
     this->setAcceptRichText(true);
@@ -120,7 +122,7 @@ GuiDocEditor::GuiDocEditor(QWidget *parent)
 
 GuiDocEditor::~GuiDocEditor() {
     // delete m_document;
-    hasDocument = false;
+    m_hasDocument = false;
 }
 
 /*
@@ -130,21 +132,16 @@ GuiDocEditor::~GuiDocEditor() {
 
 bool GuiDocEditor::openDocument(const QString handle) {
 
+    m_hasDocument = false;
     m_document = new Document(m_data->project(), handle);
-    hasDocument = true;
+    m_document->read();
 
-    this->setColletDoc(m_document->paragraphs());
+    if (m_document->isValid() && !m_document->isEmpty()) {
+        m_hasDocument = true;
+        this->setColletDoc(m_document->paragraphs());
+    }
 
-    // this->setHtml(
-    //     "<h1>Hello World</h1>"
-    //     "<p>This is some text in a paragraph.</p>"
-    //     "<p>And here is some {more} text in a second paragraph!</p>"
-    //     "<p>Here we have some <b>bold</b> and <i>italic</i> text.</p>"
-    //     "<p>This is <b>a <i>sentence <u>with <s>nested</s> formatting</u> in</i> the</b> middle.</p>"
-    //     "<p style='text-align: center;'><i>The End</i></p>"
-    // );
-
-    return true;
+    return m_hasDocument;
 }
 
 bool GuiDocEditor::saveDocument() {
@@ -152,7 +149,7 @@ bool GuiDocEditor::saveDocument() {
     for (int i=0; i < docText.size(); ++i) {
         qInfo() << docText.at(i);
     }
-    if (hasDocument) {
+    if (m_hasDocument) {
         m_document->write(docText.join("\n"));
     }
     return true;
@@ -234,8 +231,8 @@ void GuiDocEditor::setColletDoc(const QStringList &content) {
             if (blockFrag.plain) {
                 cursor.insertText(blockFrag.text, textCharFmt);
             } else {
-                auto textFragFmt = textCharFmt;
-                textFragFmt.setFontWeight(blockFrag.bold ? 700 : 400);
+                QTextCharFormat textFragFmt = textCharFmt;
+                textFragFmt.setFontWeight(blockFrag.bold ? QFont::Bold : QFont::Normal);
                 textFragFmt.setFontItalic(blockFrag.italic);
                 textFragFmt.setFontUnderline(blockFrag.underline);
                 textFragFmt.setFontStrikeOut(blockFrag.strikeout);

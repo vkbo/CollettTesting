@@ -21,17 +21,23 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "document.h"
 #include "project.h"
-
-#include <QDir>
-#include <QString>
-#include <QFile>
-#include <QIODevice>
-#include <QTextStream>
-#include <QStringList>
+#include "documentblock.h"
 
 #include <QDebug>
+#include <QDir>
+#include <QFile>
+#include <QIODevice>
+#include <QString>
+#include <QStringList>
+#include <QTextStream>
+#include <QtGlobal>
 
 namespace Collett {
+
+/*
+    Constructor/Destructor
+    ======================
+*/
 
 Document::Document(Project *_project, const QString _handle)
     : project(_project), m_handle(_handle)
@@ -48,57 +54,80 @@ Document::Document(Project *_project, const QString _handle)
     m_filePath = contentPath.absoluteFilePath(m_fileName);
 
     m_file = new QFile(m_filePath);
+
+    clearError();
 }
 
-Document::~Document() {}
+Document::~Document() {
+    if (m_file->isOpen()) {
+        m_file->close();
+    }
+    delete m_file;
+}
 
 /*
-    Methods
+    Getters
     =======
 */
 
-void Document::readMeta() {
+bool Document::isValid() const {
+    return m_valid;
+}
 
-    QString line;
+bool Document::isEmpty() const {
+    return m_empty;
+}
 
-    rawMeta.clear();
+bool Document::exists() const {
+    return m_file->exists();
+}
+
+QStringList Document::paragraphs() const {
+    if (m_valid && !m_empty) {
+        return m_rawText;
+    } else {
+        return QStringList();
+    }
+}
+
+/*
+    Read/Write
+    ==========
+*/
+
+Document::RWStatus Document::read() {
+
+    m_empty = true;
+    m_rawMeta.clear();
+    m_rawText.clear();
+
+    if (!m_file->exists()) {
+        m_valid = true;
+        m_empty = true;
+        return RWStatus::New;
+    }
+
     if (m_file->open(QIODevice::ReadOnly)) {
+        QString line;
         QTextStream inStream(m_file);
         while (!inStream.atEnd()) {
             line = inStream.readLine();
             if (line.startsWith("[META:")) {
-                rawMeta.append(line);
-            } else {
-                break;
+                m_rawMeta.append(line);
+            } else if (line.startsWith("[")) {
+                m_rawText.append(line);
             }
         }
         m_file->close();
+
+        m_valid = true;
+        m_empty = false;
+        return RWStatus::OK;
+    } else {
+        m_valid = false;
+        m_empty = true;
+        return RWStatus::Fail;
     }
-
-    return;
-}
-
-QStringList Document::paragraphs() {
-
-    QStringList content;
-    QString line;
-
-    if (m_file->open(QIODevice::ReadOnly)) {
-        QTextStream inStream(m_file);
-        while (!inStream.atEnd()) {
-            line = inStream.readLine();
-            if (!line.startsWith("[META:")) {
-                content.append(line);
-            }
-        }
-        m_file->close();
-    }
-
-    return content;
-}
-
-QString Document::text() {
-    return paragraphs().join('\n');
 }
 
 Document::RWStatus Document::write(const QString &text) {
@@ -113,6 +142,46 @@ Document::RWStatus Document::write(const QString &text) {
     }
 
     return Document::RWStatus::OK;
+}
+
+/*
+    Parsing
+    =======
+*/
+
+QString Document::toPlainText() {
+
+    QString text;
+    int errCount = 0;
+
+    for (const QString& line : m_rawText) {
+        DocumentBlock::Block block = DocumentBlock::decodeText(line);
+        if (!block.valid) {
+            errCount++;
+            continue;
+        }
+        text.append(block.text).append('\n');
+    }
+
+    clearError();
+    if (errCount > 0) {
+        m_hasError = true;
+        m_errMessage = tr(
+            "Encountered %1 error(s) while parsing document file: %2").arg(errCount).arg(m_file->fileName()
+        );
+    }
+
+    return text;
+}
+
+/*
+    Other Methods
+    =============
+*/
+
+void Document::clearError() {
+    m_hasError = false;
+    m_errMessage.clear();
 }
 
 } // namespace Collett
