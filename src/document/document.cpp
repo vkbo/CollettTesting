@@ -203,11 +203,11 @@ QString Document::toPlainText() {
 
     clearError();
     if (errCount > 0) {
-        addError(tr(
-            "Encountered %1 error(s) while parsing document file: %2")
+        addError(
+            tr("Encountered %1 error(s) while parsing document file: %2")
             .arg(errCount)
-            .arg(m_file->fileName()
-        ));
+            .arg(m_file->fileName())
+        );
     }
 
     return text;
