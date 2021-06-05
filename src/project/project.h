@@ -81,7 +81,7 @@ private:
 
     // Meta Values
     QString m_projectCreated = "";
-    int     m_projectRevisions = 0;
+    int     m_projectRevision = 0;
 
     // Project Values
     QString m_projectTitle = "Unnamed Project";
@@ -105,11 +105,12 @@ private:
     QString m_nsDC  = "http://purl.org/dc/elements/1.1/";
 
     // XML Readers
+    void readMetaXML(QDomNode &parent);
     void readProjectXML(QDomNode &parent);
     void readContentXML(QDomNode &parent);
 
     // XML Writers
-    void writeMetatXML(QXmlStreamWriter &xmlWriter);
+    void writeMetaXML(QXmlStreamWriter &xmlWriter);
     void writeProjectXML(QXmlStreamWriter &xmlWriter);
     void writeContentXML(QXmlStreamWriter &xmlWriter);
 

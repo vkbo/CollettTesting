@@ -148,9 +148,13 @@ bool GuiDocEditor::openDocument(const QString handle) {
 
 bool GuiDocEditor::saveDocument() {
 
-    QString plain = toPlainText();
-    int wCount = TextUtils::countWords(plain);
-    m_document->item()->setWordCount(wCount);
+    StoryItem *item = m_document->item();
+    if (item->isEmpty()) {
+        return false;
+    }
+
+    item->setWordCount(TextUtils::countWords(toPlainText()));
+    item->setCursorPosition(textCursor().position());
 
     QStringList docText = this->toColletDoc();
     for (int i=0; i < docText.size(); ++i) {

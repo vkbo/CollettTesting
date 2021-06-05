@@ -24,6 +24,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "storytree.h"
 #include "storymodel.h"
 
+#include <QApplication>
 #include <QDateTime>
 #include <QDebug>
 #include <QDir>
@@ -143,7 +144,9 @@ bool Project::openProject() {
         QDomElement element = node.toElement();
         if(!element.isNull()) {
             if (element.namespaceURI() == m_nsCol) {
-                if (element.tagName() == "project") {
+                if (element.tagName() == "meta") {
+                    readMetaXML(node);
+                } else if (element.tagName() == "project") {
                     readProjectXML(node);
                 } else if (element.tagName() == "content") {
                     readContentXML(node);
@@ -187,10 +190,12 @@ bool Project::saveProject() {
     xmlWriter.writeNamespace(m_nsItm, "item");
     xmlWriter.writeNamespace(m_nsDC, "dc");
     xmlWriter.writeStartElement(m_nsCol, "collettXml");
+    xmlWriter.writeAttribute(m_nsMta, "fileVersion", "0.1");
+    xmlWriter.writeAttribute(m_nsMta, "appVersion", qApp->applicationVersion());
 
     // Write Data
 
-    writeMetatXML(xmlWriter);
+    writeMetaXML(xmlWriter);
     writeProjectXML(xmlWriter);
     writeContentXML(xmlWriter);
 
@@ -208,6 +213,33 @@ bool Project::saveProject() {
     ===========
 */
 
+void Project::readMetaXML(QDomNode &parent) {
+
+    QDomNode node = parent.firstChild();
+    while(!node.isNull()) {
+        QDomElement element = node.toElement();
+        if(!element.isNull()) {
+
+            // Dublin Core
+            if (element.namespaceURI() == m_nsDC) {
+                if (element.tagName() == QLatin1String("created")) {
+                    m_projectCreated = element.text();
+                }
+            }
+
+            // Collett Meta
+            if (element.namespaceURI() == m_nsMta) {
+                if (element.tagName() == QLatin1String("revision")) {
+                    m_projectRevision = element.text().toInt();
+                }
+            }
+
+            qInfo() << element.namespaceURI() << element.tagName();
+        }
+        node = node.nextSibling();
+    }
+}
+
 void Project::readProjectXML(QDomNode &parent) {
 
     QDomNode node = parent.firstChild();
@@ -219,8 +251,6 @@ void Project::readProjectXML(QDomNode &parent) {
             if (element.namespaceURI() == m_nsDC) {
                 if (element.tagName() == QLatin1String("title")) {
                     m_projectTitle = element.text();
-                } else if (element.tagName() == QLatin1String("created")) {
-                    m_projectCreated = element.text();
                 }
             }
             qInfo() << element.namespaceURI() << element.tagName();
@@ -251,7 +281,7 @@ void Project::readContentXML(QDomNode &parent) {
     ===========
 */
 
-void Project::writeMetatXML(QXmlStreamWriter &xmlWriter) {
+void Project::writeMetaXML(QXmlStreamWriter &xmlWriter) {
 
     xmlWriter.writeStartElement(m_nsCol, "meta");
 
@@ -263,8 +293,8 @@ void Project::writeMetatXML(QXmlStreamWriter &xmlWriter) {
     xmlWriter.writeCharacters(QDateTime::currentDateTime().toString(Qt::ISODate));
     xmlWriter.writeEndElement();
 
-    xmlWriter.writeStartElement(m_nsMta, "revisions");
-    xmlWriter.writeCharacters(QString().setNum(m_projectRevisions));
+    xmlWriter.writeStartElement(m_nsMta, "revision");
+    xmlWriter.writeCharacters(QString().setNum(++m_projectRevision));
     xmlWriter.writeEndElement();
 
     xmlWriter.writeEndElement(); // Close: meta
