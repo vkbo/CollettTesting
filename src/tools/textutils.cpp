@@ -25,6 +25,11 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Collett {
 
+/*
+    Stats
+    =====
+*/
+
 int TextUtils::countWords(const QString &text) {
 
     QString clean = text.simplified();

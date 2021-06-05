@@ -194,10 +194,10 @@ DocumentBlock::Block DocumentBlock::decodeText(const QString &text) {
     }
     block.valid = true;
 
-    qDebug() << "Block:" << blockFmt;
-    qDebug() << "Text:" << blockText;
-    qDebug() << "Fragments:" << textFrags;
-    qDebug() << "Plain:" << block.text;
+    // qDebug() << "Block:" << blockFmt;
+    // qDebug() << "Text:" << blockText;
+    // qDebug() << "Fragments:" << textFrags;
+    // qDebug() << "Plain:" << block.text;
 
     return block;
 }

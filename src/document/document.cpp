@@ -22,6 +22,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "document.h"
 #include "project.h"
 #include "documentblock.h"
+#include "textutils.h"
+#include "storyitem.h"
 
 #include <QDebug>
 #include <QDir>
@@ -39,12 +41,31 @@ namespace Collett {
     ======================
 */
 
-Document::Document(Project *_project, const QString _handle)
-    : project(_project), m_handle(_handle)
+Document::Document(Project *project, const QString &handle)
+    : m_project(project), m_handle(handle)
 {
-    QDir contentPath = project->contentPath();
+    clearError();
+
+    if (!TextUtils::isHandle(m_handle)) {
+        addError(tr("An error occured while initialising document."));
+        qWarning() << QString("Document ERROR: Handle '%1' is not valid").arg(m_handle);
+        m_valid = false;
+        m_empty = true;
+        return;
+    }
+
+    QDir contentPath = m_project->contentPath();
     if (!contentPath.exists()) {
-        qWarning() << "Cannot initialise document object as content path does not exist";
+        addError(tr("An error occured while initialising document."));
+        qWarning() << "Document ERROR: Cannot initialise document object as content path does not exist";
+        m_valid = false;
+        m_empty = true;
+        return;
+    }
+
+    m_item = m_project->storyTree()->itemWithHandle(m_handle);
+    if (m_item->isEmpty()) {
+        addError(tr("The document is not known to the project and cannot be saved."));
         m_valid = false;
         m_empty = true;
         return;
@@ -54,8 +75,8 @@ Document::Document(Project *_project, const QString _handle)
     m_filePath = contentPath.absoluteFilePath(m_fileName);
 
     m_file = new QFile(m_filePath);
-
-    clearError();
+    m_valid = true;
+    m_empty = true;
 }
 
 Document::~Document() {
@@ -88,6 +109,10 @@ QStringList Document::paragraphs() const {
     } else {
         return QStringList();
     }
+}
+
+StoryItem *Document::item() const {
+    return m_item;
 }
 
 /*
@@ -132,16 +157,29 @@ Document::RWStatus Document::read() {
 
 Document::RWStatus Document::write(const QString &text) {
 
+    if (!checkBeforeIO()) {
+        return RWStatus::Fail;
+    }
+
     if (m_file->open(QIODevice::WriteOnly)) {
         QTextStream stream(m_file);
+
+        // Meta Data
+        stream << "[META:TITLE]" << m_item->title() << "\n";
+        stream << "[META:WORDS]" << m_item->wordCount() << "\n";
+
+        // Body Text
         stream << text << '\n';
+
+        // Close and Report
         m_file->close();
         qDebug() << "Wrote document:" << m_filePath;
+
     } else {
         return Document::RWStatus::Fail;
     }
 
-    return Document::RWStatus::OK;
+    return RWStatus::OK;
 }
 
 /*
@@ -165,10 +203,11 @@ QString Document::toPlainText() {
 
     clearError();
     if (errCount > 0) {
-        m_hasError = true;
-        m_errMessage = tr(
-            "Encountered %1 error(s) while parsing document file: %2").arg(errCount).arg(m_file->fileName()
-        );
+        addError(tr(
+            "Encountered %1 error(s) while parsing document file: %2")
+            .arg(errCount)
+            .arg(m_file->fileName()
+        ));
     }
 
     return text;
@@ -181,7 +220,27 @@ QString Document::toPlainText() {
 
 void Document::clearError() {
     m_hasError = false;
-    m_errMessage.clear();
+    m_errMessages.clear();
+}
+
+/*
+    Internal Functions
+    ==================
+*/
+
+void Document::addError(const QString &err) {
+    m_hasError = true;
+    m_errMessages.append(err);
+    qWarning() << "Document ERROR:" << err;
+}
+
+bool Document::checkBeforeIO() {
+    if (m_valid) {
+        return true;
+    } else {
+        addError(tr("Cannot perform action on invalid document."));
+        return false;
+    }
 }
 
 } // namespace Collett

@@ -23,11 +23,18 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #define COL_TEXTUTILS_H
 
 #include <QString>
+#include <QUuid>
 
 namespace Collett {
 namespace TextUtils {
 
+// Stats
 int countWords(const QString &text);
+
+// Validators
+inline bool isHandle(const QString &handle) {
+    return !QUuid(handle).isNull();
+}
 
 } // namespace TextUtils
 } // namespace Collett

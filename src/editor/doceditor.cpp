@@ -23,6 +23,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "project.h"
 #include "doceditor.h"
 #include "documentblock.h"
+#include "textutils.h"
+#include "storyitem.h"
 
 #include <QDebug>
 #include <QFont>
@@ -145,6 +147,11 @@ bool GuiDocEditor::openDocument(const QString handle) {
 }
 
 bool GuiDocEditor::saveDocument() {
+
+    QString plain = toPlainText();
+    int wCount = TextUtils::countWords(plain);
+    m_document->item()->setWordCount(wCount);
+
     QStringList docText = this->toColletDoc();
     for (int i=0; i < docText.size(); ++i) {
         qInfo() << docText.at(i);

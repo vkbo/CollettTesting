@@ -23,6 +23,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #define COL_DOCUMENT_H
 
 #include "project.h"
+#include "storyitem.h"
 
 #include <QString>
 #include <QStringList>
@@ -36,15 +37,11 @@ class Document : public QObject
     Q_OBJECT
 
 public:
-    enum DocumentType {
-        Story, Note
-    };
-
     enum RWStatus {
         OK, New, Fail
     };
 
-    Document(Project *_project, const QString _handle);
+    Document(Project *project, const QString &handle);
     ~Document();
 
     void readMeta();
@@ -56,26 +53,36 @@ public:
     bool isEmpty() const;
     bool exists() const;
 
+    StoryItem *item() const;
+
     QStringList paragraphs() const;
     QString     toPlainText();
 
     void clearError();
 
 private:
-    Project *project;
+    // Class Properties
+    Project      *m_project;
+    StoryItem    *m_item;
     const QString m_handle;
 
-    QStringList m_rawMeta;
-    QStringList m_rawText;
+    // Class State
+    bool        m_valid;
+    bool        m_empty;
+    bool        m_hasError;
+    QStringList m_errMessages;
 
-    bool    m_valid;
-    bool    m_empty;
-    bool    m_hasError;
-    QString m_errMessage;
-
+    // Document Meta
     QFile  *m_file;
     QString m_fileName;
     QString m_filePath;
+
+    // Document Data
+    QStringList m_rawMeta;
+    QStringList m_rawText;
+
+    void addError(const QString &err);
+    bool checkBeforeIO();
 
 };
 } // namespace Collett

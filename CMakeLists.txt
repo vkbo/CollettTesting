@@ -55,6 +55,7 @@ include_directories(
     src/editor
     src/gui
     src/project
+    src/tools
 )
 
 # Source Files

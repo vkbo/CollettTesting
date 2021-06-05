@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collett:collettXml xmlns:collett="urn:collett:collett" xmlns:project="urn:collett:project" xmlns:meta="urn:collett:meta" xmlns:item="urn:collett:item" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <collett:meta>
+    <dc:created>2021-06-05T17:13:10</dc:created>
+    <dc:date>2021-06-05T17:13:10</dc:date>
+    <meta:revisions>0</meta:revisions>
+  </collett:meta>
+  <collett:project>
+    <dc:title>Sample Project</dc:title>
+    <project:author></project:author>
+  </collett:project>
+  <collett:content>
+    <collett:story item:count="10">
+      <collett:item item:type="title" item:handle="ec373dd8-fd14-401f-8c75-535ea96e4db6">
+        <item:title>Title Page</item:title>
+        <item:cursorPos>0</item:cursorPos>
+        <item:wordCount>0</item:wordCount>
+      </collett:item>
+      <collett:item item:type="page" item:handle="62900e30-ba27-49ee-ab37-863d2e6cd02d">
+        <item:title>Acknowledgements</item:title>
+        <item:cursorPos>0</item:cursorPos>
+        <item:wordCount>47</item:wordCount>
+      </collett:item>
+      <collett:item item:type="section" item:handle="7c5e8615-8ae4-451a-bb4a-ad96c6de47d1">
+        <item:title>Prologue</item:title>
+        <item:cursorPos>0</item:cursorPos>
+        <item:wordCount>0</item:wordCount>
+      </collett:item>
+      <collett:item item:type="partition" item:handle="21d442ad-9ecc-4540-89d3-781881d1e089">
+        <item:title>Part One</item:title>
+        <item:cursorPos>0</item:cursorPos>
+        <item:wordCount>0</item:wordCount>
+      </collett:item>
+      <collett:item item:type="chapter" item:handle="909f58d6-b8a9-4a8b-b5c7-d2c02a8e1ca9">
+        <item:title>Chapter One</item:title>
+        <item:cursorPos>0</item:cursorPos>
+        <item:wordCount>0</item:wordCount>
+      </collett:item>
+      <collett:item item:type="scene" item:handle="964b9a9e-5b5d-4591-8d3a-e16efaa1906b">
+        <item:title>Scene One</item:title>
+        <item:cursorPos>0</item:cursorPos>
+        <item:wordCount>0</item:wordCount>
+      </collett:item>
+      <collett:item item:type="scene" item:handle="2bbe6147-1cde-4932-8831-ac543231f4a9">
+        <item:title>Scene Two</item:title>
+        <item:cursorPos>0</item:cursorPos>
+        <item:wordCount>0</item:wordCount>
+      </collett:item>
+      <collett:item item:type="chapter" item:handle="30d4a422-12ab-40f4-9408-bf17ab229cff">
+        <item:title>Chapter Two</item:title>
+        <item:cursorPos>0</item:cursorPos>
+        <item:wordCount>0</item:wordCount>
+      </collett:item>
+      <collett:item item:type="scene" item:handle="ce535195-d7d6-4cbe-9d6d-286ef43fb21a">
+        <item:title>Scene Three</item:title>
+        <item:cursorPos>0</item:cursorPos>
+        <item:wordCount>0</item:wordCount>
+      </collett:item>
+      <collett:item item:type="scene" item:handle="e816f5e6-962a-467d-b71c-84ccfa798721">
+        <item:title>Scene Four</item:title>
+        <item:cursorPos>0</item:cursorPos>
+        <item:wordCount>0</item:wordCount>
+      </collett:item>
+    </collett:story>
+  </collett:content>
+</collett:collettXml>

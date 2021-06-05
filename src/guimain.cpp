@@ -85,7 +85,7 @@ void GuiMain::openProject(const QString &path) {
     m_novelTree->setModel(m_data->storyModel());
     delete m;
 
-    openDocument("test");
+    openDocument("62900e30-ba27-49ee-ab37-863d2e6cd02d");
 }
 
 bool GuiMain::saveProject() {
@@ -108,7 +108,7 @@ bool GuiMain::openDocument(const QString &handle) {
 
 bool GuiMain::closeMain() {
 
-    // guiDocEditor->saveDocument();
+    m_docEditor->saveDocument();
     saveProject();
 
     // Save Settings
