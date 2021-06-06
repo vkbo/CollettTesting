@@ -2,7 +2,7 @@
 [META:WORDS]47
 [H1:AL:O]Hello World
 [TX:AL:O]This is some text in a paragraph.
-[TX:AL:I]And here is some \lc\more\rc\ text in a second paragraph!
+[TX:AL:I]And here is some \lc\more\rc\ text in a {fbiu}second{/f} paragraph!
 [H2:AL:O]More Headers!
 [TX:AL:O]Here we have some {fb}bold{/f} and {fi}italic{/f} text.
 [TX:AL:I]This is {fb}a {/f}{fbi}sentence {/f}{fbiu}with {/f}{fbius}nested{/f}{fbiu} formatting{/f}{fbi} in{/f}{fb} the{/f} middle.

@@ -22,6 +22,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef GUIDOCEDITOR_H
 #define GUIDOCEDITOR_H
 
+#include "collett.h"
 #include "data.h"
 #include "project.h"
 #include "document.h"
@@ -67,6 +68,9 @@ public:
 
     bool hasDocument() const;
     bool hasBeenModified() const;
+
+public slots:
+    void documentAction(Collett::DocAction action);
 
 private:
     CollettData *m_data;

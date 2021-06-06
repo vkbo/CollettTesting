@@ -19,6 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include "collett.h"
 #include "maintoolbar.h"
 
 #include <QAction>
@@ -80,6 +81,46 @@ void GuiMainToolBar::doChangeBlockFormat(int level) {
             m_blockHeader4->setChecked(true);
             break;
     }
+}
+
+void GuiMainToolBar::fmtBoldClicked() {
+    emit documentAction(Collett::FormatBold);
+}
+
+void GuiMainToolBar::fmtItalicClicked() {
+    emit documentAction(Collett::FormatItalic);
+}
+
+void GuiMainToolBar::fmtUnderlineClicked() {
+    emit documentAction(Collett::FormatUnderline);
+}
+
+void GuiMainToolBar::fmtStrikeoutClicked() {
+    emit documentAction(Collett::FormatStrikeOut);
+}
+
+void GuiMainToolBar::alignLeftClicked() {
+    emit documentAction(Collett::TextAlignLeft);
+}
+
+void GuiMainToolBar::alignCentreClicked() {
+    emit documentAction(Collett::TextAlignCentre);
+}
+
+void GuiMainToolBar::alignRightClicked() {
+    emit documentAction(Collett::TextAlignRight);
+}
+
+void GuiMainToolBar::alignJustifyClicked() {
+    emit documentAction(Collett::TextAlignJustify);
+}
+
+void GuiMainToolBar::textIndentClicked() {
+    emit documentAction(Collett::TextIndent);
+}
+
+void GuiMainToolBar::textOutdentClicked() {
+    emit documentAction(Collett::TextOutdent);
 }
 
 /*
@@ -180,6 +221,16 @@ void GuiMainToolBar::buildTextFormatButtons() {
     m_fmtUnderline = addAction(QIcon::fromTheme("format-text-underline"), tr("Underline"));
     m_fmtStrike = addAction(QIcon::fromTheme("format-text-strikethrough"), tr("Strikethrough"));
 
+    m_fmtBold->setShortcut(QKeySequence("Ctrl+B"));
+    m_fmtItalic->setShortcut(QKeySequence("Ctrl+I"));
+    m_fmtUnderline->setShortcut(QKeySequence("Ctrl+U"));
+    m_fmtStrike->setShortcut(QKeySequence("Ctrl+D"));
+
+    connect(m_fmtBold, &QAction::triggered, this, &GuiMainToolBar::fmtBoldClicked);
+    connect(m_fmtItalic, &QAction::triggered, this, &GuiMainToolBar::fmtItalicClicked);
+    connect(m_fmtUnderline, &QAction::triggered, this, &GuiMainToolBar::fmtUnderlineClicked);
+    connect(m_fmtStrike, &QAction::triggered, this, &GuiMainToolBar::fmtStrikeoutClicked);
+
     addSeparator();
 
     m_alignLeft = addAction(QIcon::fromTheme("format-justify-left"), tr("Left Align"));
@@ -187,10 +238,18 @@ void GuiMainToolBar::buildTextFormatButtons() {
     m_alignRight = addAction(QIcon::fromTheme("format-justify-right"), tr("Right Align"));
     m_alignJustified = addAction(QIcon::fromTheme("format-justify-fill"), tr("Justified"));
 
+    connect(m_alignLeft, &QAction::triggered, this, &GuiMainToolBar::alignLeftClicked);
+    connect(m_alignCentre, &QAction::triggered, this, &GuiMainToolBar::alignCentreClicked);
+    connect(m_alignRight, &QAction::triggered, this, &GuiMainToolBar::alignRightClicked);
+    connect(m_alignJustified, &QAction::triggered, this, &GuiMainToolBar::alignJustifyClicked);
+
     addSeparator();
 
     m_textIndent = addAction(QIcon::fromTheme("format-indent-more"), tr("Indent"));
     m_textOutent = addAction(QIcon::fromTheme("format-indent-less"), tr("Outdent"));
+
+    connect(m_textIndent, &QAction::triggered, this, &GuiMainToolBar::textIndentClicked);
+    connect(m_textOutent, &QAction::triggered, this, &GuiMainToolBar::textOutdentClicked);
 
 }
 

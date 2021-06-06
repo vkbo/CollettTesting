@@ -19,6 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include "collett.h"
 #include "data.h"
 #include "project.h"
 #include "doceditor.h"
@@ -141,6 +142,59 @@ bool GuiDocEditor::hasBeenModified() const {
         return false;
     }
     return document()->isModified();
+}
+
+/*
+    Text Format Slots
+    =================
+*/
+
+void GuiDocEditor::documentAction(Collett::DocAction action) {
+
+    if (action == Collett::FormatBold) {
+        if (fontWeight() > QFont::Medium) {
+            setFontWeight(QFont::Normal);
+        } else {
+            setFontWeight(QFont::Bold);
+        }
+
+    } else if (action == Collett::FormatItalic) {
+        setFontItalic(!fontItalic());
+
+    } else if (action == Collett::FormatUnderline) {
+        setFontUnderline(!fontUnderline());
+
+    } else if (action == Collett::FormatStrikeOut) {
+        QFont font = currentFont();
+        font.setStrikeOut(!font.strikeOut());
+        setCurrentFont(font);
+
+    } else if (action == Collett::TextAlignLeft) {
+        setAlignment(Qt::AlignLeft);
+
+    } else if (action == Collett::TextAlignCentre) {
+        setAlignment(Qt::AlignHCenter);
+
+    } else if (action == Collett::TextAlignRight) {
+        setAlignment(Qt::AlignRight);
+
+    } else if (action == Collett::TextAlignJustify) {
+        setAlignment(Qt::AlignJustify);
+
+    } else if (action == Collett::TextIndent) {
+        QTextCursor cursor = textCursor();
+        QTextBlock block = document()->findBlock(cursor.position());
+        QTextBlockFormat format = block.blockFormat();
+        format.setTextIndent(m_format.blockIndent);
+        cursor.setBlockFormat(format);
+
+    } else if (action == Collett::TextOutdent) {
+        QTextCursor cursor = textCursor();
+        QTextBlock block = document()->findBlock(cursor.position());
+        QTextBlockFormat format = block.blockFormat();
+        format.setTextIndent(0.0);
+        cursor.setBlockFormat(format);
+    }
 }
 
 /*

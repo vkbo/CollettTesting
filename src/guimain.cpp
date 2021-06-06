@@ -73,6 +73,8 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
         this, SLOT(doStoryTreeDoubleClick(const QModelIndex &))
     );
 
+    connect(m_mainToolBar, &GuiMainToolBar::documentAction, this, &GuiMain::forwardDocAction);
+
     // Finalise
     setWindowTitle(
         tr("%1 %2 Version %3").arg(qApp->applicationName(), "–", qApp->applicationVersion())
@@ -151,6 +153,12 @@ void GuiMain::doStoryTreeDoubleClick(const QModelIndex &index) {
     if (TextUtils::isHandle(handle)) {
         openDocument(handle);
         qDebug() << "Opening document:" << handle;
+    }
+}
+
+void GuiMain::forwardDocAction(Collett::DocAction action) {
+    if (m_docEditor->hasFocus()) {
+        m_docEditor->documentAction(action);
     }
 }
 

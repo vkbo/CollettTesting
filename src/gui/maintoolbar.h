@@ -22,6 +22,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef GUIMAINTOOLBAR_H
 #define GUIMAINTOOLBAR_H
 
+#include "collett.h"
+
 #include <QObject>
 #include <QAction>
 #include <QToolBar>
@@ -40,6 +42,19 @@ public:
 
 public slots:
     void doChangeBlockFormat(int level);
+    void fmtBoldClicked();
+    void fmtItalicClicked();
+    void fmtUnderlineClicked();
+    void fmtStrikeoutClicked();
+    void alignLeftClicked();
+    void alignCentreClicked();
+    void alignRightClicked();
+    void alignJustifyClicked();
+    void textIndentClicked();
+    void textOutdentClicked();
+
+signals:
+    void documentAction(Collett::DocAction action);
 
 private:
 

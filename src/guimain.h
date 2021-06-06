@@ -22,6 +22,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef GUIMAIN_H
 #define GUIMAIN_H
 
+#include "collett.h"
 #include "data.h"
 #include "noveltree.h"
 #include "statusbar.h"
@@ -57,6 +58,7 @@ public:
 public slots:
 
     void doStoryTreeDoubleClick(const QModelIndex &index);
+    void forwardDocAction(Collett::DocAction action);
 
 private:
     CollettData *m_data;
