@@ -63,8 +63,8 @@ private:
 
     // Format Menu
     QAction *a_fmtEmphasis;
-    QAction *aFmtStrong;
-    QAction *aFmtStike;
+    QAction *a_fmtStrong;
+    QAction *a_fmtStike;
 
 };
 } // namespace Collett

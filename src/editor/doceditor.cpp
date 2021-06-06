@@ -128,19 +128,36 @@ GuiDocEditor::~GuiDocEditor() {
 }
 
 /*
+    Getters
+    =======
+*/
+
+bool GuiDocEditor::hasDocument() const {
+    return m_hasDocument;
+}
+
+bool GuiDocEditor::hasBeenModified() const {
+    if (!m_hasDocument) {
+        return false;
+    }
+    return document()->isModified();
+}
+
+/*
     Document Functions
     ==================
 */
 
-bool GuiDocEditor::openDocument(const QString handle) {
+bool GuiDocEditor::openDocument(const QString &handle) {
 
     m_hasDocument = false;
     m_document = new Document(m_data->project(), handle);
     m_document->read();
 
-    if (m_document->isValid() && !m_document->isEmpty()) {
+    if (m_document->isValid()) {
         m_hasDocument = true;
-        this->setColletDoc(m_document->paragraphs());
+        setColletDoc(m_document->paragraphs());
+        document()->setModified(false);
     }
 
     return m_hasDocument;
@@ -162,6 +179,7 @@ bool GuiDocEditor::saveDocument() {
     }
     if (m_hasDocument) {
         m_document->write(docText.join("\n"));
+        document()->setModified(false);
     }
     return true;
 }

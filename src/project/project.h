@@ -50,24 +50,16 @@ public:
     bool saveProject();
 
     // Getters
-    QDir projectPath() const {
-        return m_projectPath;
-    }
-    QDir contentPath() const {
-        return m_contentPath;
-    }
-    bool hasProject() const {
-        return m_hasProject;
-    }
-    bool hasError() const {
-        return m_hasError;
-    }
-    QString lastError() const {
-        return m_lastError;
-    }
-    StoryTree *storyTree() {
-        return m_storyTree;
-    }
+    QDir projectPath() const;
+    QDir contentPath() const;
+    bool hasProject() const;
+    bool hasError() const;
+    QString lastError() const;
+    QString lastOpenDocument() const;
+    StoryTree *storyTree();
+
+    // Setters
+    void setLastOpenDocument(const QString &handle);
 
 private:
     bool    m_hasProject;
@@ -86,6 +78,7 @@ private:
     // Project Values
     QString m_projectTitle = "Unnamed Project";
     QString m_projectAuthor = "";
+    QString m_lastOpenDocument = "";
 
     // Content
     StoryTree *m_storyTree;

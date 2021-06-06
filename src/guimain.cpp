@@ -27,13 +27,14 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "mainmenu.h"
 #include "noveltree.h"
 #include "statusbar.h"
+#include "textutils.h"
 
 #include <QApplication>
 #include <QCloseEvent>
+#include <QDir>
 #include <QList>
 #include <QMainWindow>
 #include <QSplitter>
-#include <QDir>
 #include <QString>
 
 namespace Collett {
@@ -66,6 +67,12 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
     this->resize(mainConf->mainWindowSize());
     m_splitMain->setSizes(mainConf->mainSplitSizes());
 
+    // Connect Signals
+    connect(
+        m_novelTree, SIGNAL(doubleClicked(const QModelIndex &)),
+        this, SLOT(doStoryTreeDoubleClick(const QModelIndex &))
+    );
+
     // Finalise
     this->setWindowTitle(
         tr("%1 %2 Version %3").arg(qApp->applicationName(), "–", qApp->applicationVersion())
@@ -85,7 +92,10 @@ void GuiMain::openProject(const QString &path) {
     m_novelTree->setModel(m_data->storyModel());
     delete m;
 
-    openDocument("62900e30-ba27-49ee-ab37-863d2e6cd02d");
+    QString lastHandle = m_data->project()->lastOpenDocument();
+    if (TextUtils::isHandle(lastHandle)) {
+        openDocument(lastHandle);
+    }
 }
 
 bool GuiMain::saveProject() {
@@ -97,8 +107,13 @@ bool GuiMain::saveProject() {
     ==================
 */
 
-bool GuiMain::openDocument(const QString &handle) {
-    return m_docEditor->openDocument(handle);
+void GuiMain::openDocument(const QString &handle) {
+    if (m_docEditor->hasBeenModified()) {
+        m_docEditor->saveDocument();
+    }
+    if (m_docEditor->openDocument(handle)) {
+        m_data->project()->setLastOpenDocument(handle);
+    };
 }
 
 /*
@@ -120,6 +135,23 @@ bool GuiMain::closeMain() {
     mainConf->flushSettings();
 
     return true;
+}
+
+/*
+    Slots
+    =====
+*/
+
+void GuiMain::doStoryTreeDoubleClick(const QModelIndex &index) {
+    if (!index.isValid()) {
+        return;
+    }
+
+    QString handle = m_novelTree->model()->data(index, Qt::UserRole).toString();
+    if (TextUtils::isHandle(handle)) {
+        openDocument(handle);
+        qDebug() << "Opening document:" << handle;
+    }
 }
 
 /*

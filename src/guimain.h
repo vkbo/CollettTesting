@@ -28,10 +28,11 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "statusbar.h"
 #include "doceditor.h"
 
-#include <QObject>
-#include <QMainWindow>
-#include <QSplitter>
 #include <QDir>
+#include <QMainWindow>
+#include <QModelIndex>
+#include <QObject>
+#include <QSplitter>
 
 namespace Collett {
 
@@ -47,11 +48,15 @@ public:
     bool saveProject();
     bool closeProject();
 
-    bool openDocument(const QString &handle);
+    void openDocument(const QString &handle);
     bool saveDocument();
     bool closeDocument();
 
     bool closeMain();
+
+public slots:
+
+    void doStoryTreeDoubleClick(const QModelIndex &index);
 
 private:
     CollettData *m_data;

@@ -23,6 +23,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "project.h"
 #include "storytree.h"
 #include "storymodel.h"
+#include "textutils.h"
 
 #include <QApplication>
 #include <QDateTime>
@@ -92,7 +93,52 @@ Project::~Project() {
 }
 
 /*
+    Getters
+    =======
+*/
+
+QDir Project::projectPath() const {
+    return m_projectPath;
+}
+
+QDir Project::contentPath() const {
+    return m_contentPath;
+}
+
+bool Project::hasProject() const {
+    return m_hasProject;
+}
+
+bool Project::hasError() const {
+    return m_hasError;
+}
+
+QString Project::lastError() const {
+    return m_lastError;
+}
+
+QString Project::lastOpenDocument() const {
+    return m_lastOpenDocument;
+}
+
+StoryTree *Project::storyTree() {
+    return m_storyTree;
+}
+
+/*
+    Setters
+    =======
+*/
+
+void Project::setLastOpenDocument(const QString &handle) {
+    if (TextUtils::isHandle(handle)) {
+        m_lastOpenDocument = handle;
+    }
+}
+
+/*
     Error Handling
+    ==============
 */
 
 void Project::clearError() {
@@ -108,6 +154,7 @@ void Project::setError(const QString &error) {
 
 /*
     Project File I/O
+    ================
 */
 
 bool Project::openProject() {
@@ -253,6 +300,14 @@ void Project::readProjectXML(QDomNode &parent) {
                     m_projectTitle = element.text();
                 }
             }
+
+            // Collett Project
+            if (element.namespaceURI() == m_nsPrj) {
+                if (element.tagName() == QLatin1String("lastDocument")) {
+                    m_lastOpenDocument = element.text();
+                }
+            }
+
             qInfo() << element.namespaceURI() << element.tagName();
         }
         node = node.nextSibling();
@@ -312,6 +367,10 @@ void Project::writeProjectXML(QXmlStreamWriter &xmlWriter) {
 
     xmlWriter.writeStartElement(m_nsPrj, "author");
     xmlWriter.writeCharacters(m_projectAuthor);
+    xmlWriter.writeEndElement();
+
+    xmlWriter.writeStartElement(m_nsPrj, "lastDocument");
+    xmlWriter.writeCharacters(m_lastOpenDocument);
     xmlWriter.writeEndElement();
 
     xmlWriter.writeEndElement(); // Close: project

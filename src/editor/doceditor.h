@@ -62,8 +62,11 @@ public:
     GuiDocEditor(QWidget *parent=nullptr);
     ~GuiDocEditor();
 
-    bool openDocument(const QString handle);
+    bool openDocument(const QString &handle);
     bool saveDocument();
+
+    bool hasDocument() const;
+    bool hasBeenModified() const;
 
 private:
     CollettData *m_data;
