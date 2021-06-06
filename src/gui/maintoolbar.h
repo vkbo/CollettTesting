@@ -68,7 +68,6 @@ private:
     QMenu       *m_documentMenu;
     QAction     *m_documentOpen;
     QAction     *m_documentSave;
-    QAction     *m_documentNewTitle;
     QAction     *m_documentNewPartition;
     QAction     *m_documentNewChapter;
     QAction     *m_documentNewSection;

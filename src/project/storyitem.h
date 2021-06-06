@@ -35,7 +35,7 @@ class StoryItem : public QObject
     Q_OBJECT
 
 public:
-    enum ItemType {Title, Partition, Chapter, Section, Scene, Page};
+    enum ItemType {Partition, Chapter, Section, Scene, Page};
 
     StoryItem();
     ~StoryItem() {};

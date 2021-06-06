@@ -2,8 +2,8 @@
 <collett:collettXml xmlns:collett="urn:collett:collett" xmlns:project="urn:collett:project" xmlns:meta="urn:collett:meta" xmlns:item="urn:collett:item" xmlns:dc="http://purl.org/dc/elements/1.1/" meta:fileVersion="0.1" meta:appVersion="0.0.1-alpha0">
   <collett:meta>
     <dc:created>2021-06-05T17:13:10</dc:created>
-    <dc:date>2021-06-06T22:15:19</dc:date>
-    <meta:revision>127</meta:revision>
+    <dc:date>2021-06-06T22:22:00</dc:date>
+    <meta:revision>130</meta:revision>
   </collett:meta>
   <collett:project>
     <dc:title>Sample Project</dc:title>
@@ -12,14 +12,14 @@
   </collett:project>
   <collett:content>
     <collett:story item:count="10">
-      <collett:item item:type="title" item:handle="ec373dd8-fd14-401f-8c75-535ea96e4db6">
+      <collett:item item:type="page" item:handle="ec373dd8-fd14-401f-8c75-535ea96e4db6">
         <item:title>Title Page</item:title>
         <item:cursorPos>16</item:cursorPos>
         <item:wordCount>2</item:wordCount>
       </collett:item>
       <collett:item item:type="page" item:handle="62900e30-ba27-49ee-ab37-863d2e6cd02d">
         <item:title>Acknowledgements</item:title>
-        <item:cursorPos>112</item:cursorPos>
+        <item:cursorPos>260</item:cursorPos>
         <item:wordCount>47</item:wordCount>
       </collett:item>
       <collett:item item:type="section" item:handle="7c5e8615-8ae4-451a-bb4a-ad96c6de47d1">

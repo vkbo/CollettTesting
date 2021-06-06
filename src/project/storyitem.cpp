@@ -86,9 +86,6 @@ StoryItem::ItemType StoryItem::type() const {
 
 QString StoryItem::typeAsString() const {
     switch (m_type) {
-        case ItemType::Title:
-            return "title";
-            break;
         case ItemType::Partition:
             return "partition";
             break;
@@ -110,9 +107,6 @@ QString StoryItem::typeAsString() const {
 
 QString StoryItem::typeForDisplay() const {
     switch (m_type) {
-        case ItemType::Title:
-            return tr("Title Page");
-            break;
         case ItemType::Partition:
             return tr("Part %1").arg(m_itemCount);
             break;
@@ -134,9 +128,6 @@ QString StoryItem::typeForDisplay() const {
 
 QString StoryItem::typeBackground() const {
     switch (m_type) {
-        case ItemType::Title:
-            return "#00ff00";
-            break;
         case ItemType::Partition:
             return "#00ff00";
             break;
@@ -256,10 +247,8 @@ void StoryItem::fromXml(const QString &nsCol, const QString &nsItm, QDomNode &no
         qWarning() << "Story item is missing type or handle, skipping";
     }
 
-    ItemType type = ItemType::Scene;
-    if (aType.value() == "title") {
-        type = ItemType::Title;
-    } else if (aType.value() == "partition") {
+    ItemType type = ItemType::Page;
+    if (aType.value() == "partition") {
         type = ItemType::Partition;
     } else if (aType.value() == "chapter") {
         type = ItemType::Chapter;

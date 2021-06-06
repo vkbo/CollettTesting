@@ -158,7 +158,6 @@ void GuiMainToolBar::buildDocumentMenu() {
     m_documentOpen = m_documentMenu->addAction(tr("Open Document"));
     m_documentSave = m_documentMenu->addAction(tr("Save Document"));
     m_documentMenu->addSeparator();
-    m_documentNewTitle = m_documentMenu->addAction(tr("New Title Page"));
     m_documentNewPartition = m_documentMenu->addAction(tr("New Partition"));
     m_documentNewChapter = m_documentMenu->addAction(tr("New Chapter"));
     m_documentNewSection = m_documentMenu->addAction(tr("New Section"));
@@ -167,7 +166,6 @@ void GuiMainToolBar::buildDocumentMenu() {
 
     m_documentOpen->setIcon(QIcon(":/icons/light/open.svg"));
     m_documentSave->setIcon(QIcon(":/icons/light/save.svg"));
-    m_documentNewTitle->setIcon(QIcon(":/icons/light/document-add.svg"));
     m_documentNewPartition->setIcon(QIcon(":/icons/light/document-add.svg"));
     m_documentNewChapter->setIcon(QIcon(":/icons/light/document-add.svg"));
     m_documentNewSection->setIcon(QIcon(":/icons/light/document-add.svg"));
@@ -176,7 +174,6 @@ void GuiMainToolBar::buildDocumentMenu() {
 
     m_documentOpen->setShortcut(QKeySequence("Ctrl+O"));
     m_documentSave->setShortcut(QKeySequence("Ctrl+S"));
-    m_documentNewTitle->setShortcut(QKeySequence("Ctrl+N, T"));
     m_documentNewPartition->setShortcut(QKeySequence("Ctrl+N, P"));
     m_documentNewChapter->setShortcut(QKeySequence("Ctrl+N, C"));
     m_documentNewSection->setShortcut(QKeySequence("Ctrl+N, X"));
