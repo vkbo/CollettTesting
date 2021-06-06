@@ -24,10 +24,10 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "settings.h"
 #include "document.h"
 #include "doceditor.h"
-#include "mainmenu.h"
 #include "noveltree.h"
 #include "statusbar.h"
 #include "textutils.h"
+#include "maintoolbar.h"
 
 #include <QApplication>
 #include <QCloseEvent>
@@ -45,10 +45,10 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
     m_data = CollettData::instance();
 
     // Main GUI Elements
-    m_mainMenu  = new GuiMainMenu(this);
-    m_novelTree = new GuiNovelTree(this);
-    m_docEditor = new GuiDocEditor(this);
-    m_statusBar = new GuiMainStatus(this);
+    m_mainToolBar = new GuiMainToolBar(this);
+    m_novelTree   = new GuiNovelTree(this);
+    m_docEditor   = new GuiDocEditor(this);
+    m_statusBar   = new GuiMainStatus(this);
 
     // Assemble Main Window
     m_splitMain = new QSplitter(Qt::Horizontal, this);
@@ -58,13 +58,13 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
     m_splitMain->addWidget(m_docEditor);
 
     // Set Main Window Elements
-    this->setMenuBar(m_mainMenu);
-    this->setCentralWidget(m_splitMain);
-    this->setStatusBar(m_statusBar);
+    setCentralWidget(m_splitMain);
+    setStatusBar(m_statusBar);
+    addToolBar(Qt::TopToolBarArea, m_mainToolBar);
 
     // Apply Settings
     CollettSettings *mainConf = CollettSettings::instance();
-    this->resize(mainConf->mainWindowSize());
+    resize(mainConf->mainWindowSize());
     m_splitMain->setSizes(mainConf->mainSplitSizes());
 
     // Connect Signals
@@ -74,7 +74,7 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent) {
     );
 
     // Finalise
-    this->setWindowTitle(
+    setWindowTitle(
         tr("%1 %2 Version %3").arg(qApp->applicationName(), "–", qApp->applicationVersion())
     );
 

@@ -23,10 +23,10 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #define GUIMAIN_H
 
 #include "data.h"
-#include "mainmenu.h"
 #include "noveltree.h"
 #include "statusbar.h"
 #include "doceditor.h"
+#include "maintoolbar.h"
 
 #include <QDir>
 #include <QMainWindow>
@@ -62,10 +62,10 @@ private:
     CollettData *m_data;
 
     // Main GUI Elements
-    GuiDocEditor  *m_docEditor;
-    GuiMainStatus *m_statusBar;
-    GuiNovelTree  *m_novelTree;
-    GuiMainMenu   *m_mainMenu;
+    GuiMainToolBar *m_mainToolBar;
+    GuiNovelTree   *m_novelTree;
+    GuiDocEditor   *m_docEditor;
+    GuiMainStatus  *m_statusBar;
 
     // GUI Widgets
     QSplitter *m_splitMain;

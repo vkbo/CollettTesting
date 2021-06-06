@@ -1,0 +1,8 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <file>icons/light/book.svg</file>
+    <file>icons/light/document.svg</file>
+    <file>icons/light/document-add.svg</file>
+    <file>icons/light/document-text.svg</file>
+</qresource>
+</RCC>

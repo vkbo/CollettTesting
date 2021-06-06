@@ -59,11 +59,12 @@ include_directories(
 )
 
 # Source Files
-list(APPEND Collet_SOURCE
-    document/documentblock
+list(APPEND Collett_SOURCE
     document/document
+    document/documentblock
     editor/doceditor
     gui/mainmenu
+    gui/maintoolbar
     gui/noveltree
     gui/noveltreedelegate
     gui/statusbar
@@ -78,13 +79,18 @@ list(APPEND Collet_SOURCE
     settings
 )
 
-foreach(entry IN LISTS Collet_SOURCE)
+# Resource Files
+list(APPEND QRC_FILES
+    assets/icons.qrc
+)
+
+foreach(entry IN LISTS Collett_SOURCE)
     list(APPEND EXEC_SRC src/${entry}.cpp)
 endforeach()
 
 # Targets
 # =======
 
-qt_add_executable(Collett ${EXEC_SRC} ${TS_FILES})
+qt_add_executable(Collett ${EXEC_SRC} ${QRC_FILES} ${TS_FILES})
 target_link_libraries(Collett PRIVATE Qt::Widgets Qt::Xml)
 set_target_properties(Collett PROPERTIES OUTPUT_NAME "collett")
