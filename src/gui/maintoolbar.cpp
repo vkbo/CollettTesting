@@ -137,6 +137,8 @@ void GuiMainToolBar::buildProjectMenu() {
 
     m_projectSave = m_projectMenu->addAction(tr("Save Project"));
 
+    m_projectSave->setIcon(QIcon(":/icons/light/save.svg"));
+
     // Assemble Menu
     m_projectButton = new QToolButton(this);
     m_projectButton->setIcon(QIcon(":/icons/light/book.svg"));
@@ -163,8 +165,8 @@ void GuiMainToolBar::buildDocumentMenu() {
     m_documentNewScene = m_documentMenu->addAction(tr("New Scene"));
     m_documentNewPage = m_documentMenu->addAction(tr("New Page"));
 
-    m_documentOpen->setIcon(QIcon(":/icons/light/document-text.svg"));
-    m_documentSave->setIcon(QIcon(":/icons/light/document-text.svg"));
+    m_documentOpen->setIcon(QIcon(":/icons/light/open.svg"));
+    m_documentSave->setIcon(QIcon(":/icons/light/save.svg"));
     m_documentNewTitle->setIcon(QIcon(":/icons/light/document-add.svg"));
     m_documentNewPartition->setIcon(QIcon(":/icons/light/document-add.svg"));
     m_documentNewChapter->setIcon(QIcon(":/icons/light/document-add.svg"));
@@ -216,10 +218,15 @@ void GuiMainToolBar::buildBlockFormatButtons() {
 */
 void GuiMainToolBar::buildTextFormatButtons() {
 
-    m_fmtBold = addAction(QIcon::fromTheme("format-text-bold"), tr("Bold"));
-    m_fmtItalic = addAction(QIcon::fromTheme("format-text-italic"), tr("Italic"));
-    m_fmtUnderline = addAction(QIcon::fromTheme("format-text-underline"), tr("Underline"));
-    m_fmtStrike = addAction(QIcon::fromTheme("format-text-strikethrough"), tr("Strikethrough"));
+    m_fmtBold = addAction(tr("Bold"));
+    m_fmtItalic = addAction(tr("Italic"));
+    m_fmtUnderline = addAction(tr("Underline"));
+    m_fmtStrike = addAction(tr("Strikethrough"));
+
+    m_fmtBold->setIcon(QIcon(":/icons/light/format-bold.svg"));
+    m_fmtItalic->setIcon(QIcon(":/icons/light/format-italic.svg"));
+    m_fmtUnderline->setIcon(QIcon(":/icons/light/format-underline.svg"));
+    m_fmtStrike->setIcon(QIcon(":/icons/light/format-strikeout.svg"));
 
     m_fmtBold->setShortcut(QKeySequence("Ctrl+B"));
     m_fmtItalic->setShortcut(QKeySequence("Ctrl+I"));
@@ -233,10 +240,15 @@ void GuiMainToolBar::buildTextFormatButtons() {
 
     addSeparator();
 
-    m_alignLeft = addAction(QIcon::fromTheme("format-justify-left"), tr("Left Align"));
-    m_alignCentre = addAction(QIcon::fromTheme("format-justify-center"), tr("Centre Align"));
-    m_alignRight = addAction(QIcon::fromTheme("format-justify-right"), tr("Right Align"));
-    m_alignJustified = addAction(QIcon::fromTheme("format-justify-fill"), tr("Justified"));
+    m_alignLeft = addAction(tr("Left Align"));
+    m_alignCentre = addAction(tr("Centre Align"));
+    m_alignRight = addAction(tr("Right Align"));
+    m_alignJustified = addAction(tr("Justified"));
+
+    m_alignLeft->setIcon(QIcon(":/icons/light/align-left.svg"));
+    m_alignCentre->setIcon(QIcon(":/icons/light/align-center.svg"));
+    m_alignRight->setIcon(QIcon(":/icons/light/align-right.svg"));
+    m_alignJustified->setIcon(QIcon(":/icons/light/align-justify.svg"));
 
     connect(m_alignLeft, &QAction::triggered, this, &GuiMainToolBar::alignLeftClicked);
     connect(m_alignCentre, &QAction::triggered, this, &GuiMainToolBar::alignCentreClicked);
@@ -245,11 +257,14 @@ void GuiMainToolBar::buildTextFormatButtons() {
 
     addSeparator();
 
-    m_textIndent = addAction(QIcon::fromTheme("format-indent-more"), tr("Indent"));
-    m_textOutent = addAction(QIcon::fromTheme("format-indent-less"), tr("Outdent"));
+    m_textIndent = addAction(tr("Indent"));
+    m_textOutdent = addAction(tr("Outdent"));
+
+    m_textIndent->setIcon(QIcon(":/icons/light/text-indent.svg"));
+    m_textOutdent->setIcon(QIcon(":/icons/light/text-outdent.svg"));
 
     connect(m_textIndent, &QAction::triggered, this, &GuiMainToolBar::textIndentClicked);
-    connect(m_textOutent, &QAction::triggered, this, &GuiMainToolBar::textOutdentClicked);
+    connect(m_textOutdent, &QAction::triggered, this, &GuiMainToolBar::textOutdentClicked);
 
 }
 

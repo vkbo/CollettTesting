@@ -1,8 +1,19 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
+    <file>icons/light/align-center.svg</file>
+    <file>icons/light/align-justify.svg</file>
+    <file>icons/light/align-left.svg</file>
+    <file>icons/light/align-right.svg</file>
     <file>icons/light/book.svg</file>
     <file>icons/light/document.svg</file>
     <file>icons/light/document-add.svg</file>
-    <file>icons/light/document-text.svg</file>
+    <file>icons/light/format-bold.svg</file>
+    <file>icons/light/format-italic.svg</file>
+    <file>icons/light/format-strikeout.svg</file>
+    <file>icons/light/format-underline.svg</file>
+    <file>icons/light/open.svg</file>
+    <file>icons/light/save.svg</file>
+    <file>icons/light/text-indent.svg</file>
+    <file>icons/light/text-outdent.svg</file>
 </qresource>
 </RCC>

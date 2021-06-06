@@ -80,7 +80,7 @@ list(APPEND Collett_SOURCE
 )
 
 # Resource Files
-list(APPEND QRC_FILES
+set(QRC_FILES
     assets/icons.qrc
 )
 

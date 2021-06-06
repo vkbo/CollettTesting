@@ -98,7 +98,7 @@ private:
 
     // Indent
     QAction *m_textIndent;
-    QAction *m_textOutent;
+    QAction *m_textOutdent;
 
     void buildProjectMenu();
     void buildDocumentMenu();
