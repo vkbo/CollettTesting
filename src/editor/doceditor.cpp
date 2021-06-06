@@ -185,15 +185,19 @@ void GuiDocEditor::documentAction(Collett::DocAction action) {
         QTextCursor cursor = textCursor();
         QTextBlock block = document()->findBlock(cursor.position());
         QTextBlockFormat format = block.blockFormat();
-        format.setTextIndent(m_format.blockIndent);
-        cursor.setBlockFormat(format);
+        if (format.headingLevel() == 0) {
+            format.setTextIndent(m_format.blockIndent);
+            cursor.setBlockFormat(format);
+        }
 
     } else if (action == Collett::TextOutdent) {
         QTextCursor cursor = textCursor();
         QTextBlock block = document()->findBlock(cursor.position());
         QTextBlockFormat format = block.blockFormat();
-        format.setTextIndent(0.0);
-        cursor.setBlockFormat(format);
+        if (format.headingLevel() == 0) {
+            format.setTextIndent(0.0);
+            cursor.setBlockFormat(format);
+        }
     }
 }
 
@@ -210,7 +214,7 @@ bool GuiDocEditor::openDocument(const QString &handle) {
 
     if (m_document->isValid()) {
         m_hasDocument = true;
-        setColletDoc(m_document->paragraphs());
+        setCollettDoc(m_document->paragraphs());
         document()->setModified(false);
     }
 
@@ -227,7 +231,7 @@ bool GuiDocEditor::saveDocument() {
     item->setWordCount(TextUtils::countWords(toPlainText()));
     item->setCursorPosition(textCursor().position());
 
-    QStringList docText = this->toColletDoc();
+    QStringList docText = this->toCollettDoc();
     for (int i=0; i < docText.size(); ++i) {
         qInfo() << docText.at(i);
     }
@@ -249,7 +253,7 @@ bool GuiDocEditor::saveDocument() {
     Populate the editor's QTextDocument by decoding a list of QStrings using
     the DocumentBlock class.
 */
-void GuiDocEditor::setColletDoc(const QStringList &content) {
+void GuiDocEditor::setCollettDoc(const QStringList &content) {
 
     QTextDocument *doc = this->document();
     QTextCursor cursor = QTextCursor(doc);
@@ -336,7 +340,7 @@ void GuiDocEditor::setColletDoc(const QStringList &content) {
     Encode the content of the QTextDocument block by block onto a list of
     QStrings. This uses a static function in the ColFocBlock class.
 */
-QStringList GuiDocEditor::toColletDoc() {
+QStringList GuiDocEditor::toCollettDoc() {
     QStringList docText;
     QTextBlock block = this->document()->firstBlock();
     while(block.isValid()) {

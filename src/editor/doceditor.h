@@ -79,8 +79,8 @@ private:
 
     bool m_hasDocument;
 
-    void setColletDoc(const QStringList &content);
-    QStringList toColletDoc();
+    void setCollettDoc(const QStringList &content);
+    QStringList toCollettDoc();
 
 };
 } // namespace Collett

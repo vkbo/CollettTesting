@@ -167,6 +167,7 @@ Document::RWStatus Document::write(const QString &text) {
         // Meta Data
         stream << "[META:TITLE]" << m_item->title() << "\n";
         stream << "[META:WORDS]" << m_item->wordCount() << "\n";
+        stream << "[META:TYPE]" << m_item->typeAsString() << "\n";
 
         // Body Text
         stream << text << '\n';
