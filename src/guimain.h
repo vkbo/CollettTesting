@@ -73,7 +73,7 @@ private:
     QSplitter *m_splitMain;
 
     // Events
-    virtual void closeEvent(QCloseEvent*);
+    void closeEvent(QCloseEvent*);
 
 };
 } // namespace Collett

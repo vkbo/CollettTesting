@@ -167,11 +167,11 @@ void GuiMain::forwardDocAction(Collett::DocAction action) {
     ======
 */
 
-void GuiMain::closeEvent(QCloseEvent *theEvent) {
+void GuiMain::closeEvent(QCloseEvent *event) {
     if (closeMain()) {
-        theEvent->accept();
+        event->accept();
     } else {
-        theEvent->ignore();
+        event->ignore();
     }
 }
 

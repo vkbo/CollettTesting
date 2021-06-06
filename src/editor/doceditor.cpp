@@ -29,6 +29,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include <QDebug>
 #include <QFont>
+#include <QKeyEvent>
 #include <QString>
 #include <QStringList>
 #include <QTextBlock>
@@ -183,8 +184,7 @@ void GuiDocEditor::documentAction(Collett::DocAction action) {
 
     } else if (action == Collett::TextIndent) {
         QTextCursor cursor = textCursor();
-        QTextBlock block = document()->findBlock(cursor.position());
-        QTextBlockFormat format = block.blockFormat();
+        QTextBlockFormat format = cursor.blockFormat();
         if (format.headingLevel() == 0) {
             format.setTextIndent(m_format.blockIndent);
             cursor.setBlockFormat(format);
@@ -192,8 +192,7 @@ void GuiDocEditor::documentAction(Collett::DocAction action) {
 
     } else if (action == Collett::TextOutdent) {
         QTextCursor cursor = textCursor();
-        QTextBlock block = document()->findBlock(cursor.position());
-        QTextBlockFormat format = block.blockFormat();
+        QTextBlockFormat format = cursor.blockFormat();
         if (format.headingLevel() == 0) {
             format.setTextIndent(0.0);
             cursor.setBlockFormat(format);
@@ -243,6 +242,40 @@ bool GuiDocEditor::saveDocument() {
 }
 
 /*
+    Events
+    ======
+*/
+
+void GuiDocEditor::keyPressEvent(QKeyEvent *event) {
+
+    int key = event->key();
+    int mod = event->modifiers();
+
+    if (mod == Qt::NoModifier && (key == Qt::Key_Return || key == Qt::Key_Enter)) {
+
+        QTextCursor cursor = textCursor();
+        int pos = cursor.positionInBlock();
+        int level = cursor.blockFormat().headingLevel();
+        bool empty = cursor.block().text().isEmpty();
+
+        cursor.beginEditBlock();
+        QTextBlockFormat blockFormat = m_format.blockParagraph;
+        if (level == 0 && !empty) {
+            if (pos == 0) {
+                blockFormat.setTextIndent(cursor.blockFormat().textIndent());
+            } else {
+                blockFormat.setTextIndent(m_format.blockIndent);
+            }
+        }
+        cursor.insertBlock(blockFormat, m_format.charParagraph);
+        cursor.endEditBlock();
+
+    } else {
+        QTextEdit::keyPressEvent(event);
+    }
+}
+
+/*
     Internal Functions
     ==================
 */
@@ -268,12 +301,6 @@ void GuiDocEditor::setCollettDoc(const QStringList &content) {
         if (!newBlock.valid) {
             qWarning() << "Invalid block encountered";
             continue;
-        }
-
-        if (isFirst) {
-            isFirst = false;
-        } else {
-            cursor.insertBlock();
         }
 
         QTextBlockFormat textBlockFmt = m_format.blockDefault;
@@ -312,7 +339,12 @@ void GuiDocEditor::setCollettDoc(const QStringList &content) {
             textBlockFmt.setTextIndent(m_format.blockIndent);
         }
 
-        cursor.setBlockFormat(textBlockFmt);
+        if (isFirst) {
+            cursor.setBlockFormat(textBlockFmt);
+            isFirst = false;
+        } else {
+            cursor.insertBlock(textBlockFmt);
+        }
 
         for (const DocumentBlock::Fragment& blockFrag : newBlock.fragments) {
             if (blockFrag.plain) {

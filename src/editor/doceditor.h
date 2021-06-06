@@ -27,14 +27,15 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include "project.h"
 #include "document.h"
 
+#include <QKeyEvent>
 #include <QObject>
-#include <QStringList>
-#include <QTextEdit>
 #include <QString>
+#include <QStringList>
 #include <QTextBlock>
-#include <QTextDocument>
 #include <QTextBlockFormat>
 #include <QTextCharFormat>
+#include <QTextDocument>
+#include <QTextEdit>
 
 namespace Collett {
 
@@ -81,6 +82,9 @@ private:
 
     void setCollettDoc(const QStringList &content);
     QStringList toCollettDoc();
+
+    // Events
+    void keyPressEvent(QKeyEvent *event);
 
 };
 } // namespace Collett
