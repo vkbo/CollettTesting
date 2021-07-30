@@ -36,6 +36,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QTextCursor>
 #include <QTextDocument>
 #include <QTextEdit>
+#include <QTextOption>
 
 namespace Collett {
 
@@ -46,7 +47,14 @@ GuiDocEditor::GuiDocEditor(QWidget *parent)
     m_hasDocument = false;
 
     // Settings
-    this->setAcceptRichText(true);
+    setAcceptRichText(true);
+
+    // Text Options
+    QTextOption opts;
+    opts.setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+    // opts.setAlignment(Qt::AlignJustify);
+    document()->setDefaultTextOption(opts);
+    document()->setDocumentMargin(40);
 
     // Set up formats
     // ==============
@@ -183,20 +191,21 @@ void GuiDocEditor::documentAction(Collett::DocAction action) {
         setAlignment(Qt::AlignJustify);
 
     } else if (action == Collett::TextIndent) {
+        // Indenting is only allowed on text paragraphs (no heading level) that
+        // are also aligned to the leading edge.
         QTextCursor cursor = textCursor();
         QTextBlockFormat format = cursor.blockFormat();
-        if (format.headingLevel() == 0) {
+        if (format.headingLevel() == 0 && format.alignment() == Qt::AlignLeading) {
             format.setTextIndent(m_format.blockIndent);
             cursor.setBlockFormat(format);
         }
 
     } else if (action == Collett::TextOutdent) {
+        // Text outdent is always allowed as there is no need to restrict it.
         QTextCursor cursor = textCursor();
         QTextBlockFormat format = cursor.blockFormat();
-        if (format.headingLevel() == 0) {
-            format.setTextIndent(0.0);
-            cursor.setBlockFormat(format);
-        }
+        format.setTextIndent(0.0);
+        cursor.setBlockFormat(format);
     }
 }
 
@@ -257,16 +266,18 @@ void GuiDocEditor::keyPressEvent(QKeyEvent *event) {
         int pos = cursor.positionInBlock();
         int level = cursor.blockFormat().headingLevel();
         bool empty = cursor.block().text().isEmpty();
+        auto align = cursor.blockFormat().alignment();
 
         cursor.beginEditBlock();
         QTextBlockFormat blockFormat = m_format.blockParagraph;
-        if (level == 0 && !empty) {
+        if (level == 0 && !empty && align == Qt::AlignLeading) {
             if (pos == 0) {
                 blockFormat.setTextIndent(cursor.blockFormat().textIndent());
             } else {
                 blockFormat.setTextIndent(m_format.blockIndent);
             }
         }
+        blockFormat.setAlignment(align);
         cursor.insertBlock(blockFormat, m_format.charParagraph);
         cursor.endEditBlock();
 
